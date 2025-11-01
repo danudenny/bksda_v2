@@ -1,0 +1,302 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// 1. Konfigurasi Generator dan Datasource
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ============================================
+// 2. ENUMS
+// ============================================
+
+enum Role {
+  ADMIN
+  AUTHOR
+}
+
+enum GalleryRow {
+  ROW_1
+  ROW_2
+  ROW_3
+}
+
+enum LinkStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+}
+
+// ============================================
+// 3. AUTHENTICATION & USER MANAGEMENT
+// ============================================
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String // Must be hashed with bcrypt
+  role      Role     @default(AUTHOR)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  posts         Post[]
+  auditLogs     AuditLog[]
+  refreshTokens RefreshToken[]
+
+  @@index([email])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@index([userId])
+}
+
+// ============================================
+// 4. NEWS & BLOG SECTION
+// ============================================
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  posts Post[]
+
+  @@index([slug])
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  content   String   @db.Text
+  excerpt   String?  @db.Text
+  imageUrl  String
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  publishedAt DateTime?
+
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String
+
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  categoryId String
+
+  @@index([slug])
+  @@index([authorId])
+  @@index([categoryId])
+  @@index([published])
+}
+
+// ============================================
+// 5. ANNOUNCEMENT MARQUEE
+// ============================================
+
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  date      String
+  category  String
+  href      String
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+  @@index([isActive])
+}
+
+// ============================================
+// 6. FOKUS KONSERVASI (Featured Species)
+// ============================================
+
+model FokusKonservasi {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  latinName   String
+  slug        String   @unique
+  imageUrl    String
+  description String?  @db.Text
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([order])
+  @@index([isActive])
+}
+
+// ============================================
+// 7. KAWASAN KONSERVASI (Conservation Areas)
+// ============================================
+
+model KawasanCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String   @db.Text
+  imageUrl    String
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  locations KawasanLocation[]
+
+  @@index([slug])
+  @@index([order])
+  @@index([isActive])
+}
+
+model KawasanLocation {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String
+  description String?  @db.Text
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category   KawasanCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String
+
+  @@unique([categoryId, slug])
+  @@index([categoryId])
+  @@index([slug])
+}
+
+// ============================================
+// 8. GALLERY IMAGES
+// ============================================
+
+model GalleryImage {
+  id       String     @id @default(cuid())
+  imageUrl String
+  altText  String
+  row      GalleryRow
+  order    Int        @default(0)
+  isActive Boolean    @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([row])
+  @@index([order])
+  @@index([isActive])
+}
+
+// ============================================
+// 9. EXTERNAL LINKS (BELIDA)
+// ============================================
+
+model ExternalLink {
+  id        String     @id @default(cuid())
+  title     String
+  subtitle  String
+  url       String
+  status    LinkStatus @default(ACTIVE)
+  order     Int        @default(0)
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([order])
+  @@index([status])
+  @@index([isActive])
+}
+
+// ============================================
+// 10. SITE SETTINGS (Global Configuration)
+// ============================================
+
+model SiteSettings {
+  id String @id @default("global")
+
+  // Contact Info
+  footerAddress String @db.Text
+  footerPhone   String
+  footerEmail   String
+
+  // Social Media
+  socialFacebook  String?
+  socialTwitter   String?
+  socialInstagram String?
+  socialYoutube   String?
+
+  // About Section
+  aboutDescription String? @db.Text
+  aboutImageUrl    String?
+
+  // Hero Section
+  heroTitle       String?
+  heroSubtitle    String?
+  heroImageUrl    String?
+
+  // CTA Section
+  ctaTitle        String?
+  ctaDescription  String? @db.Text
+  ctaButtonText   String?
+  ctaButtonUrl    String?
+
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================
+// 11. IMAGE ASSET MANAGEMENT
+// ============================================
+
+model ImageAsset {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String   @unique
+  altText   String?
+  size      Int      // File size in bytes
+  mimeType  String
+  width     Int?
+  height    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
+}
+
+// ============================================
+// 12. AUDIT LOGS
+// ============================================
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String   // CREATE, UPDATE, DELETE
+  entity    String   // Model name (Post, Announcement, etc.)
+  entityId  String
+  changes   String   @db.Text // JSON stringified changes
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@index([userId])
+  @@index([entity])
+  @@index([createdAt])
+}
