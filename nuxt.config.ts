@@ -33,12 +33,6 @@ export default defineNuxtConfig({
     componentDir: "./components/ui",
   },
   // Server configuration for API routes
-  nitro: {
-    prerender: {
-      crawlLinks: false,
-      routes: ["/sitemap.xml", "/rss.xml"],
-    },
-  },
   // CORS configuration for API
   routeRules: {
     "/api/**": { cors: true },
