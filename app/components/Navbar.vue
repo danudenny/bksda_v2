@@ -1,11 +1,11 @@
 <template>
   <header
     class="fixed left-0 right-0 z-50 w-full transition-all duration-300 ease-out"
-    :class="{
-      'top-5': !isScrolled,
-      'top-0 bg-gradient-to-b from-black/40 to-black/10 backdrop-blur-lg':
-        isScrolled,
-    }"
+    :class="[
+      isHomepage 
+        ? (isScrolled ? 'top-0 bg-black/30 backdrop-blur-lg' : 'top-5 bg-transparent')
+        : 'top-0 bg-black/30 backdrop-blur-lg'
+    ]"
   >
     <div
       ref="megaMenuContainer"
@@ -29,17 +29,6 @@
               class="h-full w-full object-cover"
             />
           </div>
-          <!--          <div-->
-          <!--            class="h-10 w-10 overflow-hidden rounded-full group-hover:ring-emerald-300 transition duration-300"-->
-          <!--          >-->
-          <!--            <NuxtImg-->
-          <!--              src="/logo_bksda_sumsel.avif"-->
-          <!--              alt="BKSDA Sumatera Selatan logo"-->
-          <!--              width="40"-->
-          <!--              height="40"-->
-          <!--              class="h-full w-full object-cover"-->
-          <!--            />-->
-          <!--          </div>-->
           <div class="flex flex-col leading-tight">
             <span
               class="text-base font-bold leading-none tracking-tight text-white transition-colors duration-300 group-hover:text-emerald-300"
@@ -88,9 +77,9 @@
 
 <script setup lang="ts">
 import { AlignVerticalJustifyStart } from "lucide-vue-next";
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount, computed } from "vue";
 
-defineProps<{
+const props = defineProps<{
   isOpen: boolean;
 }>();
 
@@ -99,8 +88,12 @@ const emit = defineEmits<{
   "close-menu": [];
 }>();
 
+const route = useRoute();
 const menuTrigger = ref<HTMLButtonElement | null>(null);
 const isScrolled = ref(false);
+
+// Check if we're on the homepage
+const isHomepage = computed(() => route.path === '/' || route.path === '/index.html');
 
 const handleScroll = () => {
   if (typeof window !== "undefined") {

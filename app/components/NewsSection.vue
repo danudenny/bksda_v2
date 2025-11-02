@@ -56,6 +56,18 @@
           <p class="mt-4 text-base leading-7 text-gray-600">
             {{ featuredPost.description }}
           </p>
+          <!-- Author Information -->
+          <div class="mt-4 flex items-center gap-3">
+            <div class="h-8 w-8 overflow-hidden rounded-full bg-gray-200">
+              <div class="h-full w-full bg-gray-300 flex items-center justify-center">
+                <UserIcon class="h-4 w-4 text-gray-500" />
+              </div>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-gray-900">{{ featuredPost.author.name }}</p>
+              <p class="text-xs text-gray-500">{{ featuredPost.author.role }}</p>
+            </div>
+          </div>
           <div class="mt-6">
             <NuxtLink
               :to="featuredPost.href"
@@ -97,6 +109,17 @@
                   <span class="absolute inset-0" />
                   {{ post.title }}
                 </h3>
+                <!-- Author Information -->
+                <div class="mt-3 flex items-center gap-2">
+                  <div class="h-6 w-6 overflow-hidden rounded-full bg-gray-200">
+                    <div class="h-full w-full bg-gray-300 flex items-center justify-center">
+                      <UserIcon class="h-3 w-3 text-gray-500" />
+                    </div>
+                  </div>
+                  <div>
+                    <p class="text-xs font-medium text-gray-900">{{ post.author.name }}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </NuxtLink>
@@ -108,52 +131,56 @@
 
 <script setup>
 import { computed } from "vue";
-import { ArrowRightCircleIcon } from "lucide-vue-next"; // Import the icon
+import { ArrowRightCircleIcon, UserIcon } from "lucide-vue-next"; // Import the icon
 
 const posts = [
   {
     id: 1,
     title: "BKSDA Sumsel Gelar Operasi Penyelamatan Satwa Dilindungi",
-    href: "#",
+    href: "/berita/1",
     description:
       "Tim BKSDA berhasil menyelamatkan seekor harimau sumatera yang terjebak di area perkebunan warga, kini dalam proses rehabilitasi.",
     imageUrl: "/news-1.jpg",
     date: "10 April 2024",
     datetime: "2024-04-10",
     category: { title: "Penyelamatan Satwa" },
+    author: { name: "Dra. Siti Nurhaliza, M.Si", role: "Kepala BKSDA Sumsel" },
   },
   {
     id: 2,
     title: "Edukasi Konservasi: BKSDA Kunjungi Sekolah di Muara Enim",
-    href: "#",
+    href: "/berita/2",
     description:
       "Program edukasi interaktif untuk menumbuhkan kesadaran konservasi sejak dini.",
     imageUrl: "/news-2.jpg",
     date: "05 April 2024",
     datetime: "2024-04-05",
     category: { title: "Edukasi" },
+    author: { name: "Dr. Budi Santoso, S.Hut., M.Sc.", role: "Koordinator Edukasi" },
   },
   {
     id: 3,
     title: "Penanaman Ribuan Bibit Pohon di Kawasan Hutan Lindung",
-    href: "#",
+    href: "/berita/3",
     description:
       "Kolaborasi BKSDA dengan masyarakat dalam upaya reforestasi memulihkan fungsi hutan.",
     imageUrl: "/news-3.webp",
     date: "28 Maret 2024",
     datetime: "2024-03-28",
     category: { title: "Rehabilitasi Hutan" },
+    author: { name: "Ir. Rina Permata, M.For.Sc.", role: "Koordinator Rehabilitasi" },
   },
   {
     id: 4,
     title: "Studi Habitat Baru untuk Badak Sumatera di Taman Nasional",
-    href: "#",
+    href: "/berita/4",
     description:
       "Penelitian mendalam untuk menemukan zona aman dan ideal bagi pelepasliaran badak.",
     imageUrl: "/news-4.jpg",
     date: "20 Maret 2024",
     datetime: "2024-03-20",
     category: { title: "Penelitian" },
+    author: { name: "Dr. Andi Prasetyo, S.Si., M.Biol.", role: "Kepala Laboratorium" },
   },
 ];
 
