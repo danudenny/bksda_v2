@@ -1,14 +1,30 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { Menu, Search, Bell, Settings, LogOut } from "lucide-vue-next";
+import {
+  Menu,
+  Search,
+  Bell,
+  LogOut,
+  Moon,
+  Sun,
+  Globe,
+} from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { adminMenuItems } from "@/data/admin-menu";
 import { useAuth } from "@/composables/useAuth";
 import { useAuthStore } from "@/stores/auth";
+import { useColorMode } from "#imports";
 
 const { logout } = useAuth();
 const authStore = useAuthStore();
+const colorMode = useColorMode();
+const isDark = computed(() => colorMode.value === "dark");
+const nextColorMode = computed(() => (isDark.value ? "light" : "dark"));
+
+function toggleColorMode() {
+  colorMode.preference = nextColorMode.value;
+}
 
 const userInitials = computed(() => {
   if (!authStore.user) return "U";
@@ -40,7 +56,9 @@ async function handleLogout() {
 
       <SheetContent side="left" class="w-64 p-0 flex flex-col">
         <!-- Mobile Sidebar Header -->
-        <div class="h-16 flex items-center justify-center border-b dark:border-gray-700">
+        <div
+          class="h-16 flex items-center justify-center border-b dark:border-gray-700"
+        >
           <div class="flex flex-col items-center">
             <h1 class="text-lg font-bold text-primary dark:text-green-400">
               ADMIN
@@ -74,7 +92,9 @@ async function handleLogout() {
             </RouterLink>
 
             <div v-else>
-              <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 px-3 py-2">
+              <p
+                class="text-xs font-semibold text-gray-500 dark:text-gray-400 px-3 py-2"
+              >
                 {{ item.name }}
               </p>
               <div class="space-y-1">
@@ -119,21 +139,40 @@ async function handleLogout() {
     </Sheet>
 
     <!-- Header Title -->
-    <h2 class="text-lg font-semibold ml-4 hidden lg:block text-gray-900 dark:text-white">
+    <h2
+      class="text-lg font-semibold ml-4 hidden lg:block text-gray-900 dark:text-white"
+    >
       Admin Panel
     </h2>
 
     <!-- Header Actions -->
     <div class="flex items-center space-x-3 ml-auto">
+      <Button
+        variant="ghost"
+        size="icon"
+        @click="toggleColorMode"
+        :title="`Switch to ${nextColorMode} mode`"
+        :aria-label="`Switch to ${nextColorMode} mode`"
+      >
+        <Sun v-if="isDark" class="h-5 w-5" />
+        <Moon v-else class="h-5 w-5" />
+      </Button>
       <Button variant="ghost" size="icon" title="Search">
         <Search class="h-5 w-5" />
       </Button>
       <Button variant="ghost" size="icon" title="Notifications">
         <Bell class="h-5 w-5" />
       </Button>
-      <Button variant="ghost" size="icon" title="Settings">
-        <Settings class="h-5 w-5" />
-      </Button>
+
+      <a
+        href="/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hidden sm:inline-flex items-center gap-2 rounded-md border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-700"
+      >
+        <Globe class="h-4 w-4" />
+        <span>View Website</span>
+      </a>
 
       <!-- User Avatar -->
       <div

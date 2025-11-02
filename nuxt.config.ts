@@ -5,10 +5,12 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/fonts",
     "@nuxt/image",
+    "@nuxtjs/color-mode",
     "@nuxtjs/tailwindcss",
     "shadcn-nuxt",
     "@pinia/nuxt",
     "pinia-plugin-persistedstate/nuxt",
+    "motion-v/nuxt",
   ],
   fonts: {
     families: [
@@ -31,6 +33,11 @@ export default defineNuxtConfig({
   shadcn: {
     prefix: "",
     componentDir: "./components/ui",
+  },
+  colorMode: {
+    classSuffix: "",
+    preference: "system",
+    storageKey: "nuxt-color-mode",
   },
   // Server configuration for API routes
   // CORS configuration for API

@@ -38,7 +38,7 @@
         class="mx-auto mt-16 grid max-w-none grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
       >
         <NuxtLink
-          v-for="link in filteredLinks"
+          v-for="link in displayedLinks"
           :key="link.id"
           :to="link.url"
           target="_blank"
@@ -47,8 +47,18 @@
         >
           <span
             class="absolute top-4 right-4 h-2.5 w-2.5 rounded-full"
-            :class="link.status === 'online' ? 'bg-green-500' : 'bg-red-500'"
-            :title="link.status === 'online' ? 'Online' : 'Offline'"
+            :class="{
+              'bg-green-500': link.status === 'online',
+              'bg-red-500': link.status === 'offline',
+              'bg-yellow-400 animate-pulse': link.status === 'pending',
+            }"
+            :title="
+              link.status === 'online'
+                ? 'Online'
+                : link.status === 'offline'
+                  ? 'Offline'
+                  : 'Mengecek...'
+            "
           ></span>
 
           <div class="flex-grow">
@@ -64,13 +74,15 @@
               {{ link.subtitle }}
             </p>
           </div>
-
           <div
-            class="mt-4 pt-4 border-t border-gray-100 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            class="mt-4 pt-4 border-t border-gray-100 transition-opacity duration-300 group-hover:border-emerald-950"
           >
             <span class="text-sm font-semibold text-emerald-600"
-              >Kunjungi Tautan &rarr;</span
+              >Kunjungi Tautan</span
             >
+            <ArrowRightCircleIcon
+              class="ml-1 inline-block h-5 w-5 text-emerald-600"
+            />
           </div>
         </NuxtLink>
 
@@ -86,109 +98,128 @@
           </p>
         </div>
       </div>
+
+      <div v-if="filteredLinks.length > 4" class="mt-12 text-center">
+        <button
+          @click="isExpanded = !isExpanded"
+          type="button"
+          class="inline-flex cursor-pointer items-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 transition-colors"
+        >
+          <template v-if="!isExpanded">
+            <span>Tampilkan Semua ({{ filteredLinks.length }})</span>
+            <ChevronDown class="ml-2 h-4 w-4" />
+          </template>
+          <template v-else>
+            <span>Tampilkan Lebih Sedikit</span>
+            <ChevronUp class="ml-2 h-4 w-4" />
+          </template>
+        </button>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { AppWindow, Search } from "lucide-vue-next";
+import { ref, computed, watch, onMounted } from "vue";
+import {
+  AppWindow,
+  Search,
+  ChevronDown,
+  ChevronUp,
+  ArrowRightCircleIcon,
+} from "lucide-vue-next";
 
 type AccessLink = {
   id: number;
   title: string;
   subtitle: string;
   url: string;
-  status: "online" | "offline";
+  status: "online" | "offline" | "pending";
 };
 
-// --- State untuk Pencarian ---
 const searchQuery = ref("");
+const isExpanded = ref(false);
 
-// --- Data Tautan (Total 11) ---
 const allLinks = ref<AccessLink[]>([
-  // 5 Link Pertama Anda
   {
     id: 1,
     title: "SIDAK KSDAE",
     subtitle: "Kementerian LHK",
     url: "https://sidak.ksdae.id/",
-    status: "online",
+    status: "pending",
   },
   {
     id: 2,
     title: "SIMPEG",
     subtitle: "Kementerian LHK",
-    url: "http://simpeg.menlhk.go.id/",
-    status: "online",
+    url: "https://simpeg.menlhk.go.id/",
+    status: "pending",
   },
   {
     id: 3,
     title: "SAKTI Kemenkeu",
     subtitle: "Kementerian Keuangan",
     url: "https://sakti.kemenkeu.go.id/LL-Zg7BviiuXviBn9TvfiA",
-    status: "online",
+    status: "pending",
   },
   {
     id: 4,
     title: "E-Reporting",
     subtitle: "Kementerian LHK",
-    url: "https://sakti.kemenkeu.go.id/LL-Zg7BviiuXviBn9TvfiA",
-    status: "online",
+    url: "https://e-reporting.menlhk.go.id/",
+    status: "pending",
   },
   {
     id: 5,
     title: "SRIKANDI ARSIP",
     subtitle: "Arsip Nasional RI",
     url: "https://srikandi.arsip.go.id/login",
-    status: "offline", // Contoh status offline
+    status: "pending",
   },
-  // 6 Link Baru Anda
   {
     id: 6,
     title: "Kementerian LHK",
     subtitle: "Website Resmi MenLHK",
     url: "https://www.menlhk.go.id/",
-    status: "online",
+    status: "pending",
   },
   {
     id: 7,
     title: "Ditjen KSDAE",
     subtitle: "Direktorat Jenderal KSDAE",
-    url: "http://ksdae.menlhk.go.id/",
-    status: "online",
+    url: "https://ksdae.or.id",
+    status: "pending",
   },
   {
     id: 8,
     title: "Direktorat PIKA",
     subtitle: "Konservasi Hayati",
     url: "http://pika.ksdae.menlhk.go.id/",
-    status: "online",
+    status: "pending",
   },
   {
     id: 9,
     title: "Direktorat PJLHK",
     subtitle: "Jasa Lingkungan",
     url: "https://ekowisata.org/",
-    status: "online",
+    status: "pending",
   },
   {
     id: 10,
     title: "SiPongi",
     subtitle: "Deteksi Kebakaran Hutan",
     url: "http://sipongi.menlhk.go.id/",
-    status: "online",
+    status: "pending",
   },
   {
     id: 11,
     title: "GRACCESS",
     subtitle: "Perizinan Akses SDG",
     url: "https://graccess.co.id/",
-    status: "online",
+    status: "pending",
   },
 ]);
 
-// --- Logika Filter Dinamis ---
 const filteredLinks = computed(() => {
   const query = searchQuery.value.toLowerCase().trim();
   if (!query) {
@@ -202,6 +233,30 @@ const filteredLinks = computed(() => {
   });
 });
 
-// CATATAN: Status "online"/"offline" masih hardcoded untuk tujuan desain.
-// Implementasi nyata memerlukan panggilan API sisi server untuk cek "live status".
+const displayedLinks = computed(() => {
+  if (isExpanded.value) {
+    return filteredLinks.value;
+  }
+  return filteredLinks.value.slice(0, 4);
+});
+
+watch(searchQuery, () => {
+  isExpanded.value = false;
+});
+
+onMounted(() => {
+  allLinks.value.forEach(async (link) => {
+    try {
+      const response = await $fetch("/api/check-status", {
+        method: "POST",
+        body: { url: link.url },
+      });
+
+      link.status = response.status;
+    } catch (error) {
+      console.error(`Gagal mengecek ${link.url}:`, error);
+      link.status = "offline";
+    }
+  });
+});
 </script>

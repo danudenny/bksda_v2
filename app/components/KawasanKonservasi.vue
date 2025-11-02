@@ -50,7 +50,7 @@
             class="grid grid-cols-1 items-center overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-gray-900/5 lg:grid-cols-2"
           >
             <div class="relative h-64 w-full lg:h-full">
-              <NuxtImg
+              <img
                 :src="activeShowcase.imageUrl"
                 :alt="activeShowcase.label"
                 class="absolute h-full w-full object-cover"
@@ -71,17 +71,38 @@
                 aria-label="Kawasan"
               >
                 <div class="flex flex-wrap gap-2">
-                  <NuxtLink
+                  <button
                     v-for="kawasan in activeShowcase.children"
                     :key="kawasan.label"
-                    :to="`/kawasan/${slugify(activeShowcase.id)}/${slugify(
-                      kawasan.label,
-                    )}`"
-                    class="block transform rounded-full bg-slate-100 px-4 py-1.5 text-sm font-semibold text-gray-700 transition-all duration-300 hover:bg-emerald-100 hover:text-emerald-700 hover:scale-105"
+                    @click="toggleChild(kawasan.label)"
+                    type="button"
+                    :class="[
+                      'block transform rounded-full px-4 py-1.5 text-sm font-semibold transition-all duration-300',
+                      activeChildLabel === kawasan.label
+                        ? 'bg-emerald-600 text-white scale-105 shadow-md shadow-emerald-600/30'
+                        : 'bg-slate-100 text-gray-700 hover:bg-emerald-100 hover:text-emerald-700 hover:scale-105',
+                    ]"
                   >
                     {{ kawasan.label }}
-                  </NuxtLink>
+                  </button>
                 </div>
+
+                <transition name="expand">
+                  <div
+                    v-if="activeChildData"
+                    class="relative mt-4 pt-4 border-t border-gray-100"
+                  >
+                    <p class="text-sm leading-6 text-gray-600">
+                      {{ activeChildData.description }}
+                    </p>
+                    <NuxtLink
+                      :to="getKawasanUrl(activeChildData.label)"
+                      class="mt-3 inline-block text-sm font-semibold text-emerald-600 transition-colors hover:text-emerald-500"
+                    >
+                      Jelajahi Selengkapnya &rarr;
+                    </NuxtLink>
+                  </div>
+                </transition>
               </div>
             </div>
           </div>
@@ -92,13 +113,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-// MapPin tidak lagi diperlukan
+import { ref, computed, watch } from "vue";
 import { Shield, Camera, Mountain } from "lucide-vue-next";
 
-// --- Tipe Data (Tidak Berubah) ---
 type KawasanChild = {
   label: string;
+  description: string;
 };
 type KategoriKawasan = {
   id: string;
@@ -109,15 +129,13 @@ type KategoriKawasan = {
   children: KawasanChild[];
 };
 
-// --- Fungsi Utilitas untuk membuat URL ---
 const slugify = (text: string) => {
   return text
     .toLowerCase()
-    .replace(/\s+/g, "-") // Ganti spasi dengan -
-    .replace(/[^\w-]+/g, ""); // Hapus karakter non-word
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "");
 };
 
-// --- Data Kawasan (Tidak Berubah) ---
 const dataKawasan: KategoriKawasan[] = [
   {
     id: "suaka-margasatwa",
@@ -125,14 +143,33 @@ const dataKawasan: KategoriKawasan[] = [
     icon: Shield,
     description:
       "Kawasan suaka alam yang melindungi satwa liar khas, sebagai tempat perlindungan, perkembangbiakan, dan habitat penting.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imageUrl: "/kws_konservasi/dangku.avif",
     children: [
-      { label: "Dangku" },
-      { label: "Bentayan" },
-      { label: "Isau Isau" },
-      { label: "Gumai Pasemah" },
-      { label: "Gunung Raya" },
+      {
+        label: "Dangku",
+        description:
+          "Merupakan habitat Harimau Sumatera. Kawasan dengan luas 47.996,45 hektar menyimpan potensi flora fauna yang cukup beragam.",
+      },
+      {
+        label: "Bentayan",
+        description:
+          "Kawasan yang sejak tahun 1981 berfungsi sebagai kawasan konservasi.",
+      },
+      {
+        label: "Isau Isau",
+        description:
+          "Kawasan ini merupakan hutan hujan pegunungan dengan jenis tumbuhan yang didominasi oleh famili Dipterocarpaceae, Fagaceae, Lauraceae.",
+      },
+      {
+        label: "Gumai Pasemah",
+        description:
+          "HSA Gumai Tebing Tinggi merupakan ekosistem hutan hujan yang vegetasinya beragam dan didominasi oleh famili Dipterocapaceae.",
+      },
+      {
+        label: "Gunung Raya",
+        description:
+          "SM Gunung Raya menyimpan potensi jasa lingkungan berupa penyimpanan karbon, air, wisata alam terbatas, dan wisata religi.",
+      },
     ],
   },
   {
@@ -141,13 +178,28 @@ const dataKawasan: KategoriKawasan[] = [
     icon: Camera,
     description:
       "Kawasan pelestarian alam yang dimanfaatkan untuk rekreasi, pariwisata alam, dan edukasi lingkungan secara berkelanjutan.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1501675423372-9bfa95849e62?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imageUrl: "/kws_konservasi/punti.avif",
     children: [
-      { label: "Punti Kayu" },
-      { label: "Isau-Isau" },
-      { label: "Jering Menduyung" },
-      { label: "Gunung Permisan" },
+      {
+        label: "Punti Kayu",
+        description:
+          "Punti Kayu merupakan hutan pinus dalam kota terbesar di Indonesia. Selain menjadi tempat wisata, Punti Kayu berkontribusi dalam penyerapan karbon dioksida.",
+      },
+      {
+        label: "Isau-Isau",
+        description:
+          "Kawasan ini merupakan pusat pelatihan Gajah yang ada di Sumatera Selatan. Gajah yang dikelola di kawasan ini saat ini berjumlah 10 Gajah.",
+      },
+      {
+        label: "Jering Menduyung",
+        description:
+          "Kawasan TWA Jering Menduyung merupakan ekosistem mangrove yang didominasi oleh dua jenis flora, yaitu bakau dan nipah.",
+      },
+      {
+        label: "Gunung Permisan",
+        description:
+          "Yang menjadi daya tarik adalah Bukit Nenek, karena adanya goa di puncak bukitnya dan batu yang terbelah serta dataran di puncak untuk melihat pemandangan.",
+      },
     ],
   },
   {
@@ -156,16 +208,58 @@ const dataKawasan: KategoriKawasan[] = [
     icon: Mountain,
     description:
       "Ekosistem asli yang dikelola untuk tujuan penelitian, ilmu pengetahuan, pendidikan, dan pelestarian keanekaragaman hayati.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    children: [{ label: "Gunung Maras" }],
+    imageUrl: "/kws_konservasi/gnmaras.avif",
+    children: [
+      {
+        label: "Gunung Maras",
+        description:
+          "Keunikan kawasan ini terdiri dari beberapa tipe ekosistem yang menjadi satu kesatuan bentang alam, yaitu ekosistem mangrove, pegunungan, dan dataran rendah.",
+      },
+    ],
   },
 ];
 
-// --- State (Tidak Berubah) ---
 const activeTab = ref<string>("suaka-margasatwa");
-
 const activeShowcase = computed(() => {
   return dataKawasan.find((k) => k.id === activeTab.value)!;
+});
+
+const defaultActiveShowcase = dataKawasan.find((k) => k.id === activeTab.value);
+
+const initialChildLabel =
+  defaultActiveShowcase && defaultActiveShowcase.children.length > 0
+    ? defaultActiveShowcase.children[0].label
+    : null;
+
+const activeChildLabel = ref<string | null>(initialChildLabel);
+
+const activeChildData = computed(() => {
+  if (!activeChildLabel.value) return null;
+  return activeShowcase.value.children.find(
+    (c) => c.label === activeChildLabel.value,
+  );
+});
+
+function toggleChild(label: string) {
+  if (activeChildLabel.value === label) {
+    activeChildLabel.value = null;
+  } else {
+    activeChildLabel.value = label;
+  }
+}
+
+const getKawasanUrl = (childLabel: string) => {
+  if (!activeShowcase.value) return "/";
+  return `/kawasan/${slugify(activeShowcase.value.id)}/${slugify(childLabel)}`;
+};
+
+watch(activeTab, (newTabId) => {
+  const newShowcase = dataKawasan.find((k) => k.id === newTabId);
+
+  if (newShowcase && newShowcase.children.length > 0) {
+    activeChildLabel.value = newShowcase.children[0].label;
+  } else {
+    activeChildLabel.value = null;
+  }
 });
 </script>

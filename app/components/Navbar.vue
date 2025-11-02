@@ -1,10 +1,12 @@
 <template>
   <header
-    class="fixed left-0 right-0 z-50 w-full transition-all duration-300 ease-out"
+    class="fixed left-0 right-0 z-50 transition-all duration-300 ease-out mt-4 mx-4 rounded-lg"
     :class="[
-      isHomepage 
-        ? (isScrolled ? 'top-0 bg-black/30 backdrop-blur-lg' : 'top-5 bg-transparent')
-        : 'top-0 bg-black/30 backdrop-blur-lg'
+      isHomepage
+        ? isScrolled
+          ? 'top-0 bg-black/40 backdrop-blur-lg'
+          : 'top-5 bg-transparent'
+        : 'top-0 bg-black/40 backdrop-blur-lg',
     ]"
   >
     <div
@@ -31,14 +33,14 @@
           </div>
           <div class="flex flex-col leading-tight">
             <span
-              class="text-base font-bold leading-none tracking-tight text-white transition-colors duration-300 group-hover:text-emerald-300"
+              class="text-base font-bold leading-none tracking-tight text-white transition-colors duration-300"
             >
-              Balai Konservasi Sumber Daya Alam
+              BKSDA Sumatera Selatan
             </span>
             <span
-              class="text-xs font-semibold leading-none text-emerald-300 mt-1 transition-colors duration-300"
+              class="text-xs font-bold leading-none text-emerald-300 mt-1 transition-colors duration-300"
             >
-              Sumatera Selatan
+              Kementerian LHK
             </span>
           </div>
         </NuxtLink>
@@ -93,7 +95,9 @@ const menuTrigger = ref<HTMLButtonElement | null>(null);
 const isScrolled = ref(false);
 
 // Check if we're on the homepage
-const isHomepage = computed(() => route.path === '/' || route.path === '/index.html');
+const isHomepage = computed(
+  () => route.path === "/" || route.path === "/index.html",
+);
 
 const handleScroll = () => {
   if (typeof window !== "undefined") {
