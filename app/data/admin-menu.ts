@@ -8,6 +8,7 @@ import {
   Image,
   Link,
   Settings,
+  Tag,
 } from "lucide-vue-next";
 
 export interface MenuItem {
@@ -33,6 +34,11 @@ export const adminMenuItems: MenuItem[] = [
         name: "Posts & News",
         icon: FileText,
         href: "/admin/posts",
+      },
+      {
+        name: "Categories",
+        icon: Tag,
+        href: "/admin/categories",
       },
       {
         name: "Announcements",
