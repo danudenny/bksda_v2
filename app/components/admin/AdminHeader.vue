@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { Menu, Search, Bell, Settings, LogOut } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
+import ColorModeSwitcher from "./ColorModeSwitcher.vue";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { adminMenuItems } from "@/data/admin-menu";
 import { useAuth } from "@/composables/useAuth";
@@ -134,6 +135,8 @@ async function handleLogout() {
       <Button variant="ghost" size="icon" title="Settings">
         <Settings class="h-5 w-5" />
       </Button>
+
+      <ColorModeSwitcher />
 
       <!-- User Avatar -->
       <div
