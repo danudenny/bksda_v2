@@ -4,6 +4,7 @@ import AdminHeader from "@/components/admin/AdminHeader.vue";
 import AdminFooter from "@/components/admin/AdminFooter.vue";
 import ConfirmDialog from "@/components/ConfirmDialog.vue";
 import { Toaster } from "@/components/ui/sonner";
+const colorMode = useColorMode();
 </script>
 
 <template>
@@ -31,7 +32,7 @@ import { Toaster } from "@/components/ui/sonner";
 
     <!-- Toast Notifications - Fixed positioning outside flex container -->
     <div class="fixed top-0 right-0 z-[9999] pointer-events-none">
-      <Toaster />
+      <Toaster :theme="colorMode.value === 'dark' ? 'dark' : 'light'" />
     </div>
 
     <!-- Confirm Dialog -->

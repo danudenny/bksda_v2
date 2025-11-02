@@ -9,6 +9,7 @@ export default {
     "./app.vue",
     "./error.vue",
   ],
+  darkMode: "class",
   safelist: [
     {
       pattern: /sonner-toast/,
