@@ -1,20 +1,24 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import { Button } from '@/components/ui/button'
+import { Icon } from "@iconify/vue";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from "@/components/ui/dropdown-menu";
 
-const colorMode = useColorMode()
+const colorMode = useColorMode();
 </script>
 
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
-      <Button variant="outline">
+      <Button
+        variant="outline"
+        size="icon"
+        class="relative cursor-pointer overflow-hidden"
+      >
         <Icon
           icon="radix-icons:moon"
           class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
@@ -27,13 +31,22 @@ const colorMode = useColorMode()
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
-      <DropdownMenuItem @click="colorMode.preference = 'light'">
+      <DropdownMenuItem
+        @click="colorMode.preference = 'light'"
+        class="cursor-pointer"
+      >
         Light
       </DropdownMenuItem>
-      <DropdownMenuItem @click="colorMode.preference = 'dark'">
+      <DropdownMenuItem
+        @click="colorMode.preference = 'dark'"
+        class="cursor-pointer"
+      >
         Dark
       </DropdownMenuItem>
-      <DropdownMenuItem @click="colorMode.preference = 'system'">
+      <DropdownMenuItem
+        @click="colorMode.preference = 'system'"
+        class="cursor-pointer"
+      >
         System
       </DropdownMenuItem>
     </DropdownMenuContent>
