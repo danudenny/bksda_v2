@@ -2,13 +2,15 @@
   <div>
     <SocialMdiaFloating />
     <BackToTop />
+    <WhatsAppButton />
+    <SurveyButton />
     <HeroSection />
     <Announcement />
+    <NewsSection />
     <AboutSection />
     <KawasanKonservasi />
     <FocusConservation />
     <Gallery />
-    <NewsSection />
     <CTA />
     <Belida />
   </div>

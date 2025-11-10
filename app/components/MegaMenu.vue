@@ -11,12 +11,12 @@
     >
       <div
         v-if="isOpen"
-        class="fixed top-[65px] lg:top-4 bg-black/10 backdrop-blur-sm z-40 left-2 sm:left-4 right-2 sm:right-4 bottom-2 sm:bottom-4 rounded-xl cursor-pointer"
+        class="fixed bg-black/10 backdrop-blur-sm z-40 left-2 sm:left-4 right-2 sm:right-4 bottom-2 sm:bottom-4 rounded-xl cursor-pointer transition-all duration-300"
+        :class="[isHomepage && !isScrolled ? 'top-[85px]' : 'top-[73px]']"
         @click="handleBackdropClick"
         aria-hidden="true"
       ></div>
     </transition>
-
     <!-- Menu content with scale and fade transition -->
     <transition
       enter-active-class="transition-all duration-400 ease-out"
@@ -28,40 +28,78 @@
     >
       <div
         v-if="isOpen"
-        class="fixed top-[65px] lg:top-[90px] z-50 flex w-auto justify-center pt-1 left-2 sm:left-4 right-2 sm:right-4 origin-top"
+        class="fixed z-50 flex w-auto justify-center pt-1 left-2 sm:left-4 right-2 sm:right-4 origin-top transition-all duration-300"
+        :class="[isHomepage && !isScrolled ? 'top-[85px]' : 'top-[73px]']"
       >
         <div class="relative w-full max-w-7xl">
           <div
-            class="relative overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-2xl ring-1 ring-black/5 sm:p-8 md:p-10 cursor-default"
+            class="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-white via-slate-50/50 to-white p-5 shadow-2xl ring-1 ring-slate-900/5 sm:p-6 cursor-default backdrop-blur-sm"
             @click.stop
           >
-            <div class="grid gap-8 lg:grid-cols-4">
+            <!-- Decorative elements -->
+            <div
+              class="absolute top-0 right-0 w-64 h-64 bg-emerald-100/30 rounded-full blur-3xl -z-10"
+            ></div>
+            <div
+              class="absolute bottom-0 left-0 w-64 h-64 bg-teal-100/30 rounded-full blur-3xl -z-10"
+            ></div>
+
+            <div class="grid gap-6 lg:grid-cols-4">
               <NuxtLink
                 to="/"
-                class="hidden lg:block lg:col-span-1 rounded-xl bg-emerald-50 p-6 transition duration-300 hover:bg-emerald-100 group cursor-pointer"
+                class="hidden lg:block lg:col-span-1 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 p-5 transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/30 hover:scale-105 group cursor-pointer relative overflow-hidden"
                 @click="emit('close')"
               >
-                <Home class="h-8 w-8 text-emerald-600 mb-4" />
-                <h3
-                  class="text-xl font-bold text-gray-900 group-hover:text-emerald-700 transition duration-300"
-                >
-                  Beranda Utama
-                </h3>
-                <p class="mt-2 text-sm text-gray-600">
-                  Kembali ke halaman utama Balai Konservasi Sumber Daya Alam
-                  Sumatera Selatan.
-                </p>
-                <span
-                  class="mt-4 inline-flex items-center text-sm font-semibold text-emerald-600 group-hover:text-emerald-700 transition duration-300"
-                >
-                  Akses Cepat →
-                </span>
-              </NuxtLink>
+                <!-- Decorative pattern -->
+                <div class="absolute inset-0 opacity-10">
+                  <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <pattern
+                        id="home-pattern"
+                        width="20"
+                        height="20"
+                        patternUnits="userSpaceOnUse"
+                      >
+                        <circle
+                          cx="2"
+                          cy="2"
+                          r="1"
+                          fill="currentColor"
+                          class="text-white"
+                        />
+                      </pattern>
+                    </defs>
+                    <rect
+                      width="100%"
+                      height="100%"
+                      fill="url(#home-pattern)"
+                    />
+                  </svg>
+                </div>
 
+                <div class="relative z-10">
+                  <div
+                    class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm mb-3 group-hover:scale-110 transition-transform duration-300"
+                  >
+                    <Home class="h-6 w-6 text-white" />
+                  </div>
+                  <h3 class="text-xl font-bold text-white mb-2">
+                    Beranda Utama
+                  </h3>
+                  <p class="text-xs text-emerald-50 leading-relaxed">
+                    Kembali ke halaman utama Balai Konservasi Sumber Daya Alam
+                    Sumatera Selatan.
+                  </p>
+                  <div
+                    class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-white group-hover:gap-3 transition-all duration-300"
+                  >
+                    <span>Akses Cepat</span>
+                    <ArrowRight class="h-3 w-3" />
+                  </div>
+                </div>
+              </NuxtLink>
               <div class="lg:col-span-3">
-                <div
-                  class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3"
-                >
+                <div class="grid gap-x-6 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
                   <template v-for="item in menuItems" :key="item.label">
                     <div
                       v-for="child in item.children"
@@ -69,47 +107,57 @@
                       class="col-span-1"
                     >
                       <template v-if="child.children">
-                        <div class="mb-3 flex items-center gap-3">
-                          <span
-                            class="rounded-full bg-emerald-100 p-1.5 text-emerald-600"
+                        <div
+                          class="mb-2.5 flex items-center gap-2 pb-2 border-b-2 border-emerald-100"
+                        >
+                          <div
+                            class="flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 shadow-md"
                           >
                             <component
                               :is="iconMap[item.icon || 'default']"
-                              class="h-4 w-4"
+                              class="h-3.5 w-3.5 text-white"
                               aria-hidden="true"
                             />
-                          </span>
+                          </div>
                           <p
-                            class="text-sm font-bold uppercase tracking-wide text-gray-700"
+                            class="text-xs font-bold uppercase tracking-wider text-slate-800"
                           >
                             {{ child.label }}
                           </p>
                         </div>
-
-                        <ul
-                          class="ml-4 space-y-2 border-l border-gray-200 pl-4"
-                        >
+                        <ul class="space-y-1.5">
                           <li
                             v-for="grandchild in child.children"
                             :key="grandchild.label"
                           >
                             <NuxtLink
                               to="#"
-                              class="flex items-center gap-2 text-sm text-gray-600 transition duration-200 hover:text-emerald-600 hover:translate-x-0.5"
+                              class="group flex items-center gap-2 text-xs text-slate-600 transition-all duration-200 hover:text-emerald-600 hover:translate-x-1 py-1 px-2 rounded-lg hover:bg-emerald-50/50"
                               @click="emit('close')"
                             >
-                              {{ grandchild.label }}
+                              <svg
+                                class="h-1.5 w-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                viewBox="0 0 6 6"
+                                fill="currentColor"
+                              >
+                                <circle cx="3" cy="3" r="3" />
+                              </svg>
+                              <span class="font-medium">{{
+                                grandchild.label
+                              }}</span>
                             </NuxtLink>
                           </li>
                         </ul>
                       </template>
-
                       <NuxtLink
                         v-else
                         to="#"
-                        class="flex items-center gap-2 text-sm font-medium text-gray-600 transition duration-200 hover:translate-x-0.5 hover:text-emerald-600"
+                        class="group flex items-center gap-2 text-xs font-semibold text-slate-700 transition-all duration-200 hover:translate-x-1 hover:text-emerald-600 py-1.5 px-2 rounded-lg hover:bg-emerald-50"
                         @click="emit('close')"
                       >
+                        <ArrowRight
+                          class="h-3.5 w-3.5 text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                        />
                         {{ child.label }}
                       </NuxtLink>
                     </div>
@@ -123,7 +171,6 @@
     </transition>
   </div>
 </template>
-
 <script setup lang="ts">
 import {
   FileText,
@@ -135,27 +182,25 @@ import {
   NotebookPen,
   TreePine,
   Users,
+  ArrowRight,
 } from "lucide-vue-next";
-
 type MenuItem = {
   label: string;
   description?: string;
   icon?: string;
   children?: MenuItem[];
 };
-
 defineProps<{
   isOpen: boolean;
+  isScrolled?: boolean;
+  isHomepage?: boolean;
 }>();
-
 const emit = defineEmits<{
   close: [];
 }>();
-
 const handleBackdropClick = () => {
-  emit('close');
+  emit("close");
 };
-
 const iconMap: any = {
   about: Users,
   profile: NotebookPen,
@@ -167,7 +212,6 @@ const iconMap: any = {
   default: Menu,
   home: Home,
 };
-
 const menuItems: MenuItem[] = [
   {
     label: "Informasi Utama",

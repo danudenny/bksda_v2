@@ -13,7 +13,7 @@
         <div
           class="overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_10%,_black_90%,transparent_100%)]"
         >
-          <div class="flex items-center animate-marquee-left py-6">
+          <div class="flex items-center animate-marquee-left py-4 sm:py-6">
             <div
               v-for="n in 2"
               :key="n"
@@ -22,15 +22,16 @@
               <template v-for="(item, index) in announcements" :key="item.id">
                 <NuxtLink
                   :to="item.href"
-                  class="flex flex-shrink-0 items-start px-8 sm:px-12 transition-opacity duration-300 hover:opacity-80"
+                  class="flex flex-shrink-0 items-start px-6 sm:px-8 lg:px-12 transition-opacity duration-300 hover:opacity-80"
                 >
                   <Megaphone
-                    class="h-5 w-5 flex-shrink-0 mr-4 text-emerald-400 mt-0.5"
+                    class="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 mr-3 sm:mr-4 text-emerald-400 mt-0.5"
                     aria-hidden="true"
                   />
                   <div class="flex flex-col">
                     <div
-                      class="flex items-center gap-2 text-xs text-emerald-200"
+                      class="flex items-center gap-1.5 sm:gap-2 text-emerald-200"
+                      style="font-size: clamp(0.625rem, 1vw, 0.75rem)"
                     >
                       <span>{{ item.date }}</span>
                       <span aria-hidden="true">&bull;</span>
@@ -39,7 +40,8 @@
                       }}</span>
                     </div>
                     <span
-                      class="text-lg font-semibold whitespace-nowrap text-white pt-1"
+                      class="font-semibold whitespace-nowrap text-white pt-1"
+                      style="font-size: clamp(0.875rem, 1.5vw, 1.125rem)"
                     >
                       {{ item.title }}
                     </span>
@@ -47,7 +49,7 @@
                 </NuxtLink>
                 <div
                   v-if="index < announcements.length - 1"
-                  class="h-12 w-px self-center bg-white/20"
+                  class="h-8 sm:h-12 w-px self-center bg-white/20"
                   aria-hidden="true"
                 ></div>
               </template>
@@ -59,11 +61,12 @@
           class="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 translate-y-full"
         >
           <button
-            @click="isExpanded = true"
-            class="flex cursor-pointer items-center gap-2 rounded-b-md bg-emerald-800 px-3 py-1 text-sm font-semibold text-white shadow-lg transition-colors duration-300 hover:bg-emerald-700"
+            @click="toggleExpanded"
+            class="flex cursor-pointer items-center gap-2 rounded-lg bg-emerald-700 px-3 py-1.5 sm:px-4 sm:py-2 font-semibold text-white shadow-lg transition-all duration-300 hover:bg-emerald-600 hover:shadow-xl"
+            style="font-size: clamp(0.75rem, 1.25vw, 0.875rem)"
           >
-            <ArrowDownCircleIcon class="h-4 w-4" />
-            <span>Lihat Semua</span>
+            <ArrowDownCircleIcon class="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span>Lihat Semua Pengumuman</span>
           </button>
         </div>
       </div>

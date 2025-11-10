@@ -43,6 +43,7 @@
                 >Jl. Kol. H . Burlian / Punti Kayu Km 6 No 79. Palembang</span
               >
             </div>
+
             <div class="flex items-start gap-3">
               <Phone
                 class="h-5 w-5 flex-shrink-0 text-emerald-400"
@@ -53,6 +54,26 @@
                 class="transition-colors duration-300 hover:text-emerald-300"
                 >(0711) 410948</a
               >
+            </div>
+
+            <div class="flex items-start gap-3">
+              <Smartphone
+                class="h-5 w-5 flex-shrink-0 text-emerald-400"
+                aria-hidden="true"
+              />
+              <div>
+                <a
+                  href="https://wa.me/6281234567890"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="transition-colors duration-300 hover:text-emerald-300"
+                >
+                  +62 812-3456-7890
+                </a>
+                <span class="mt-0.5 block text-xs text-gray-400/80"
+                  >Hotline WhatsApp</span
+                >
+              </div>
             </div>
             <div class="flex items-start gap-3">
               <Mail
@@ -157,9 +178,9 @@ import {
   Twitter,
   Instagram,
   Youtube,
+  Smartphone,
 } from "lucide-vue-next";
 
-// Data untuk tautan media sosial
 const socialLinks = [
   {
     name: "Facebook",
@@ -183,7 +204,6 @@ const socialLinks = [
   },
 ];
 
-// Data navigasi (Disederhanakan dari MegaMenu Anda)
 const footerNavigation = {
   profil: [
     { name: "Tentang Kami", href: "/profil/tentang-kami" },
