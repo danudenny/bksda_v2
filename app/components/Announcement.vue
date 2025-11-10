@@ -62,7 +62,7 @@
         >
           <button
             @click="toggleExpanded"
-            class="flex cursor-pointer items-center gap-2 rounded-lg bg-emerald-700 px-3 py-1.5 sm:px-4 sm:py-2 font-semibold text-white shadow-lg transition-all duration-300 hover:bg-emerald-600 hover:shadow-xl"
+            class="flex cursor-pointer items-center gap-2 rounded-b-lg bg-emerald-700 px-3 py-1.5 sm:px-4 sm:py-2 font-semibold text-white shadow-lg transition-all duration-300 hover:bg-emerald-600 hover:shadow-xl"
             style="font-size: clamp(0.75rem, 1.25vw, 0.875rem)"
           >
             <ArrowDownCircleIcon class="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -121,8 +121,11 @@
 import { ref } from "vue";
 import { Megaphone, ArrowDownCircleIcon, X } from "lucide-vue-next";
 
-// Script tidak berubah
 const isExpanded = ref(false);
+
+const toggleExpanded = () => {
+  isExpanded.value = !isExpanded.value;
+};
 
 type Announcement = {
   id: number;

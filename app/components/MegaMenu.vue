@@ -227,16 +227,8 @@ const menuItems: MenuItem[] = [
         ],
       },
       {
-        label: "Regulasi",
-        children: [
-          { label: "Undang Undang" },
-          { label: "Peraturan Pemerintah" },
-          { label: "Peraturan Menteri" },
-          { label: "Peraturan Dirjen" },
-          { label: "Lainnya" },
-          { label: "Internasional" },
-          { label: "Pedoman" },
-        ],
+        label: "Publikasi",
+        children: [{ label: "Belum Ada Sub Menu" }],
       },
       {
         label: "Aplikasi SIMAKSI",

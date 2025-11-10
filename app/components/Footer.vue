@@ -159,7 +159,12 @@
         </div>
       </div>
 
-      <div class="mt-12 border-t border-white/10 pt-8 sm:mt-16 lg:mt-20">
+      <!-- Visitor Counter -->
+      <div class="mt-12 sm:mt-16">
+        <VisitorCounter />
+      </div>
+
+      <div class="mt-12 border-t border-white/10 pt-8">
         <p class="text-center text-xs leading-5">
           &copy; {{ new Date().getFullYear() }} Balai Konservasi Sumber Daya
           Alam Sumatera Selatan. Seluruh hak cipta dilindungi.
