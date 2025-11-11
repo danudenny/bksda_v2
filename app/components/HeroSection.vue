@@ -32,88 +32,152 @@
         </div>
 
         <div
-            class="relative z-10 flex flex-col justify-end h-full w-full max-w-[1600px] mx-auto px-4 pt-12 pb-16 sm:px-6 sm:pt-16 sm:pb-20 lg:px-12 lg:pb-28"
+            class="relative z-10 flex items-end justify-center h-full w-full mx-auto px-4 pb-32 sm:pb-36 lg:pb-40"
         >
-            <div class="flex items-end justify-between gap-4 lg:gap-8">
-                <div class="max-w-xl lg:max-w-2xl xl:max-w-3xl">
-                    <h1
-                        class="mb-4 sm:mb-6 font-bold leading-tight text-white drop-shadow-2xl"
-                        style="
-                            font-size: clamp(1.875rem, 5vw, 4.5rem);
-                            line-height: 1.1;
-                        "
-                    >
-                        Melestarikan Alam,
-                        <br />
-                        Menjaga Masa Depan.
-                    </h1>
-
-                    <p
-                        class="mb-6 sm:mb-10 leading-relaxed text-gray-200 drop-shadow-lg"
-                        style="
-                            font-size: clamp(0.875rem, 1.5vw, 1.125rem);
-                            max-width: min(100%, 32rem);
-                        "
-                    >
-                        Kami berdedikasi untuk melindungi keanekaragaman hayati
-                        dan ekosistem unik di Sumatera Selatan melalui
-                        konservasi, penelitian, dan kemitraan masyarakat.
-                    </p>
-
-                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                        <NuxtLink
-                            to="/profil"
-                            class="inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg bg-emerald-600 text-white font-semibold shadow-lg shadow-emerald-900/50 transition-all duration-300 hover:bg-emerald-500 hover:scale-105"
-                            style="font-size: clamp(0.875rem, 1.5vw, 1rem)"
+            <div class="w-full max-w-5xl">
+                <transition
+                    mode="out-in"
+                    enter-active-class="transition-all duration-500 ease-out"
+                    enter-from-class="opacity-0 translate-y-4"
+                    enter-to-class="opacity-100 translate-y-0"
+                    leave-active-class="transition-all duration-300 ease-in"
+                    leave-from-class="opacity-100 translate-y-0"
+                    leave-to-class="opacity-0 -translate-y-4"
+                >
+                    <div :key="currentSlide" class="text-center">
+                        <h1
+                            class="mb-4 sm:mb-6 font-bold leading-tight"
+                            style="
+                                font-size: clamp(2.25rem, 6vw, 5rem);
+                                line-height: 1.1;
+                            "
                         >
-                            <CircleChevronRightIcon
-                                class="h-4 w-4 sm:h-5 sm:w-5 mr-2 flex-shrink-0"
-                            />
-                            <span class="whitespace-nowrap"
-                                >Jelajahi Profil Kami</span
+                            <div
+                                class="text-white font-semibold mb-2 sm:mb-3"
+                                style="
+                                    font-size: clamp(1.75rem, 3.5vw, 3rem);
+                                    text-shadow:
+                                        0 4px 20px rgba(0, 0, 0, 0.9),
+                                        0 2px 10px rgba(0, 0, 0, 0.7);
+                                "
                             >
-                        </NuxtLink>
-                        <NuxtLink
-                            to="/kawasan"
-                            class="inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg border-2 border-white/50 text-white font-semibold backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white"
-                            style="font-size: clamp(0.875rem, 1.5vw, 1rem)"
-                        >
-                            <MountainIcon
-                                class="h-4 w-4 sm:h-5 sm:w-5 mr-2 flex-shrink-0"
-                            />
-                            <span class="whitespace-nowrap"
-                                >Lihat Kawasan Konservasi</span
+                                {{ currentKawasan.type }}
+                            </div>
+                            <span
+                                class="inline-block bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent"
+                                style="
+                                    filter: drop-shadow(
+                                            0 0 30px rgba(16, 185, 129, 0.6)
+                                        )
+                                        drop-shadow(
+                                            0 4px 20px rgba(0, 0, 0, 0.9)
+                                        )
+                                        drop-shadow(
+                                            0 2px 10px rgba(0, 0, 0, 0.7)
+                                        );
+                                    background-size: 200% auto;
+                                    animation: gradient-shift 3s ease infinite;
+                                "
                             >
-                        </NuxtLink>
-                    </div>
-                </div>
+                                {{ currentKawasan.name }}
+                            </span>
+                        </h1>
 
-                <div class="hidden lg:flex flex-col items-end gap-3 lg:gap-4">
-                    <div class="flex items-center gap-2">
-                        <button
-                            @click="previousSlide"
-                            class="p-3 rounded-lg bg-white/10 backdrop-blur-sm text-white transition-all duration-300 hover:bg-white/20 border border-white/20"
-                            aria-label="Previous slide"
+                        <div
+                            class="flex items-center justify-center gap-2 mb-5 sm:mb-7"
                         >
-                            <ChevronLeft class="h-5 w-5" />
-                        </button>
-                        <button
-                            @click="toggleAutoplay"
-                            class="p-3 rounded-lg bg-white/10 backdrop-blur-sm text-white transition-all duration-300 hover:bg-white/20 border border-white/20"
-                            :aria-label="isPlaying ? 'Pause' : 'Play'"
+                            <div
+                                class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 backdrop-blur-md border border-amber-400/40 shadow-lg shadow-amber-500/20"
+                            >
+                                <svg
+                                    class="h-4 w-4 sm:h-5 sm:w-5 text-amber-400"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="2"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+                                    />
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                                    />
+                                </svg>
+                                <span
+                                    class="text-amber-50 font-medium drop-shadow-lg"
+                                    style="
+                                        font-size: clamp(0.875rem, 1.5vw, 1rem);
+                                    "
+                                >
+                                    {{ currentKawasan.location }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <p
+                            class="mx-auto max-w-3xl leading-relaxed px-4"
+                            style="
+                                font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+                                text-shadow:
+                                    0 2px 15px rgba(0, 0, 0, 0.9),
+                                    0 1px 5px rgba(0, 0, 0, 0.7);
+                                color: rgba(255, 255, 255, 0.95);
+                            "
                         >
-                            <Pause v-if="isPlaying" class="h-5 w-5" />
-                            <Play v-else class="h-5 w-5" />
-                        </button>
-                        <button
-                            @click="nextSlide"
-                            class="p-3 rounded-lg bg-white/10 backdrop-blur-sm text-white transition-all duration-300 hover:bg-white/20 border border-white/20"
-                            aria-label="Next slide"
-                        >
-                            <ChevronRight class="h-5 w-5" />
-                        </button>
+                            {{ currentKawasan.description }}
+                        </p>
                     </div>
+                </transition>
+
+                <div class="mt-8 sm:mt-10 flex justify-center items-center">
+                    <NuxtLink
+                        to="/kawasan"
+                        class="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold shadow-xl shadow-emerald-900/50 transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-900/60 hover:scale-105 hover:from-emerald-500 hover:to-teal-500"
+                        style="font-size: clamp(0.9375rem, 1.5vw, 1.125rem)"
+                    >
+                        <MountainIcon
+                            class="h-5 w-5 sm:h-6 sm:w-6 mr-2.5 shrink-0 transition-transform duration-300 group-hover:scale-110"
+                        />
+                        <span class="whitespace-nowrap"
+                            >Jelajahi Kawasan Konservasi</span
+                        >
+                        <CircleChevronRightIcon
+                            class="h-5 w-5 sm:h-6 sm:w-6 ml-2 shrink-0 transition-transform duration-300 group-hover:translate-x-1"
+                        />
+                    </NuxtLink>
                 </div>
+            </div>
+
+            <!-- Control buttons -->
+            <div
+                class="absolute bottom-32 sm:bottom-36 lg:bottom-40 right-4 lg:right-12 flex items-center gap-2"
+            >
+                <button
+                    @click="previousSlide"
+                    class="p-3 rounded-lg bg-white/10 backdrop-blur-sm text-white transition-all duration-300 hover:bg-white/20 border border-white/20"
+                    aria-label="Previous slide"
+                >
+                    <ChevronLeft class="h-5 w-5" />
+                </button>
+                <button
+                    @click="toggleAutoplay"
+                    class="p-3 rounded-lg bg-white/10 backdrop-blur-sm text-white transition-all duration-300 hover:bg-white/20 border border-white/20"
+                    :aria-label="isPlaying ? 'Pause' : 'Play'"
+                >
+                    <Pause v-if="isPlaying" class="h-5 w-5" />
+                    <Play v-else class="h-5 w-5" />
+                </button>
+                <button
+                    @click="nextSlide"
+                    class="p-3 rounded-lg bg-white/10 backdrop-blur-sm text-white transition-all duration-300 hover:bg-white/20 border border-white/20"
+                    aria-label="Next slide"
+                >
+                    <ChevronRight class="h-5 w-5" />
+                </button>
             </div>
         </div>
         <!-- Dot Indicators -->
@@ -157,7 +221,7 @@ import {
     Pause,
     Play,
 } from 'lucide-vue-next';
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 const parallaxOffset = ref(0);
 const isScrolled = ref(false);
@@ -168,75 +232,97 @@ let autoplayInterval: NodeJS.Timeout | null = null;
 const kawasanKonservasi = [
     {
         id: 1,
-        name: 'Taman Nasional Bukit Barisan Selatan',
+        name: 'Gunung Maras',
         type: 'Taman Nasional',
-        location: 'Kabupaten Lahat & Empat Lawang',
+        location: 'Kabupaten Bangka',
         image: '/kws_konservasi/gnmaras.avif',
+        description:
+            'Keunikan kawasan ini terdiri dari beberapa tipe ekosistem yang menjadi satu kesatuan bentang alam, yaitu ekosistem mangrove, pegunungan, dan dataran rendah.',
     },
     {
         id: 2,
-        name: 'Taman Wisata Alam Punti Kayu',
-        type: 'TWA',
+        name: 'Punti Kayu',
+        type: 'Taman Wisata Alam',
         location: 'Kota Palembang',
         image: '/kws_konservasi/punti.avif',
+        description:
+            'Punti Kayu merupakan hutan pinus dalam kota terbesar di Indonesia. Selain menjadi tempat wisata, Punti Kayu berkontribusi dalam penyerapan karbon dioksida.',
     },
     {
         id: 3,
-        name: 'Taman Wisata Alam Danau Ranau',
-        type: 'TWA',
-        location: 'Kabupaten OKU Selatan',
+        name: 'Isau-Isau',
+        type: 'Taman Wisata Alam',
+        location: 'Kabupaten Lahat',
         image: '/about-1.avif',
+        description:
+            'Kawasan ini merupakan pusat pelatihan Gajah yang ada di Sumatera Selatan. Gajah yang dikelola di kawasan ini saat ini berjumlah 10 Gajah.',
     },
     {
         id: 4,
-        name: 'Suaka Margasatwa Dangku',
+        name: 'Dangku',
         type: 'Suaka Margasatwa',
         location: 'Kabupaten Musi Banyuasin',
         image: '/kws_konservasi/dangku.avif',
+        description:
+            'Merupakan habitat Harimau Sumatera. Kawasan dengan luas 47.996,45 hektar menyimpan potensi flora fauna yang cukup beragam.',
     },
     {
         id: 5,
-        name: 'Cagar Alam Isau-Isau Karang Agung',
-        type: 'Cagar Alam',
-        location: 'Kabupaten Musi Rawas',
+        name: 'Isau Isau',
+        type: 'Suaka Margasatwa',
+        location: 'Kabupaten Muara Enim',
         image: '/about-2.avif',
+        description:
+            'Kawasan ini merupakan hutan hujan pegunungan dengan jenis tumbuhan yang didominasi oleh famili Dipterocarpaceae, Fagaceae, Lauraceae.',
     },
     {
         id: 6,
-        name: 'Taman Wisata Alam Teluk Gelam',
-        type: 'TWA',
-        location: 'Kabupaten OKI',
+        name: 'Jering Menduyung',
+        type: 'Taman Wisata Alam',
+        location: 'Kabupaten Bangka Barat',
         image: '/hero-background.avif',
+        description:
+            'Kawasan TWA Jering Menduyung merupakan ekosistem mangrove yang didominasi oleh dua jenis flora, yaitu bakau dan nipah.',
     },
     {
         id: 7,
-        name: 'Suaka Margasatwa Bentayan',
+        name: 'Bentayan',
         type: 'Suaka Margasatwa',
         location: 'Kabupaten Musi Banyuasin',
         image: '/fokus_konservasi/gajah.avif',
+        description:
+            'Kawasan yang sejak tahun 1981 berfungsi sebagai kawasan konservasi.',
     },
     {
         id: 8,
-        name: 'Taman Wisata Alam Bukit Cogong',
-        type: 'TWA',
-        location: 'Kabupaten Musi Rawas',
+        name: 'Gunung Permisan',
+        type: 'Taman Wisata Alam',
+        location: 'Kabupaten Bangka Selatan',
         image: '/fokus_konservasi/harimau.avif',
+        description:
+            'Yang menjadi daya tarik adalah Bukit Nenek, karena adanya goa di puncak bukitnya dan batu yang terbelah serta dataran di puncak untuk melihat pemandangan.',
     },
     {
         id: 9,
-        name: 'Suaka Margasatwa Padang Sugihan',
+        name: 'Gumai Pasemah',
         type: 'Suaka Margasatwa',
-        location: 'Kabupaten Banyuasin',
+        location: 'Kabupaten Lahat',
         image: '/fokus_konservasi/rangkong.avif',
+        description:
+            'HSA Gumai Tebing Tinggi merupakan ekosistem hutan hujan yang vegetasinya beragam dan didominasi oleh famili Dipterocapaceae.',
     },
     {
         id: 10,
-        name: 'Cagar Alam Gunung Raya',
-        type: 'Cagar Alam',
-        location: 'Kabupaten Lahat',
+        name: 'Gunung Raya',
+        type: 'Suaka Margasatwa',
+        location: 'Kabupaten OKU Selatan',
         image: '/news-1.jpg',
+        description:
+            'SM Gunung Raya menyimpan potensi jasa lingkungan berupa penyimpanan karbon, air, wisata alam terbatas, dan wisata religi.',
     },
 ];
+
+const currentKawasan = computed(() => kawasanKonservasi[currentSlide.value]);
 
 const handleScroll = () => {
     if (typeof window !== 'undefined') {
@@ -318,5 +404,15 @@ onBeforeUnmount(() => {
 .slide-fade-leave-to {
     opacity: 0;
     transform: scale(0.95);
+}
+
+@keyframes gradient-shift {
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
 }
 </style>
