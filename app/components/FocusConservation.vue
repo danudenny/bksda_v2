@@ -1,212 +1,247 @@
 <template>
-  <section
-    class="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-16 sm:py-24"
-  >
-    <!-- Decorative background elements -->
-    <div class="absolute inset-0 -z-10">
-      <div
-        class="absolute left-1/4 top-0 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl filter"
-      ></div>
-      <div
-        class="absolute right-1/4 bottom-0 h-96 w-96 rounded-full bg-teal-500/10 blur-3xl filter"
-      ></div>
-    </div>
-
-    <!-- Grid pattern overlay -->
-    <div class="absolute inset-0 -z-10 opacity-5">
-      <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <pattern
-            id="grid-pattern"
-            width="32"
-            height="32"
-            patternUnits="userSpaceOnUse"
-          >
-            <path
-              d="M0 32V0h32"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="0.5"
-              class="text-white"
-            />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#grid-pattern)" />
-      </svg>
-    </div>
-
-    <div class="mx-auto max-w-screen-2xl px-6 sm:px-8 lg:px-10">
-      <!-- Header Section -->
-      <div class="mx-auto max-w-3xl text-center">
-        <div
-          class="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-2 ring-1 ring-inset ring-emerald-500/30 backdrop-blur-sm"
-        >
-          <svg
-            class="h-4 w-4 text-emerald-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z"
-            />
-          </svg>
-          <span class="text-sm font-semibold text-emerald-400">
-            Fokus Konservasi
-          </span>
-        </div>
-
-        <h2
-          class="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl"
-        >
-          Harta Karun
-          <span
-            class="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent"
-            >Hayati</span
-          >
-          Kami
-        </h2>
-        <p class="mt-6 text-lg leading-8 text-gray-300">
-          Sumatera Selatan adalah rumah bagi beberapa spesies paling terancam di
-          dunia. Perlindungan mereka adalah inti dari misi kami, memastikan
-          keberadaan mereka untuk generasi yang akan datang.
-        </p>
-      </div>
-
-      <!-- Carousel Container -->
-      <div class="relative mx-auto mt-16 max-w-full sm:mt-20">
-        <div class="overflow-hidden py-8" ref="emblaRef">
-          <div class="flex -ml-6">
+    <section
+        class="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-16 sm:py-24"
+    >
+        <!-- Decorative background elements -->
+        <div class="absolute inset-0 -z-10">
             <div
-              v-for="(spesies, index) in fokusKonservasi"
-              :key="spesies.name"
-              class="relative flex-grow-0 flex-shrink-0 basis-full pl-6 sm:basis-1/2 lg:basis-1/3 xl:basis-[30%]"
-            >
-              <NuxtLink
-                :to="`/konservasi/${slugify(spesies.name)}`"
-                class="group relative block h-[32rem] overflow-hidden rounded-3xl ring-1 ring-white/10 transition-all duration-500 hover:scale-[1.02] hover:ring-emerald-400 hover:shadow-2xl hover:shadow-emerald-500/20"
-              >
-                <!-- Image with Grayscale Effect -->
-                <div class="absolute inset-0 overflow-hidden">
-                  <NuxtImg
-                    :src="spesies.imageUrl"
-                    :alt="spesies.name"
-                    class="h-full w-full object-cover transition-all duration-700 grayscale group-hover:grayscale-0 group-hover:scale-110"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    loading="lazy"
-                    format="avif,webp"
-                    quality="80"
-                  />
-                </div>
+                class="absolute left-1/4 top-0 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl filter"
+            ></div>
+            <div
+                class="absolute right-1/4 bottom-0 h-96 w-96 rounded-full bg-teal-500/10 blur-3xl filter"
+            ></div>
+        </div>
 
-                <!-- Gradient Overlays -->
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"
-                  aria-hidden="true"
-                ></div>
-
-                <!-- Number Badge -->
-                <div class="absolute top-4 right-4 z-10">
-                  <div
-                    class="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 backdrop-blur-md ring-1 ring-white/20"
-                  >
-                    <span class="text-lg font-bold text-white">{{
-                      String(index + 1).padStart(2, "0")
-                    }}</span>
-                  </div>
-                </div>
-
-                <!-- Content -->
-                <div
-                  class="relative z-10 flex h-full flex-col justify-end p-6 sm:p-8"
-                >
-                  <div class="space-y-3">
-                    <h3 class="text-3xl font-bold text-white drop-shadow-lg">
-                      {{ spesies.name }}
-                    </h3>
-                    <p class="text-base font-medium text-emerald-300 italic">
-                      {{ spesies.latinName }}
-                    </p>
-
-                    <!-- Action Button -->
-                    <div
-                      class="mt-6 inline-flex items-center gap-2 rounded-lg bg-white/10 backdrop-blur-sm px-4 py-2.5 ring-1 ring-white/20 transition-all duration-300 group-hover:bg-emerald-500 group-hover:ring-emerald-400"
+        <!-- Grid pattern overlay -->
+        <div class="absolute inset-0 -z-10 opacity-5">
+            <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern
+                        id="grid-pattern"
+                        width="32"
+                        height="32"
+                        patternUnits="userSpaceOnUse"
                     >
-                      <span class="text-sm font-semibold text-white"
-                        >Pelajari lebih lanjut</span
-                      >
-                      <ArrowRightCircle
-                        class="h-5 w-5 text-white transition-transform duration-300 group-hover:translate-x-1"
-                      />
-                    </div>
-                  </div>
+                        <path
+                            d="M0 32V0h32"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="0.5"
+                            class="text-white"
+                        />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+            </svg>
+        </div>
+
+        <div class="mx-auto max-w-screen-2xl px-6 sm:px-8 lg:px-10">
+            <!-- Header Section -->
+            <div class="mx-auto max-w-3xl text-center">
+                <div
+                    class="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-2 ring-1 ring-inset ring-emerald-500/30 backdrop-blur-sm"
+                >
+                    <svg
+                        class="h-4 w-4 text-emerald-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z"
+                        />
+                    </svg>
+                    <span class="text-sm font-semibold text-emerald-400">
+                        Fokus Konservasi
+                    </span>
                 </div>
 
-                <!-- Hover Gradient Bar -->
-                <div
-                  class="absolute bottom-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
-                ></div>
-              </NuxtLink>
+                <h2
+                    class="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl"
+                >
+                    Harta Karun
+                    <span
+                        class="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent"
+                        >Hayati</span
+                    >
+                    Kami
+                </h2>
+                <p class="mt-6 text-lg leading-8 text-gray-300">
+                    Sumatera Selatan adalah rumah bagi beberapa spesies paling
+                    terancam di dunia. Perlindungan mereka adalah inti dari misi
+                    kami, memastikan keberadaan mereka untuk generasi yang akan
+                    datang.
+                </p>
             </div>
-          </div>
+
+            <!-- Carousel Container -->
+            <div class="relative mx-auto mt-16 max-w-full sm:mt-20">
+                <div class="overflow-hidden py-8" ref="emblaRef">
+                    <div class="flex -ml-6">
+                        <div
+                            v-for="(spesies, index) in fokusKonservasi"
+                            :key="spesies.name"
+                            class="relative flex-grow-0 flex-shrink-0 basis-full pl-6 sm:basis-1/2 lg:basis-1/3 xl:basis-[30%]"
+                        >
+                            <button
+                                @click="openModal(spesies)"
+                                class="group relative block h-[32rem] w-full overflow-hidden rounded-3xl ring-1 ring-white/10 transition-all duration-500 hover:scale-[1.02] hover:ring-emerald-400 hover:shadow-2xl hover:shadow-emerald-500/20 cursor-pointer text-left"
+                            >
+                                <!-- Image with Grayscale Effect -->
+                                <div class="absolute inset-0 overflow-hidden">
+                                    <NuxtImg
+                                        :src="spesies.imageUrl"
+                                        :alt="spesies.name"
+                                        class="h-full w-full object-cover transition-all duration-700 grayscale group-hover:grayscale-0 group-hover:scale-110"
+                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                        loading="lazy"
+                                        format="avif,webp"
+                                        quality="80"
+                                    />
+                                </div>
+
+                                <!-- Gradient Overlays -->
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"
+                                    aria-hidden="true"
+                                ></div>
+
+                                <!-- Number Badge -->
+                                <div class="absolute top-4 right-4 z-10">
+                                    <div
+                                        class="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 backdrop-blur-md ring-1 ring-white/20"
+                                    >
+                                        <span
+                                            class="text-lg font-bold text-white"
+                                            >{{
+                                                String(index + 1).padStart(
+                                                    2,
+                                                    '0'
+                                                )
+                                            }}</span
+                                        >
+                                    </div>
+                                </div>
+
+                                <!-- Content -->
+                                <div
+                                    class="relative z-10 flex h-full flex-col justify-end p-6 sm:p-8"
+                                >
+                                    <div class="space-y-3">
+                                        <h3
+                                            class="text-3xl font-bold text-white drop-shadow-lg"
+                                        >
+                                            {{ spesies.name }}
+                                        </h3>
+                                        <p
+                                            class="text-base font-medium text-emerald-300 italic"
+                                        >
+                                            {{ spesies.latinName }}
+                                        </p>
+
+                                        <!-- Action Button -->
+                                        <div
+                                            class="mt-6 inline-flex items-center gap-2 rounded-lg bg-white/10 backdrop-blur-sm px-4 py-2.5 ring-1 ring-white/20 transition-all duration-300 group-hover:bg-emerald-500 group-hover:ring-emerald-400"
+                                        >
+                                            <span
+                                                class="text-sm font-semibold text-white"
+                                                >Pelajari lebih lanjut</span
+                                            >
+                                            <ArrowRightCircle
+                                                class="h-5 w-5 text-white transition-transform duration-300 group-hover:translate-x-1"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Hover Gradient Bar -->
+                                <div
+                                    class="absolute bottom-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
+                                ></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Left Navigation Button -->
+                <button
+                    @click="scrollPrev"
+                    :disabled="!canScrollPrev"
+                    class="absolute left-2 top-1/2 -translate-y-1/2 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white/70 ring-1 ring-white/10 transition-all duration-300 hover:bg-black/80 hover:text-white hover:ring-white/30 disabled:opacity-30 disabled:cursor-not-allowed hover:scale-110"
+                    aria-label="Geser ke kiri"
+                >
+                    <ChevronLeft class="h-6 w-6" />
+                </button>
+
+                <!-- Right Navigation Button -->
+                <button
+                    @click="scrollNext"
+                    :disabled="!canScrollNext"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white/70 ring-1 ring-white/10 transition-all duration-300 hover:bg-black/80 hover:text-white hover:ring-white/30 disabled:opacity-30 disabled:cursor-not-allowed hover:scale-110"
+                    aria-label="Geser ke kanan"
+                >
+                    <ChevronRight class="h-6 w-6" />
+                </button>
+
+                <!-- Pagination Dots (Bottom Center) -->
+                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2">
+                    <div class="flex items-center justify-center gap-2">
+                        <button
+                            v-for="(_, index) in scrollSnaps"
+                            :key="index"
+                            @click="scrollTo(index)"
+                            class="transition-all duration-300"
+                            :class="{
+                                'h-2 w-12 rounded-full bg-emerald-400':
+                                    index === selectedIndex,
+                                'h-2 w-2 rounded-full bg-slate-600 hover:bg-slate-400':
+                                    index !== selectedIndex,
+                            }"
+                            :aria-label="`Lompat ke slide ${index + 1}`"
+                        ></button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Left Navigation Button -->
-        <button
-          @click="scrollPrev"
-          :disabled="!canScrollPrev"
-          class="absolute left-2 top-1/2 -translate-y-1/2 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white/70 ring-1 ring-white/10 transition-all duration-300 hover:bg-black/80 hover:text-white hover:ring-white/30 disabled:opacity-30 disabled:cursor-not-allowed hover:scale-110"
-          aria-label="Geser ke kiri"
-        >
-          <ChevronLeft class="h-6 w-6" />
-        </button>
-
-        <!-- Right Navigation Button -->
-        <button
-          @click="scrollNext"
-          :disabled="!canScrollNext"
-          class="absolute right-2 top-1/2 -translate-y-1/2 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white/70 ring-1 ring-white/10 transition-all duration-300 hover:bg-black/80 hover:text-white hover:ring-white/30 disabled:opacity-30 disabled:cursor-not-allowed hover:scale-110"
-          aria-label="Geser ke kanan"
-        >
-          <ChevronRight class="h-6 w-6" />
-        </button>
-
-        <!-- Pagination Dots (Bottom Center) -->
-        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2">
-          <div class="flex items-center justify-center gap-2">
-            <button
-              v-for="(_, index) in scrollSnaps"
-              :key="index"
-              @click="scrollTo(index)"
-              class="transition-all duration-300"
-              :class="{
-                'h-2 w-12 rounded-full bg-emerald-400': index === selectedIndex,
-                'h-2 w-2 rounded-full bg-slate-600 hover:bg-slate-400':
-                  index !== selectedIndex,
-              }"
-              :aria-label="`Lompat ke slide ${index + 1}`"
-            ></button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+        <!-- Conservation Detail Modal -->
+        <ConservationDetailModal
+            :is-open="isModalOpen"
+            :species="selectedSpecies"
+            @close="closeModal"
+        />
+    </section>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
-import useEmblaCarousel from "embla-carousel-vue";
-import Autoplay from "embla-carousel-autoplay";
+import Autoplay from 'embla-carousel-autoplay';
+import useEmblaCarousel from 'embla-carousel-vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
-import { ArrowRightCircle, ChevronLeft, ChevronRight } from "lucide-vue-next";
+import { ArrowRightCircle, ChevronLeft, ChevronRight } from 'lucide-vue-next';
+
+interface Species {
+    name: string;
+    latinName: string;
+    imageUrl: string;
+    description?: string;
+    status?: string;
+    habitat?: string;
+    population?: string;
+    weight?: string;
+    length?: string;
+    threats?: string[];
+    efforts?: string[];
+    gallery?: string[];
+}
 
 const emblaOptions = {
-  loop: true,
-  align: "start",
-  slidesToScroll: 1,
+    loop: true,
+    align: 'start' as const,
+    slidesToScroll: 1,
 };
 
 const autoplay = Autoplay({ delay: 4000, stopOnInteraction: false });
@@ -218,95 +253,200 @@ const scrollSnaps = ref<number[]>([]);
 const canScrollPrev = ref(false);
 const canScrollNext = ref(false);
 
+// Modal state
+const isModalOpen = ref(false);
+const selectedSpecies = ref<Species | null>(null);
+
+const openModal = (species: Species) => {
+    selectedSpecies.value = species;
+    isModalOpen.value = true;
+};
+
+const closeModal = () => {
+    isModalOpen.value = false;
+    setTimeout(() => {
+        selectedSpecies.value = null;
+    }, 300);
+};
+
 const scrollPrev = () => emblaApi.value?.scrollPrev();
 const scrollNext = () => emblaApi.value?.scrollNext();
 const scrollTo = (index: number) => emblaApi.value?.scrollTo(index);
 
 const updateCarouselState = () => {
-  if (!emblaApi.value) return;
-  selectedIndex.value = emblaApi.value.selectedScrollSnap();
-  scrollSnaps.value = emblaApi.value.scrollSnapList();
-  canScrollPrev.value = emblaApi.value.canScrollPrev();
-  canScrollNext.value = emblaApi.value.canScrollNext();
+    if (!emblaApi.value) return;
+    selectedIndex.value = emblaApi.value.selectedScrollSnap();
+    scrollSnaps.value = emblaApi.value.scrollSnapList();
+    canScrollPrev.value = emblaApi.value.canScrollPrev();
+    canScrollNext.value = emblaApi.value.canScrollNext();
 };
 
 onMounted(() => {
-  if (!emblaApi.value) return;
-  updateCarouselState();
-  emblaApi.value.on("select", updateCarouselState);
-  emblaApi.value.on("reInit", updateCarouselState);
+    if (!emblaApi.value) return;
+    updateCarouselState();
+    emblaApi.value.on('select', updateCarouselState);
+    emblaApi.value.on('reInit', updateCarouselState);
 });
 
 onUnmounted(() => {
-  emblaApi.value?.destroy();
+    emblaApi.value?.destroy();
 });
 
 const slugify = (text: string) => {
-  return text
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w-]+/g, "");
+    return text
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w-]+/g, '');
 };
 
 const placeholder = (name: string) =>
-  `https://placehold.co/600x800/0f172a/34d399?text=${name.replace(/\s/g, "+")}`;
+    `https://placehold.co/600x800/0f172a/34d399?text=${name.replace(/\s/g, '+')}`;
 
-const fokusKonservasi = ref([
-  {
-    name: "Harimau Sumatera",
-    latinName: "Panthera tigris sumatrae",
-    imageUrl: "/fokus_konservasi/harimau.avif",
-  },
-  {
-    name: "Gajah Sumatera",
-    latinName: "Elephas maximus sumatranus",
-    imageUrl: "/fokus_konservasi/gajah.avif",
-  },
-  {
-    name: "Burung Rangkong",
-    latinName: "Buceros rhinoceros",
-    imageUrl: "/fokus_konservasi/rangkong.avif",
-  },
-  {
-    name: "Beruang Madu",
-    latinName: "Helarctos malayanus",
-    imageUrl: placeholder("Beruang Madu"),
-  },
-  {
-    name: "Tapir Asia",
-    latinName: "Tapirus indicus",
-    imageUrl: placeholder("Tapir Asia"),
-  },
-  {
-    name: "Kucing Emas",
-    latinName: "Catopuma temminckii",
-    imageUrl: placeholder("Kucing Emas"),
-  },
-  {
-    name: "Siamang",
-    latinName: "Symphalangus syndactylus",
-    imageUrl: placeholder("Siamang"),
-  },
-  {
-    name: "Rusa Sambar",
-    latinName: "Rusa unicolor",
-    imageUrl: placeholder("Rusa Sambar"),
-  },
-  {
-    name: "Binturong",
-    latinName: "Arctictis binturong",
-    imageUrl: placeholder("Binturong"),
-  },
-  {
-    name: "Elang Hitam",
-    latinName: "Ictinaetus malaiensis",
-    imageUrl: placeholder("Elang Hitam"),
-  },
+const fokusKonservasi = ref<Species[]>([
+    {
+        name: 'Harimau Sumatera',
+        latinName: 'Panthera tigris sumatrae',
+        imageUrl: '/fokus_konservasi/harimau.avif',
+        description:
+            'Harimau Sumatera adalah subspesies harimau terkecil yang masih hidup. Mereka adalah predator puncak di ekosistem hutan Sumatera dan memainkan peran penting dalam menjaga keseimbangan alam.',
+        status: 'Kritis (Critically Endangered)',
+        habitat: 'Hutan Hujan Tropis',
+        population: '< 400 individu',
+        weight: '100-140 kg',
+        length: '2.2-2.5 meter',
+        threats: [
+            'Kehilangan dan fragmentasi habitat',
+            'Perburuan liar untuk perdagangan bagian tubuh',
+            'Konflik dengan manusia',
+            'Berkurangnya basis mangsa',
+        ],
+        efforts: [
+            'Patroli anti-perburuan 24/7',
+            'Pemantauan populasi dengan camera trap',
+            'Program resolusi konflik manusia-harimau',
+            'Restorasi koridor habitat',
+            'Edukasi konservasi kepada masyarakat',
+        ],
+    },
+    {
+        name: 'Gajah Sumatera',
+        latinName: 'Elephas maximus sumatranus',
+        imageUrl: '/fokus_konservasi/gajah.avif',
+        description:
+            'Gajah Sumatera adalah salah satu dari tiga subspesies gajah Asia yang tersisa. Mereka memiliki peran vital dalam menjaga kesehatan hutan sebagai spesies kunci ekosistem.',
+        status: 'Kritis (Critically Endangered)',
+        habitat: 'Hutan Dataran Rendah & Rawa',
+        population: '< 2,000 individu',
+        weight: '2,000-4,000 kg',
+        length: '2.0-3.2 meter',
+        threats: [
+            'Konversi habitat menjadi perkebunan',
+            'Konflik dengan manusia di area pertanian',
+            'Perburuan untuk gading dan bagian tubuh',
+            'Fragmentasi populasi',
+        ],
+        efforts: [
+            'Program Flying Squad untuk mitigasi konflik',
+            'Pembangunan koridor gajah',
+            'Translokasi gajah bermasalah',
+            'Pelatihan mahout dan pengelolaan CRU',
+            'Monitoring kesehatan populasi',
+        ],
+    },
+    {
+        name: 'Burung Rangkong',
+        latinName: 'Buceros rhinoceros',
+        imageUrl: '/fokus_konservasi/rangkong.avif',
+        description:
+            'Rangkong Badak adalah spesies burung berukuran besar yang menjadi indikator kesehatan hutan. Mereka berperan penting sebagai penyebar biji berbagai jenis pohon buah-buahan.',
+        status: 'Rentan (Vulnerable)',
+        habitat: 'Hutan Primer & Sekunder',
+        population: 'Menurun',
+        weight: '2-3 kg',
+        length: '90-120 cm',
+        threats: [
+            'Deforestasi dan degradasi hutan',
+            'Perburuan untuk paruh dan daging',
+            'Perdagangan satwa ilegal',
+            'Kehilangan pohon sarang',
+        ],
+        efforts: [
+            'Perlindungan pohon sarang',
+            'Program nest box buatan',
+            'Pemantauan breeding season',
+            'Enforcement terhadap perdagangan ilegal',
+            'Restorasi habitat kunci',
+        ],
+    },
+    {
+        name: 'Beruang Madu',
+        latinName: 'Helarctos malayanus',
+        imageUrl: placeholder('Beruang Madu'),
+        description:
+            'Beruang Madu adalah spesies beruang terkecil di dunia dan satu-satunya beruang yang hidup di Asia Tenggara. Mereka berperan penting dalam penyebaran biji dan pengendalian serangga.',
+        status: 'Rentan (Vulnerable)',
+        habitat: 'Hutan Tropis Dataran Rendah',
+        population: 'Menurun signifikan',
+        weight: '27-65 kg',
+        length: '1.2-1.5 meter',
+    },
+    {
+        name: 'Tapir Asia',
+        latinName: 'Tapirus indicus',
+        imageUrl: placeholder('Tapir Asia'),
+        description:
+            'Tapir Asia adalah mamalia herbivora besar yang memiliki ciri khas warna hitam-putih. Mereka adalah penyebar biji penting dan indikator kesehatan hutan dataran rendah.',
+        status: 'Terancam (Endangered)',
+        habitat: 'Hutan & Rawa Dataran Rendah',
+        population: 'Menurun',
+        weight: '250-320 kg',
+        length: '1.8-2.5 meter',
+    },
+    {
+        name: 'Kucing Emas',
+        latinName: 'Catopuma temminckii',
+        imageUrl: placeholder('Kucing Emas'),
+        status: 'Hampir Terancam (Near Threatened)',
+        habitat: 'Hutan Tropis',
+        population: 'Tidak diketahui pasti',
+    },
+    {
+        name: 'Siamang',
+        latinName: 'Symphalangus syndactylus',
+        imageUrl: placeholder('Siamang'),
+        status: 'Terancam (Endangered)',
+        habitat: 'Hutan Pegunungan',
+        population: 'Menurun',
+    },
+    {
+        name: 'Rusa Sambar',
+        latinName: 'Rusa unicolor',
+        imageUrl: placeholder('Rusa Sambar'),
+        status: 'Rentan (Vulnerable)',
+        habitat: 'Hutan & Padang Rumput',
+        population: 'Stabil',
+    },
+    {
+        name: 'Binturong',
+        latinName: 'Arctictis binturong',
+        imageUrl: placeholder('Binturong'),
+        status: 'Rentan (Vulnerable)',
+        habitat: 'Hutan Kanopi',
+        population: 'Menurun',
+    },
+    {
+        name: 'Elang Hitam',
+        latinName: 'Ictinaetus malaiensis',
+        imageUrl: placeholder('Elang Hitam'),
+        status: 'Berisiko Rendah (Least Concern)',
+        habitat: 'Hutan & Tepi Hutan',
+        population: 'Stabil',
+    },
 ]);
 </script>
 
 <style scoped>
 .embla__button {
-  cursor: pointer;
+    cursor: pointer;
 }
 </style>
