@@ -1,6 +1,22 @@
 <template>
-    <div class="min-h-screen bg-gray-50">
-        <Navbar />
+    <div class="min-h-screen bg-gray-50 pt-16">
+        <Navbar
+            :is-open="isMegaMenuOpen"
+            :is-scrolled="isScrolled"
+            :is-homepage="false"
+            @toggle-menu="toggleMegaMenu"
+            @close-menu="closeMegaMenu"
+            @toggle-search="toggleSearch"
+        />
+
+        <MegaMenu
+            :is-open="isMegaMenuOpen"
+            :is-scrolled="isScrolled"
+            :is-homepage="false"
+            @close="closeMegaMenu"
+        />
+
+        <SearchModal :is-open="isSearchOpen" @close="closeSearch" />
 
         <!-- Hero/Header Section for Archive/List Pages -->
         <div
@@ -77,12 +93,67 @@
             </div>
         </div>
 
-        <Footer />
         <BackToTop />
         <WhatsAppButton />
     </div>
 </template>
 
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+
 // Layout for list/archive pages like all news, all announcements, etc.
+const isMegaMenuOpen = ref(false);
+const isSearchOpen = ref(false);
+const isScrolled = ref(false);
+
+const toggleMegaMenu = () => {
+    isMegaMenuOpen.value = !isMegaMenuOpen.value;
+    // Close search when opening menu
+    if (isMegaMenuOpen.value) {
+        isSearchOpen.value = false;
+    }
+};
+
+const closeMegaMenu = () => {
+    isMegaMenuOpen.value = false;
+};
+
+const toggleSearch = () => {
+    isSearchOpen.value = !isSearchOpen.value;
+    // Close menu when opening search
+    if (isSearchOpen.value) {
+        isMegaMenuOpen.value = false;
+    }
+};
+
+const closeSearch = () => {
+    isSearchOpen.value = false;
+};
+
+const handleScroll = () => {
+    if (typeof window !== 'undefined') {
+        isScrolled.value = window.scrollY > 50;
+    }
+};
+
+const handleKeydown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+        if (isSearchOpen.value) {
+            closeSearch();
+        } else if (isMegaMenuOpen.value) {
+            closeMegaMenu();
+        }
+    }
+};
+
+onMounted(() => {
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('keydown', handleKeydown);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('keydown', handleKeydown);
+});
 </script>

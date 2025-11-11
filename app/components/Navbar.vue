@@ -39,14 +39,18 @@
                     <div class="hidden sm:flex flex-col leading-tight">
                         <span
                             class="text-sm sm:text-base font-bold leading-none tracking-tight transition-colors duration-300"
-                            :class="isScrolled ? 'text-black' : 'text-white'"
+                            :class="
+                                isScrolled || !isHomepage
+                                    ? 'text-black'
+                                    : 'text-white'
+                            "
                         >
                             BKSDA Sumatera Selatan
                         </span>
                         <span
                             class="text-xs font-bold leading-none mt-1 transition-colors duration-300"
                             :class="
-                                isScrolled
+                                isScrolled || !isHomepage
                                     ? 'text-emerald-600'
                                     : 'text-emerald-300'
                             "
@@ -63,7 +67,7 @@
                         type="button"
                         class="group cursor-pointer flex items-center justify-center rounded-lg border p-2 text-sm font-semibold shadow-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
                         :class="
-                            isScrolled
+                            isScrolled || !isHomepage
                                 ? 'border-gray-300 bg-gray-100 text-gray-700 hover:border-emerald-400 hover:bg-gray-200 hover:text-emerald-600'
                                 : 'border-white/30 bg-white/10 text-white hover:border-emerald-400 hover:bg-white/20 hover:text-emerald-300'
                         "
@@ -85,9 +89,9 @@
                             'border-emerald-400 bg-emerald-600 text-white hover:bg-emerald-700 hover:text-white shadow-lg shadow-emerald-600/50':
                                 isOpen,
                             'border-gray-300 bg-gray-100 text-gray-700 hover:border-emerald-400 hover:bg-gray-200 hover:text-emerald-600':
-                                !isOpen && isScrolled,
+                                !isOpen && (isScrolled || !isHomepage),
                             'border-white/30 bg-white/10 text-white hover:border-emerald-400 hover:bg-white/20 hover:text-emerald-300':
-                                !isOpen && !isScrolled,
+                                !isOpen && !isScrolled && isHomepage,
                         }"
                         aria-haspopup="true"
                         aria-controls="mega-menu"

@@ -1,6 +1,22 @@
 <template>
-    <div class="min-h-screen bg-gray-50">
-        <Navbar />
+    <div class="min-h-screen bg-gray-50 pt-14">
+        <Navbar
+            :is-open="isMegaMenuOpen"
+            :is-scrolled="isScrolled"
+            :is-homepage="false"
+            @toggle-menu="toggleMegaMenu"
+            @close-menu="closeMegaMenu"
+            @toggle-search="toggleSearch"
+        />
+
+        <MegaMenu
+            :is-open="isMegaMenuOpen"
+            :is-scrolled="isScrolled"
+            :is-homepage="false"
+            @close="closeMegaMenu"
+        />
+
+        <SearchModal :is-open="isSearchOpen" @close="closeSearch" />
 
         <!-- Hero/Header Section for Detail Pages -->
         <div
@@ -45,18 +61,73 @@
         <!-- Main Content -->
         <main class="relative z-0">
             <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-                <div class="mx-auto max-w-4xl">
+                <div class="mx-auto max-w-5xl">
                     <slot />
                 </div>
             </div>
         </main>
 
-        <Footer />
         <BackToTop />
         <WhatsAppButton />
     </div>
 </template>
 
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+
 // Layout for single content pages like news detail, announcement detail, etc.
+const isMegaMenuOpen = ref(false);
+const isSearchOpen = ref(false);
+const isScrolled = ref(false);
+
+const toggleMegaMenu = () => {
+    isMegaMenuOpen.value = !isMegaMenuOpen.value;
+    // Close search when opening menu
+    if (isMegaMenuOpen.value) {
+        isSearchOpen.value = false;
+    }
+};
+
+const closeMegaMenu = () => {
+    isMegaMenuOpen.value = false;
+};
+
+const toggleSearch = () => {
+    isSearchOpen.value = !isSearchOpen.value;
+    // Close menu when opening search
+    if (isSearchOpen.value) {
+        isMegaMenuOpen.value = false;
+    }
+};
+
+const closeSearch = () => {
+    isSearchOpen.value = false;
+};
+
+const handleScroll = () => {
+    if (typeof window !== 'undefined') {
+        isScrolled.value = window.scrollY > 50;
+    }
+};
+
+const handleKeydown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+        if (isSearchOpen.value) {
+            closeSearch();
+        } else if (isMegaMenuOpen.value) {
+            closeMegaMenu();
+        }
+    }
+};
+
+onMounted(() => {
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('keydown', handleKeydown);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('keydown', handleKeydown);
+});
 </script>

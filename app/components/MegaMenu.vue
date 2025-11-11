@@ -157,7 +157,10 @@
                                                             "
                                                         >
                                                             <NuxtLink
-                                                                to="#"
+                                                                :to="
+                                                                    grandchild.href ||
+                                                                    '#'
+                                                                "
                                                                 class="group flex items-center gap-2 text-xs text-slate-600 transition-all duration-200 hover:text-emerald-600 hover:translate-x-1 py-1 px-2 rounded-lg hover:bg-emerald-50/50"
                                                                 @click="
                                                                     emit(
@@ -188,7 +191,7 @@
                                                 </template>
                                                 <NuxtLink
                                                     v-else
-                                                    to="#"
+                                                    :to="child.href || '#'"
                                                     class="group flex items-center gap-2 text-xs font-semibold text-slate-700 transition-all duration-200 hover:translate-x-1 hover:text-emerald-600 py-1.5 px-2 rounded-lg hover:bg-emerald-50"
                                                     @click="emit('close')"
                                                 >
@@ -366,7 +369,10 @@
                                                                     "
                                                                 >
                                                                     <NuxtLink
-                                                                        to="#"
+                                                                        :to="
+                                                                            grandchild.href ||
+                                                                            '#'
+                                                                        "
                                                                         class="group flex items-center gap-2 text-xs text-slate-600 transition-all duration-200 hover:text-emerald-600 hover:translate-x-1 py-1 px-2 rounded-lg hover:bg-emerald-50/50"
                                                                         @click="
                                                                             emit(
@@ -428,6 +434,7 @@ type MenuItem = {
     label: string;
     description?: string;
     icon?: string;
+    href?: string;
     isAccordion?: boolean;
     children?: MenuItem[];
 };
@@ -492,10 +499,10 @@ const menuItems: MenuItem[] = [
             {
                 label: 'Profil BKSDA',
                 children: [
-                    { label: 'Visi & Misi' },
-                    { label: 'Organisasi' },
-                    { label: 'Wilayah Kerja' },
-                    { label: 'Tentang Kami' },
+                    { label: 'Visi & Misi', href: '#' },
+                    { label: 'Organisasi', href: '#' },
+                    { label: 'Wilayah Kerja', href: '#' },
+                    { label: 'Tentang Kami', href: '/tentang' },
                 ],
             },
             {
@@ -555,7 +562,10 @@ const menuItems: MenuItem[] = [
             },
             {
                 label: 'Galeri',
-                children: [{ label: 'Foto' }, { label: 'Video' }],
+                children: [
+                    { label: 'Foto', href: '/galeri/foto' },
+                    { label: 'Video', href: '#' },
+                ],
             },
         ],
     },

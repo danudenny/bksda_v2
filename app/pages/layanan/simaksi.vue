@@ -1,97 +1,147 @@
 <template>
-    <div>
-        <section class="bg-white py-16 sm:py-24 mt-8">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="mx-auto max-w-2xl text-center lg:max-w-4xl">
-                    <h2
-                        class="text-base font-semibold leading-7 text-emerald-600"
+    <NuxtLayout name="detail">
+        <template #breadcrumb>
+            <NuxtLink
+                to="/layanan"
+                class="text-emerald-200 transition-colors hover:text-white"
+            >
+                Layanan
+            </NuxtLink>
+            <span class="text-emerald-400">/</span>
+            <span class="text-white">SIMAKSI</span>
+        </template>
+
+        <template #header>
+            <div class="mb-4">
+                <span
+                    class="inline-flex items-center gap-2 rounded-full bg-white/20 backdrop-blur-md border border-white/30 px-4 py-2 text-sm font-semibold text-white"
+                >
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
                     >
-                        Perizinan
-                    </h2>
-                    <p
-                        class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"
-                    >
-                        Prosedur Permohonan SIMAKSI
-                    </p>
-                    <p class="mt-6 text-lg leading-8 text-gray-600">
-                        SIMAKSI (Surat Izin Masuk Kawasan Konservasi) adalah
-                        izin yang wajib dimiliki oleh setiap orang, baik WNI
-                        maupun WNA, yang akan memasuki kawasan suaka alam,
-                        kawasan pelestarian alam, dan taman buru untuk kegiatan
-                        tertentu.
-                    </p>
-                </div>
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"
+                        />
+                    </svg>
+                    Perizinan
+                </span>
             </div>
-        </section>
+            <h1 class="text-3xl font-bold sm:text-4xl lg:text-5xl">
+                Prosedur Permohonan SIMAKSI
+            </h1>
+        </template>
 
-        <section class="bg-slate-50 py-8 sm:py-16">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="mx-auto max-w-2xl text-center lg:max-w-4xl">
-                    <h3
-                        class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"
+        <template #meta>
+            <p class="mt-4 text-lg text-emerald-100 sm:text-xl">
+                SIMAKSI (Surat Izin Masuk Kawasan Konservasi) adalah izin yang
+                wajib dimiliki oleh setiap orang, baik WNI maupun WNA, yang akan
+                memasuki kawasan suaka alam, kawasan pelestarian alam, dan taman
+                buru untuk kegiatan tertentu.
+            </p>
+        </template>
+
+        <!-- Main Content -->
+        <div class="space-y-8">
+            <!-- Ruang Lingkup Section -->
+            <section
+                class="rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5 sm:p-8"
+            >
+                <h2
+                    class="mb-6 flex items-center gap-3 text-2xl font-bold text-gray-900"
+                >
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600"
                     >
-                        Ruang Lingkup Kegiatan
-                    </h3>
-                    <p class="mt-4 text-lg leading-8 text-gray-600">
-                        SIMAKSI diperlukan untuk kegiatan-kegiatan sebagai
-                        berikut:
-                    </p>
-                </div>
+                        <svg
+                            class="h-6 w-6 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"
+                            />
+                        </svg>
+                    </div>
+                    Ruang Lingkup Kegiatan
+                </h2>
 
-                <div class="mt-16 flex gap-4">
+                <p class="mb-8 text-lg leading-relaxed text-gray-700">
+                    SIMAKSI diperlukan untuk kegiatan-kegiatan sebagai berikut:
+                </p>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     <div
                         v-for="item in scopeItems"
                         :key="item.name"
-                        class="flex h-36 flex-col w-full items-center rounded-2xl bg-white p-6 text-center shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:scale-105 sm:p-8 hover:ring-emerald-300"
+                        class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 p-6 shadow-md ring-1 ring-emerald-100 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
                     >
                         <div
-                            class="flex h-16 w-16 p-4 flex-shrink-0 items-center justify-center rounded-lg bg-emerald-100"
+                            class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-emerald-200 transition-transform duration-300 group-hover:scale-110"
                         >
                             <component
                                 :is="item.icon"
-                                class="h-8 w-8 text-emerald-600"
+                                class="h-6 w-6 text-emerald-600"
                                 aria-hidden="true"
                             />
                         </div>
-
-                        <h4
-                            class="mt-5 text-base font-semibold leading-7 text-gray-900"
-                        >
+                        <h4 class="font-semibold text-gray-900">
                             {{ item.name }}
                         </h4>
-
-                        <!--            <p class="mt-2 text-sm leading-relaxed text-gray-600">-->
-                        <!--              {{ item.description }}-->
-                        <!--            </p>-->
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section class="bg-white py-16 sm:py-24">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="mx-auto max-w-2xl text-center lg:max-w-4xl">
-                    <h3
-                        class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"
-                    >
-                        Prosedur Permohonan
-                    </h3>
-                    <p class="mt-4 text-lg leading-8 text-gray-600">
-                        Pilih kewarganegaraan Anda untuk melihat prosedur yang
-                        sesuai.
-                    </p>
-                </div>
-
-                <div
-                    class="mt-12 flex flex-wrap items-center justify-center gap-2 sm:gap-4"
+            <!-- Prosedur Permohonan Section -->
+            <section
+                class="rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 p-6 shadow-lg ring-1 ring-emerald-100 sm:p-8"
+            >
+                <h2
+                    class="mb-6 flex items-center gap-3 text-2xl font-bold text-gray-900"
                 >
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600"
+                    >
+                        <svg
+                            class="h-6 w-6 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </svg>
+                    </div>
+                    Prosedur Permohonan
+                </h2>
+
+                <p class="mb-6 text-lg leading-relaxed text-gray-700">
+                    Pilih kewarganegaraan Anda untuk melihat prosedur yang
+                    sesuai:
+                </p>
+
+                <!-- Tab Buttons -->
+                <div class="mb-8 flex flex-wrap gap-3">
                     <button
                         @click="activeTab = 'wni'"
                         :class="[
-                            'flex items-center gap-2.5 rounded-full px-5 py-2.5 text-sm sm:text-base font-semibold transition-all duration-300 transform',
+                            'flex items-center gap-2.5 rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-300 sm:text-base',
                             activeTab === 'wni'
                                 ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 scale-105'
-                                : 'bg-white text-gray-700 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-100 hover:scale-105',
+                                : 'bg-white text-gray-700 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50 hover:shadow-md',
                         ]"
                     >
                         <User class="h-5 w-5" aria-hidden="true" />
@@ -100,10 +150,10 @@
                     <button
                         @click="activeTab = 'wna'"
                         :class="[
-                            'flex items-center gap-2.5 rounded-full px-5 py-2.5 text-sm sm:text-base font-semibold transition-all duration-300 transform',
+                            'flex items-center gap-2.5 rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-300 sm:text-base',
                             activeTab === 'wna'
                                 ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 scale-105'
-                                : 'bg-white text-gray-700 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-100 hover:scale-105',
+                                : 'bg-white text-gray-700 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50 hover:shadow-md',
                         ]"
                     >
                         <Globe class="h-5 w-5" aria-hidden="true" />
@@ -111,7 +161,8 @@
                     </button>
                 </div>
 
-                <div class="relative mt-12 sm:mt-16">
+                <!-- Tab Content -->
+                <div class="relative">
                     <transition
                         mode="out-in"
                         enter-active-class="transition-all duration-300 ease-out"
@@ -124,94 +175,115 @@
                         <div
                             v-if="activeTab === 'wni'"
                             key="wni"
-                            class="mx-auto max-w-4xl"
+                            class="overflow-hidden rounded-xl bg-white shadow-md"
                         >
-                            <div class="space-y-8">
-                                <div class="flex gap-4">
+                            <div class="space-y-6 p-6 sm:p-8">
+                                <!-- Step 1 -->
+                                <div class="flex gap-5">
                                     <div
-                                        class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-emerald-600 font-bold text-white"
+                                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-bold text-white shadow-lg"
                                     >
                                         1
                                     </div>
-                                    <div>
+                                    <div class="flex-1">
                                         <h4
-                                            class="text-lg font-semibold text-gray-900"
+                                            class="text-lg font-bold text-gray-900"
                                         >
                                             Booking Online
                                         </h4>
-                                        <p class="mt-1 text-gray-600">
+                                        <p class="mt-2 leading-relaxed text-gray-600">
                                             Mengisi SIMAKSI Online yang ada di
                                             Website BKSDA Sumatera Selatan untuk
                                             membooking kuota.
                                         </p>
                                     </div>
                                 </div>
-                                <div class="flex gap-4">
+
+                                <div class="border-t border-gray-200"></div>
+
+                                <!-- Step 2 -->
+                                <div class="flex gap-5">
                                     <div
-                                        class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-emerald-600 font-bold text-white"
+                                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-bold text-white shadow-lg"
                                     >
                                         2
                                     </div>
-                                    <div>
+                                    <div class="flex-1">
                                         <h4
-                                            class="text-lg font-semibold text-gray-900"
+                                            class="text-lg font-bold text-gray-900"
                                         >
                                             Surat Permohonan
                                         </h4>
-                                        <p class="mt-1 text-gray-600">
+                                        <p class="mt-2 leading-relaxed text-gray-600">
                                             Membuat Surat Permohonan yang
                                             ditujukan kepada
-                                            <strong class="text-gray-800"
+                                            <strong class="text-emerald-700"
                                                 >Kepala BKSDA Sumatera
                                                 Selatan</strong
                                             >
                                             dengan tembusan disampaikan kepada:
                                         </p>
                                         <ul
-                                            class="mt-2 list-disc space-y-1 pl-6 text-gray-600"
+                                            class="mt-3 space-y-2 pl-6 text-gray-600"
                                         >
-                                            <li>
-                                                Kepala Pusat Penelitian dan
-                                                Pengembangan Kehutanan.
+                                            <li class="flex items-start gap-2">
+                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <span>Kepala Pusat Penelitian dan
+                                                Pengembangan Kehutanan.</span>
                                             </li>
-                                            <li>
-                                                Sekretaris Direktorat Jenderal
-                                                PHKA.
+                                            <li class="flex items-start gap-2">
+                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <span>Sekretaris Direktorat Jenderal
+                                                PHKA.</span>
                                             </li>
-                                            <li>
-                                                Direktorat Konservasi
-                                                Keanekaragaman Hayati.
+                                            <li class="flex items-start gap-2">
+                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <span>Direktorat Konservasi
+                                                Keanekaragaman Hayati.</span>
                                             </li>
-                                            <li>
-                                                Kepala Seksi Konservasi Wilayah
-                                                setempat.
+                                            <li class="flex items-start gap-2">
+                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <span>Kepala Seksi Konservasi Wilayah
+                                                setempat.</span>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="flex gap-4">
+
+                                <div class="border-t border-gray-200"></div>
+
+                                <!-- Step 3 -->
+                                <div class="flex gap-5">
                                     <div
-                                        class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-emerald-600 font-bold text-white"
+                                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-bold text-white shadow-lg"
                                     >
                                         3
                                     </div>
-                                    <div>
+                                    <div class="flex-1">
                                         <h4
-                                            class="text-lg font-semibold text-gray-900"
+                                            class="text-lg font-bold text-gray-900"
                                         >
                                             Persyaratan Dokumen
                                         </h4>
-                                        <p class="mt-1 text-gray-600">
+                                        <p class="mt-2 leading-relaxed text-gray-600">
                                             Menyerahkan fotocopy KTP dan Materai
                                             Rp 6.000, serta melampirkan dokumen
                                             sesuai kegiatan:
                                         </p>
                                         <div class="mt-4 space-y-4">
                                             <div
-                                                class="rounded-lg border border-gray-200 bg-slate-50 p-4"
+                                                class="rounded-lg border-2 border-emerald-100 bg-emerald-50/50 p-4"
                                             >
                                                 <h5
-                                                    class="font-semibold text-gray-800"
+                                                    class="font-bold text-emerald-900"
                                                 >
                                                     Kegiatan Penelitian,
                                                     Pengembangan, Ilmu
@@ -219,68 +291,86 @@
                                                     Foto Komersial & Ekspedisi
                                                 </h5>
                                                 <ul
-                                                    class="mt-2 list-disc space-y-1 pl-6 text-gray-600"
+                                                    class="mt-3 space-y-2 text-gray-700"
                                                 >
-                                                    <li>Proposal kegiatan.</li>
-                                                    <li>
-                                                        Fotocopy tanda pengenal.
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Proposal kegiatan.</span>
+                                                    </li>
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Fotocopy tanda pengenal.</span>
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div
-                                                class="rounded-lg border border-gray-200 bg-slate-50 p-4"
+                                                class="rounded-lg border-2 border-teal-100 bg-teal-50/50 p-4"
                                             >
                                                 <h5
-                                                    class="font-semibold text-gray-800"
+                                                    class="font-bold text-teal-900"
                                                 >
                                                     Kegiatan Pembuatan Film atau
                                                     Videoklip
                                                 </h5>
                                                 <ul
-                                                    class="mt-2 list-disc space-y-1 pl-6 text-gray-600"
+                                                    class="mt-3 space-y-2 text-gray-700"
                                                 >
-                                                    <li>
-                                                        Surat izin produksi
-                                                        (untuk tujuan
-                                                        komersial).
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Surat izin produksi (untuk tujuan komersial).</span>
                                                     </li>
-                                                    <li>
-                                                        Tanda pendaftaran
-                                                        rekaman video/film dari
-                                                        Badan Informasi dan
-                                                        Komunikasi Nasional.
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Tanda pendaftaran rekaman video/film dari Badan Informasi dan Komunikasi Nasional.</span>
                                                     </li>
-                                                    <li>
-                                                        Sinopsis film yang akan
-                                                        dibuat.
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Sinopsis film yang akan dibuat.</span>
                                                     </li>
-                                                    <li>Daftar crew.</li>
-                                                    <li>
-                                                        Surat Peryataan tidak
-                                                        merusak lingkungan serta
-                                                        kesediaan mematuhi
-                                                        ketentuan
-                                                        perundang-undangan yang
-                                                        berlaku.
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Daftar crew.</span>
+                                                    </li>
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Surat Peryataan tidak merusak lingkungan serta kesediaan mematuhi ketentuan perundang-undangan yang berlaku.</span>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="flex gap-4">
+
+                                <div class="border-t border-gray-200"></div>
+
+                                <!-- Step 4 -->
+                                <div class="flex gap-5">
                                     <div
-                                        class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-emerald-600 font-bold text-white"
+                                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-bold text-white shadow-lg"
                                     >
                                         4
                                     </div>
-                                    <div>
+                                    <div class="flex-1">
                                         <h4
-                                            class="text-lg font-semibold text-gray-900"
+                                            class="text-lg font-bold text-gray-900"
                                         >
                                             Pengambilan SIMAKSI
                                         </h4>
-                                        <p class="mt-1 text-gray-600">
+                                        <p class="mt-2 leading-relaxed text-gray-600">
                                             Datang ke Kantor BKSDA Sumatera
                                             Selatan untuk menyerahkan seluruh
                                             syarat-syarat (poin 2 dan 3) dan
@@ -292,43 +382,47 @@
                             </div>
                         </div>
 
-                        <div v-else key="wna" class="mx-auto max-w-4xl">
-                            <div class="space-y-8">
-                                <div class="flex gap-4">
+                        <div v-else key="wna" class="overflow-hidden rounded-xl bg-white shadow-md">
+                            <div class="space-y-6 p-6 sm:p-8">
+                                <!-- Similar structure for WNA, keeping the existing content but with same styling as WNI -->
+                                <div class="flex gap-5">
                                     <div
-                                        class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-emerald-600 font-bold text-white"
+                                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-bold text-white shadow-lg"
                                     >
                                         1
                                     </div>
-                                    <div>
+                                    <div class="flex-1">
                                         <h4
-                                            class="text-lg font-semibold text-gray-900"
+                                            class="text-lg font-bold text-gray-900"
                                         >
                                             Booking Online
                                         </h4>
-                                        <p class="mt-1 text-gray-600">
+                                        <p class="mt-2 leading-relaxed text-gray-600">
                                             Mengisi SIMAKSI Online yang ada di
                                             Website BKSDA Sumatera Selatan untuk
                                             membooking kuota.
                                         </p>
                                     </div>
                                 </div>
-                                <div class="flex gap-4">
+
+                                <div class="border-t border-gray-200"></div>
+
+                                <div class="flex gap-5">
                                     <div
-                                        class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-emerald-600 font-bold text-white"
+                                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-bold text-white shadow-lg"
                                     >
                                         2
                                     </div>
-                                    <div>
+                                    <div class="flex-1">
                                         <h4
-                                            class="text-lg font-semibold text-gray-900"
+                                            class="text-lg font-bold text-gray-900"
                                         >
                                             Surat Permohonan
                                         </h4>
-                                        <p class="mt-1 text-gray-600">
+                                        <p class="mt-2 leading-relaxed text-gray-600">
                                             Membuat Surat Permohonan yang
                                             ditujukan kepada
-                                            <strong class="text-gray-800"
+                                            <strong class="text-emerald-700"
                                                 >Sekretaris Direktorat Jenderal
                                                 Perlindungan Hutan dan
                                                 Konservasi Alam</strong
@@ -336,43 +430,55 @@
                                             dengan tembusan kepada:
                                         </p>
                                         <ul
-                                            class="mt-2 list-disc space-y-1 pl-6 text-gray-600"
+                                            class="mt-3 space-y-2 text-gray-600"
                                         >
-                                            <li>
-                                                Kepala Pusat Penelitian dan
-                                                Pengembangan Kehutanan.
+                                            <li class="flex items-start gap-2">
+                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <span>Kepala Pusat Penelitian dan Pengembangan Kehutanan.</span>
                                             </li>
-                                            <li>
-                                                Direktorat Konservasi
-                                                Keanekaragaman Hayati.
+                                            <li class="flex items-start gap-2">
+                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <span>Direktorat Konservasi Keanekaragaman Hayati.</span>
                                             </li>
-                                            <li>Kepala Balai setempat.</li>
+                                            <li class="flex items-start gap-2">
+                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <span>Kepala Balai setempat.</span>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="flex gap-4">
+
+                                <div class="border-t border-gray-200"></div>
+
+                                <div class="flex gap-5">
                                     <div
-                                        class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-emerald-600 font-bold text-white"
+                                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-bold text-white shadow-lg"
                                     >
                                         3
                                     </div>
-                                    <div>
+                                    <div class="flex-1">
                                         <h4
-                                            class="text-lg font-semibold text-gray-900"
+                                            class="text-lg font-bold text-gray-900"
                                         >
                                             Persyaratan Dokumen
                                         </h4>
-                                        <p class="mt-1 text-gray-600">
+                                        <p class="mt-2 leading-relaxed text-gray-600">
                                             Menyerahkan fotocopy KTP dan Materai
                                             Rp 6.000, serta melampirkan dokumen
                                             sesuai kegiatan:
                                         </p>
                                         <div class="mt-4 space-y-4">
                                             <div
-                                                class="rounded-lg border border-gray-200 bg-slate-50 p-4"
+                                                class="rounded-lg border-2 border-emerald-100 bg-emerald-50/50 p-4"
                                             >
                                                 <h5
-                                                    class="font-semibold text-gray-800"
+                                                    class="font-bold text-emerald-900"
                                                 >
                                                     Kegiatan Penelitian,
                                                     Pengembangan, Ilmu
@@ -380,118 +486,153 @@
                                                     Foto Komersial & Ekspedisi
                                                 </h5>
                                                 <ul
-                                                    class="mt-2 list-disc space-y-1 pl-6 text-gray-600"
+                                                    class="mt-3 space-y-2 text-gray-700"
                                                 >
-                                                    <li>
-                                                        Surat izin dari
-                                                        penelitian LIPI.
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Surat izin dari penelitian LIPI.</span>
                                                     </li>
-                                                    <li>Proposal kegiatan.</li>
-                                                    <li>Fotocopy Passport.</li>
-                                                    <li>
-                                                        Surat Pemberitahuan
-                                                        Penelitian dari
-                                                        Direktorat Kesatuan
-                                                        Bangsa dan Politik
-                                                        Departemen Dalam Negeri.
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Proposal kegiatan.</span>
                                                     </li>
-                                                    <li>
-                                                        Surat Jalan dari
-                                                        Kepolisian.
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Fotocopy Passport.</span>
                                                     </li>
-                                                    <li>
-                                                        Surat peryataan tidak
-                                                        merusak lingkungan serta
-                                                        kesediaan mematuhi
-                                                        ketentuan
-                                                        perundang-undangan yang
-                                                        berlaku.
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Surat Pemberitahuan Penelitian dari Direktorat Kesatuan Bangsa dan Politik Departemen Dalam Negeri.</span>
+                                                    </li>
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Surat Jalan dari Kepolisian.</span>
+                                                    </li>
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Surat peryataan tidak merusak lingkungan serta kesediaan mematuhi ketentuan perundang-undangan yang berlaku.</span>
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div
-                                                class="rounded-lg border border-gray-200 bg-slate-50 p-4"
+                                                class="rounded-lg border-2 border-teal-100 bg-teal-50/50 p-4"
                                             >
                                                 <h5
-                                                    class="font-semibold text-gray-800"
+                                                    class="font-bold text-teal-900"
                                                 >
                                                     Kegiatan Pembuatan Film atau
                                                     Videoklip
                                                 </h5>
                                                 <ul
-                                                    class="mt-2 list-disc space-y-1 pl-6 text-gray-600"
+                                                    class="mt-3 space-y-2 text-gray-700"
                                                 >
-                                                    <li>
-                                                        Surat izin produksi
-                                                        (untuk tujuan
-                                                        komersial).
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Surat izin produksi (untuk tujuan komersial).</span>
                                                     </li>
-                                                    <li>
-                                                        Tanda pendaftaran
-                                                        rekaman video/film dari
-                                                        Badan Informasi dan
-                                                        Komunikasi Nasional. U
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Tanda pendaftaran rekaman video/film dari Badan Informasi dan Komunikasi Nasional.</span>
                                                     </li>
-                                                    <li>
-                                                        Sinopsis film yang yang
-                                                        akan dibuat.
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Sinopsis film yang akan dibuat.</span>
                                                     </li>
-                                                    <li>Daftar crew.</li>
-                                                    <li>
-                                                        Surat Peryataan tidak
-                                                        merusak lingkungan serta
-                                                        kesedian mematuhi
-                                                        ketentuan
-                                                        perundang-undangan yang
-                                                        berlaku.
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Daftar crew.</span>
+                                                    </li>
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Surat Peryataan tidak merusak lingkungan serta kesedian mematuhi ketentuan perundang-undangan yang berlaku.</span>
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div
-                                                class="rounded-lg border border-gray-200 bg-slate-50 p-4"
+                                                class="rounded-lg border-2 border-blue-100 bg-blue-50/50 p-4"
                                             >
                                                 <h5
-                                                    class="font-semibold text-gray-800"
+                                                    class="font-bold text-blue-900"
                                                 >
                                                     Kegiatan Pembuatan Foto
                                                     Komersial & Ekspedisi
                                                 </h5>
                                                 <ul
-                                                    class="mt-2 list-disc space-y-1 pl-6 text-gray-600"
+                                                    class="mt-3 space-y-2 text-gray-700"
                                                 >
-                                                    <li>Proposal.</li>
-                                                    <li>Fotocopy Passport.</li>
-                                                    <li>Daftar peralatan.</li>
-                                                    <li>
-                                                        Surat Jalan dari
-                                                        Kepolisian.
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Proposal.</span>
                                                     </li>
-                                                    <li>
-                                                        Surat Peryataan tidak
-                                                        merusak lingkungan serta
-                                                        kesedian mematuhi
-                                                        ketentuan
-                                                        perundang-undangan yang
-                                                        berlaku.
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Fotocopy Passport.</span>
+                                                    </li>
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Daftar peralatan.</span>
+                                                    </li>
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Surat Jalan dari Kepolisian.</span>
+                                                    </li>
+                                                    <li class="flex items-start gap-2">
+                                                        <svg class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <span>Surat Peryataan tidak merusak lingkungan serta kesedian mematuhi ketentuan perundang-undangan yang berlaku.</span>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="flex gap-4">
+
+                                <div class="border-t border-gray-200"></div>
+
+                                <div class="flex gap-5">
                                     <div
-                                        class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-emerald-600 font-bold text-white"
+                                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-bold text-white shadow-lg"
                                     >
                                         4
                                     </div>
-                                    <div>
+                                    <div class="flex-1">
                                         <h4
-                                            class="text-lg font-semibold text-gray-900"
+                                            class="text-lg font-bold text-gray-900"
                                         >
                                             Pengambilan SIMAKSI
                                         </h4>
-                                        <p class="mt-1 text-gray-600">
+                                        <p class="mt-2 leading-relaxed text-gray-600">
                                             Datang ke Kantor BKSDA Sumatera
                                             Selatan untuk menyerahkan seluruh
                                             syarat-syarat (poin 2 dan 3) dan
@@ -504,9 +645,9 @@
                         </div>
                     </transition>
                 </div>
-            </div>
-        </section>
-    </div>
+            </section>
+        </div>
+    </NuxtLayout>
 </template>
 
 <script setup lang="ts">
@@ -521,9 +662,10 @@ import {
 } from 'lucide-vue-next';
 import { ref } from 'vue';
 
-definePageMeta({
-    title: 'Prosedur SIMAKSI',
-    layout: 'default',
+useSeoMeta({
+    title: 'Prosedur SIMAKSI - BKSDA Sumatera Selatan',
+    description:
+        'SIMAKSI (Surat Izin Masuk Kawasan Konservasi) adalah izin yang wajib dimiliki untuk memasuki kawasan suaka alam, kawasan pelestarian alam, dan taman buru.',
 });
 
 const activeTab = ref('wni');
