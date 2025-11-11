@@ -27,10 +27,8 @@
 
         <Footer />
 
-        <ClientOnly>
-            <LazyWhatsAppButton />
-            <LazySurveyButton />
-        </ClientOnly>
+        <WhatsAppButton />
+        <SurveyButton />
     </div>
 </template>
 
@@ -41,6 +39,8 @@ import Footer from '~/components/Footer.vue';
 import MegaMenu from '~/components/MegaMenu.vue';
 import Navbar from '~/components/Navbar.vue';
 import SearchModal from '~/components/SearchModal.vue';
+import SurveyButton from '~/components/SurveyButton.vue';
+import WhatsAppButton from '~/components/WhatsAppButton.vue';
 
 // --- TAMBAHAN UNTUK JUDUL, FAVICON, & SEO ---
 // Komposabel 'useHead' adalah cara Nuxt 3 untuk mengelola tag <head>

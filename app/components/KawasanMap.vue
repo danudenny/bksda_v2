@@ -64,7 +64,7 @@
                             class="flex items-start gap-3 p-3 rounded-lg bg-slate-50"
                         >
                             <MapPin
-                                class="h-5 w-5 text-emerald-600 shrink-0 mt-0.5"
+                                class="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5"
                             />
                             <div>
                                 <p class="text-sm font-semibold text-slate-900">
@@ -81,7 +81,7 @@
                             class="flex items-start gap-3 p-3 rounded-lg bg-slate-50"
                         >
                             <Navigation
-                                class="h-5 w-5 text-emerald-600 shrink-0 mt-0.5"
+                                class="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5"
                             />
                             <div>
                                 <p class="text-sm font-semibold text-slate-900">
@@ -101,7 +101,7 @@
                             class="flex items-start gap-3 p-3 rounded-lg bg-slate-50"
                         >
                             <TreeDeciduous
-                                class="h-5 w-5 text-emerald-600 shrink-0 mt-0.5"
+                                class="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5"
                             />
                             <div class="flex-1">
                                 <p

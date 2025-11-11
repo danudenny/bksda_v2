@@ -18,7 +18,6 @@
                         :alt="kawasan.name"
                         class="w-full h-full object-cover"
                         loading="eager"
-                        fetchpriority="high"
                         :style="{
                             transform: `translateY(${parallaxOffset}px)`,
                             willChange: 'transform',

@@ -1,437 +1,468 @@
 <template>
-  <section
-    class="relative bg-gradient-to-b from-white via-slate-50/50 to-white py-12 sm:py-16 lg:py-24 overflow-hidden"
-  >
-    <div class="absolute inset-0 -z-10">
-      <div
-        class="absolute right-0 top-0 h-96 w-96 rounded-full bg-emerald-100/40 blur-3xl filter"
-      ></div>
-      <div
-        class="absolute left-0 bottom-0 h-96 w-96 rounded-full bg-teal-100/40 blur-3xl filter"
-      ></div>
-    </div>
+    <section
+        class="relative bg-gradient-to-b from-white via-slate-50/50 to-white py-12 sm:py-16 lg:py-24 overflow-hidden"
+    >
+        <div class="absolute inset-0 -z-10">
+            <div
+                class="absolute right-0 top-0 h-96 w-96 rounded-full bg-emerald-100/40 blur-3xl filter"
+            ></div>
+            <div
+                class="absolute left-0 bottom-0 h-96 w-96 rounded-full bg-teal-100/40 blur-3xl filter"
+            ></div>
+        </div>
 
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl text-center">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <div
+                    class="inline-flex items-center gap-2 rounded-full bg-emerald-600/10 px-3 py-1.5 sm:px-4 sm:py-2 ring-1 ring-inset ring-emerald-600/20 mb-4 sm:mb-6"
+                >
+                    <svg
+                        class="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                        />
+                    </svg>
+                    <span
+                        class="font-semibold text-emerald-700"
+                        style="font-size: clamp(0.75rem, 1.25vw, 0.875rem)"
+                    >
+                        Galeri Foto & Video
+                    </span>
+                </div>
+
+                <h2
+                    class="font-bold tracking-tight text-slate-900"
+                    style="font-size: clamp(1.875rem, 4vw, 3rem)"
+                >
+                    Sorotan Visual dari Lapangan
+                </h2>
+                <p
+                    class="mt-4 sm:mt-6 text-slate-600"
+                    style="font-size: clamp(0.875rem, 1.5vw, 1.125rem)"
+                >
+                    Lihat lebih dekat keindahan alam, kekayaan fauna, dan
+                    dedikasi tim kami dalam menjaga kelestarian Sumatera
+                    Selatan.
+                </p>
+            </div>
+        </div>
+
         <div
-          class="inline-flex items-center gap-2 rounded-full bg-emerald-600/10 px-3 py-1.5 sm:px-4 sm:py-2 ring-1 ring-inset ring-emerald-600/20 mb-4 sm:mb-6"
+            class="mt-12 sm:mt-16 space-y-4 [mask-image:_linear-gradient(to_right,transparent_0,_black_10%,_black_90%,transparent_100%)]"
         >
-          <svg
-            class="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-            />
-          </svg>
-          <span
-            class="font-semibold text-emerald-700"
-            style="font-size: clamp(0.75rem, 1.25vw, 0.875rem)"
-          >
-            Galeri Foto & Video
-          </span>
+            <div class="overflow-hidden group">
+                <div
+                    class="flex flex-shrink-0 animate-marquee-right group-hover:pause"
+                >
+                    <div
+                        v-for="(image, index) in row1Images"
+                        :key="`r1-${index}`"
+                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
+                        @click="openLightbox(image, index)"
+                    >
+                        <NuxtImg
+                            :src="image.src"
+                            :alt="image.alt"
+                            class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
+                            draggable="false"
+                            loading="lazy"
+                        />
+                        <div
+                            class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
+                        >
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <p
+                                    class="text-white font-semibold text-sm line-clamp-2"
+                                >
+                                    {{ image.alt }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        v-for="(image, index) in row1Images"
+                        :key="`r1-dup-${index}`"
+                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item"
+                        aria-hidden="true"
+                    >
+                        <NuxtImg
+                            :src="image.src"
+                            :alt="image.alt"
+                            class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
+                            draggable="false"
+                            loading="lazy"
+                        />
+                        <div
+                            class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
+                        >
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <p
+                                    class="text-white font-semibold text-sm line-clamp-2"
+                                >
+                                    {{ image.alt }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-hidden group">
+                <div
+                    class="flex flex-shrink-0 animate-marquee-left group-hover:pause"
+                >
+                    <div
+                        v-for="(image, index) in row2Images"
+                        :key="`r2-${index}`"
+                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
+                        @click="openLightbox(image, row1Images.length + index)"
+                    >
+                        <NuxtImg
+                            :src="image.src"
+                            :alt="image.alt"
+                            class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
+                            draggable="false"
+                            loading="lazy"
+                        />
+                        <div
+                            class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
+                        >
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <p
+                                    class="text-white font-semibold text-sm line-clamp-2"
+                                >
+                                    {{ image.alt }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        v-for="(image, index) in row2Images"
+                        :key="`r2-dup-${index}`"
+                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item"
+                        aria-hidden="true"
+                    >
+                        <NuxtImg
+                            :src="image.src"
+                            :alt="image.alt"
+                            class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
+                            draggable="false"
+                            loading="lazy"
+                        />
+                        <div
+                            class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
+                        >
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <p
+                                    class="text-white font-semibold text-sm line-clamp-2"
+                                >
+                                    {{ image.alt }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-hidden group">
+                <div
+                    class="flex flex-shrink-0 animate-marquee-right group-hover:pause"
+                >
+                    <div
+                        v-for="(image, index) in row3Images"
+                        :key="`r3-${index}`"
+                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
+                        @click="
+                            openLightbox(
+                                image,
+                                row1Images.length + row2Images.length + index
+                            )
+                        "
+                    >
+                        <NuxtImg
+                            :src="image.src"
+                            :alt="image.alt"
+                            class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
+                            draggable="false"
+                            loading="lazy"
+                        />
+                        <div
+                            class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
+                        >
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <p
+                                    class="text-white font-semibold text-sm line-clamp-2"
+                                >
+                                    {{ image.alt }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        v-for="(image, index) in row3Images"
+                        :key="`r3-dup-${index}`"
+                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item"
+                        aria-hidden="true"
+                    >
+                        <NuxtImg
+                            :src="image.src"
+                            :alt="image.alt"
+                            class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
+                            draggable="false"
+                            loading="lazy"
+                        />
+                        <div
+                            class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
+                        >
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <p
+                                    class="text-white font-semibold text-sm line-clamp-2"
+                                >
+                                    {{ image.alt }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <h2
-          class="font-bold tracking-tight text-slate-900"
-          style="font-size: clamp(1.875rem, 4vw, 3rem)"
-        >
-          Sorotan Visual dari Lapangan
-        </h2>
-        <p
-          class="mt-4 sm:mt-6 text-slate-600"
-          style="font-size: clamp(0.875rem, 1.5vw, 1.125rem)"
-        >
-          Lihat lebih dekat keindahan alam, kekayaan fauna, dan dedikasi tim
-          kami dalam menjaga kelestarian Sumatera Selatan.
-        </p>
-      </div>
-    </div>
-
-    <div
-      class="mt-12 sm:mt-16 space-y-4 [mask-image:_linear-gradient(to_right,transparent_0,_black_10%,_black_90%,transparent_100%)]"
-    >
-      <div class="overflow-hidden group">
-        <div class="flex flex-shrink-0 animate-marquee-right group-hover:pause">
-          <div
-            v-for="(image, index) in row1Images"
-            :key="`r1-${index}`"
-            class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
-            @click="openLightbox(image, index)"
-          >
-            <NuxtImg
-              :src="image.src"
-              :alt="image.alt"
-              class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
-              draggable="false"
-              loading="lazy"
-            />
-            <div
-              class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
+        <div class="mt-12 sm:mt-16 text-center">
+            <NuxtLink
+                to="/galeri"
+                class="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-3 font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/50 hover:scale-105"
+                style="font-size: clamp(0.875rem, 1.5vw, 1rem)"
             >
-              <div class="absolute bottom-4 left-4 right-4">
-                <p class="text-white font-semibold text-sm line-clamp-2">
-                  {{ image.alt }}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            v-for="(image, index) in row1Images"
-            :key="`r1-dup-${index}`"
-            class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item"
-            aria-hidden="true"
-          >
-            <NuxtImg
-              :src="image.src"
-              :alt="image.alt"
-              class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
-              draggable="false"
-              loading="lazy"
-            />
-            <div
-              class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
-            >
-              <div class="absolute bottom-4 left-4 right-4">
-                <p class="text-white font-semibold text-sm line-clamp-2">
-                  {{ image.alt }}
-                </p>
-              </div>
-            </div>
-          </div>
+                <span>Lihat Galeri Lengkap</span>
+                <ArrowRight
+                    class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                />
+            </NuxtLink>
         </div>
-      </div>
+    </section>
 
-      <div class="overflow-hidden group">
-        <div class="flex flex-shrink-0 animate-marquee-left group-hover:pause">
-          <div
-            v-for="(image, index) in row2Images"
-            :key="`r2-${index}`"
-            class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
-            @click="openLightbox(image, row1Images.length + index)"
-          >
-            <NuxtImg
-              :src="image.src"
-              :alt="image.alt"
-              class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
-              draggable="false"
-              loading="lazy"
-            />
-            <div
-              class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
-            >
-              <div class="absolute bottom-4 left-4 right-4">
-                <p class="text-white font-semibold text-sm line-clamp-2">
-                  {{ image.alt }}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            v-for="(image, index) in row2Images"
-            :key="`r2-dup-${index}`"
-            class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item"
-            aria-hidden="true"
-          >
-            <NuxtImg
-              :src="image.src"
-              :alt="image.alt"
-              class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
-              draggable="false"
-              loading="lazy"
-            />
-            <div
-              class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
-            >
-              <div class="absolute bottom-4 left-4 right-4">
-                <p class="text-white font-semibold text-sm line-clamp-2">
-                  {{ image.alt }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="overflow-hidden group">
-        <div class="flex flex-shrink-0 animate-marquee-right group-hover:pause">
-          <div
-            v-for="(image, index) in row3Images"
-            :key="`r3-${index}`"
-            class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
-            @click="
-              openLightbox(image, row1Images.length + row2Images.length + index)
-            "
-          >
-            <NuxtImg
-              :src="image.src"
-              :alt="image.alt"
-              class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
-              draggable="false"
-              loading="lazy"
-            />
-            <div
-              class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
-            >
-              <div class="absolute bottom-4 left-4 right-4">
-                <p class="text-white font-semibold text-sm line-clamp-2">
-                  {{ image.alt }}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            v-for="(image, index) in row3Images"
-            :key="`r3-dup-${index}`"
-            class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item"
-            aria-hidden="true"
-          >
-            <NuxtImg
-              :src="image.src"
-              :alt="image.alt"
-              class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
-              draggable="false"
-              loading="lazy"
-            />
-            <div
-              class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
-            >
-              <div class="absolute bottom-4 left-4 right-4">
-                <p class="text-white font-semibold text-sm line-clamp-2">
-                  {{ image.alt }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-12 sm:mt-16 text-center">
-      <NuxtLink
-        to="/galeri"
-        class="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-3 font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/50 hover:scale-105"
-        style="font-size: clamp(0.875rem, 1.5vw, 1rem)"
-      >
-        <span>Lihat Galeri Lengkap</span>
-        <ArrowRight
-          class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-        />
-      </NuxtLink>
-    </div>
-
-    <transition
-      enter-active-class="transition-opacity duration-300 ease-out"
-      enter-from-class="opacity-0"
-      enter-to-class="opacity-100"
-      leave-active-class="transition-opacity duration-200 ease-in"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
-    >
-      <div
-        v-if="lightboxOpen"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
-        @click="closeLightbox"
-      >
-        <button
-          class="absolute top-4 right-4 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200 group"
-          aria-label="Close lightbox"
-          @click.stop="closeLightbox"
+    <Teleport to="body">
+        <transition
+            enter-active-class="transition-opacity duration-300 ease-out"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition-opacity duration-200 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
         >
-          <X
-            class="h-6 w-6 text-white group-hover:rotate-90 transition-transform duration-300"
-          />
-        </button>
+            <div
+                v-if="lightboxOpen"
+                class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm overflow-y-auto"
+                @click="closeLightbox"
+            >
+                <div class="min-h-full flex items-center justify-center p-4">
+                    <button
+                        class="fixed top-4 right-4 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200 group"
+                        aria-label="Close lightbox"
+                        @click.stop="closeLightbox"
+                    >
+                        <X
+                            class="h-6 w-6 text-white group-hover:rotate-90 transition-transform duration-300"
+                        />
+                    </button>
 
-        <button
-          v-if="currentImageIndex > 0"
-          class="absolute left-4 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200"
-          aria-label="Previous image"
-          @click.stop="previousImage"
-        >
-          <ChevronLeft class="h-6 w-6 text-white" />
-        </button>
+                    <button
+                        v-if="currentImageIndex > 0"
+                        class="fixed left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200"
+                        aria-label="Previous image"
+                        @click.stop="previousImage"
+                    >
+                        <ChevronLeft class="h-6 w-6 text-white" />
+                    </button>
 
-        <button
-          v-if="currentImageIndex < allImages.length - 1"
-          class="absolute right-4 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200"
-          aria-label="Next image"
-          @click.stop="nextImage"
-        >
-          <ChevronRight class="h-6 w-6 text-white" />
-        </button>
+                    <button
+                        v-if="currentImageIndex < allImages.length - 1"
+                        class="fixed right-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200"
+                        aria-label="Next image"
+                        @click.stop="nextImage"
+                    >
+                        <ChevronRight class="h-6 w-6 text-white" />
+                    </button>
 
-        <div class="relative max-w-7xl max-h-[90vh] w-full" @click.stop>
-          <transition
-            mode="out-in"
-            enter-active-class="transition-all duration-300 ease-out"
-            enter-from-class="opacity-0 scale-95"
-            enter-to-class="opacity-100 scale-100"
-            leave-active-class="transition-all duration-200 ease-in"
-            leave-from-class="opacity-100 scale-100"
-            leave-to-class="opacity-0 scale-95"
-          >
-            <div :key="currentImageIndex" class="flex flex-col items-center">
-              <img
-                :src="currentImage.src"
-                :alt="currentImage.alt"
-                class="max-h-[80vh] w-auto object-contain rounded-2xl shadow-2xl"
-              />
-              <div class="mt-6 text-center">
-                <p class="text-white text-lg font-semibold">
-                  {{ currentImage.alt }}
-                </p>
-                <p class="text-gray-400 text-sm mt-2">
-                  {{ currentImageIndex + 1 }} / {{ allImages.length }}
-                </p>
-              </div>
+                    <div class="relative max-w-7xl w-full my-8" @click.stop>
+                        <transition
+                            mode="out-in"
+                            enter-active-class="transition-all duration-300 ease-out"
+                            enter-from-class="opacity-0 scale-95"
+                            enter-to-class="opacity-100 scale-100"
+                            leave-active-class="transition-all duration-200 ease-in"
+                            leave-from-class="opacity-100 scale-100"
+                            leave-to-class="opacity-0 scale-95"
+                        >
+                            <div
+                                v-if="currentImage"
+                                :key="currentImageIndex"
+                                class="flex flex-col items-center"
+                            >
+                                <img
+                                    :src="currentImage.src"
+                                    :alt="currentImage.alt"
+                                    class="max-h-[80vh] w-auto object-contain rounded-2xl shadow-2xl"
+                                />
+                                <div class="mt-6 text-center">
+                                    <p class="text-white text-lg font-semibold">
+                                        {{ currentImage.alt }}
+                                    </p>
+                                    <p class="text-gray-400 text-sm mt-2">
+                                        {{ currentImageIndex + 1 }} /
+                                        {{ allImages.length }}
+                                    </p>
+                                </div>
+                            </div>
+                        </transition>
+                    </div>
+                </div>
             </div>
-          </transition>
-        </div>
-      </div>
-    </transition>
-  </section>
+        </transition>
+    </Teleport>
 </template>
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { ArrowRight, X, ChevronLeft, ChevronRight } from "lucide-vue-next";
+import { ArrowRight, ChevronLeft, ChevronRight, X } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
 
 const lightboxOpen = ref(false);
 const currentImageIndex = ref(0);
 
 const createPlaceholderUrl = (text: string) => {
-  const formattedText = text.replace(/\s+/g, "+");
-  return `https://placehold.co/600x400?text=${formattedText}`;
+    const formattedText = text.replace(/\s+/g, '+');
+    return `https://placehold.co/600x400?text=${formattedText}`;
 };
 const row1Alts = [
-  "Harimau Sumatera",
-  "Gajah Sumatera",
-  "Orangutan",
-  "Burung Rangkong",
-  "Tapir",
-  "Bunga Rafflesia",
+    'Harimau Sumatera',
+    'Gajah Sumatera',
+    'Orangutan',
+    'Burung Rangkong',
+    'Tapir',
+    'Bunga Rafflesia',
 ];
 
 const row2Alts = [
-  "Hutan Hujan Tropis",
-  "Air Terjun",
-  "Danau",
-  "Pemandangan Gunung",
-  "Sungai di Hutan",
-  "Kabut di Hutan",
+    'Hutan Hujan Tropis',
+    'Air Terjun',
+    'Danau',
+    'Pemandangan Gunung',
+    'Sungai di Hutan',
+    'Kabut di Hutan',
 ];
 
 const row3Alts = [
-  "Tim BKSDA Patroli",
-  "Edukasi Masyarakat",
-  "Peneliti di Lapangan",
-  "Pelepasliaran Satwa",
-  "Diskusi Warga",
-  "Pos Jaga BKSDA",
+    'Tim BKSDA Patroli',
+    'Edukasi Masyarakat',
+    'Peneliti di Lapangan',
+    'Pelepasliaran Satwa',
+    'Diskusi Warga',
+    'Pos Jaga BKSDA',
 ];
 
 const row1Images = computed(() =>
-  row1Alts.map((alt) => ({
-    src: createPlaceholderUrl(alt),
-    alt: alt,
-  })),
+    row1Alts.map((alt) => ({
+        src: createPlaceholderUrl(alt),
+        alt: alt,
+    }))
 );
 
 const row2Images = computed(() =>
-  row2Alts.map((alt) => ({
-    src: createPlaceholderUrl(alt),
-    alt: alt,
-  })),
+    row2Alts.map((alt) => ({
+        src: createPlaceholderUrl(alt),
+        alt: alt,
+    }))
 );
 
 const row3Images = computed(() =>
-  row3Alts.map((alt) => ({
-    src: createPlaceholderUrl(alt),
-    alt: alt,
-  })),
+    row3Alts.map((alt) => ({
+        src: createPlaceholderUrl(alt),
+        alt: alt,
+    }))
 );
 
 const allImages = computed(() => [
-  ...row1Images.value,
-  ...row2Images.value,
-  ...row3Images.value,
+    ...row1Images.value,
+    ...row2Images.value,
+    ...row3Images.value,
 ]);
 
 const currentImage = computed(() => allImages.value[currentImageIndex.value]);
 
 const openLightbox = (
-  image: { src: string; alt: string },
-  rowIndex: number,
+    image: { src: string; alt: string },
+    rowIndex: number
 ) => {
-  const globalIndex = allImages.value.findIndex(
-    (img) => img.src === image.src && img.alt === image.alt,
-  );
-  currentImageIndex.value = globalIndex !== -1 ? globalIndex : 0;
-  lightboxOpen.value = true;
-  document.body.style.overflow = "hidden";
+    const globalIndex = allImages.value.findIndex(
+        (img) => img.src === image.src && img.alt === image.alt
+    );
+    currentImageIndex.value = globalIndex !== -1 ? globalIndex : 0;
+    lightboxOpen.value = true;
+    document.body.style.overflow = 'hidden';
 };
 
 const closeLightbox = () => {
-  lightboxOpen.value = false;
-  document.body.style.overflow = "";
+    lightboxOpen.value = false;
+    document.body.style.overflow = '';
 };
 
 const nextImage = () => {
-  if (currentImageIndex.value < allImages.value.length - 1) {
-    currentImageIndex.value++;
-  }
+    if (currentImageIndex.value < allImages.value.length - 1) {
+        currentImageIndex.value++;
+    }
 };
 
 const previousImage = () => {
-  if (currentImageIndex.value > 0) {
-    currentImageIndex.value--;
-  }
+    if (currentImageIndex.value > 0) {
+        currentImageIndex.value--;
+    }
 };
 
 if (process.client) {
-  window.addEventListener("keydown", (e) => {
-    if (!lightboxOpen.value) return;
+    window.addEventListener('keydown', (e) => {
+        if (!lightboxOpen.value) return;
 
-    if (e.key === "Escape") closeLightbox();
-    if (e.key === "ArrowRight") nextImage();
-    if (e.key === "ArrowLeft") previousImage();
-  });
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') nextImage();
+        if (e.key === 'ArrowLeft') previousImage();
+    });
 }
 </script>
 
 <style>
 @keyframes marquee-left {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
 }
 
 @keyframes marquee-right {
-  from {
-    transform: translateX(-50%);
-  }
-  to {
-    transform: translateX(0);
-  }
+    from {
+        transform: translateX(-50%);
+    }
+    to {
+        transform: translateX(0);
+    }
 }
 
 .animate-marquee-left {
-  animation: marquee-left 60s linear infinite;
+    animation: marquee-left 60s linear infinite;
 }
 
 .animate-marquee-right {
-  animation: marquee-right 60s linear infinite;
+    animation: marquee-right 60s linear infinite;
 }
 
 .group:hover .pause {
-  animation-play-state: paused;
+    animation-play-state: paused;
 }
 </style>

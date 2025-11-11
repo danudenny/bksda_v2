@@ -1,51 +1,46 @@
 <template>
     <div>
-        <ClientOnly>
-            <LazySocialMdiaFloating />
-            <LazyBackToTop />
-        </ClientOnly>
-
-        <!-- Critical above-the-fold content -->
+        <SocialMdiaFloating />
+        <BackToTop />
+        <WhatsAppButton />
+        <SurveyButton />
         <HeroSection />
 
         <div data-aos="fade-up" data-aos-duration="900ms">
             <Announcement />
         </div>
 
-        <!-- Below-the-fold: lazy load for better performance -->
-        <ClientOnly>
-            <div data-aos="fade-left" data-aos-delay="200ms">
-                <LazyNewsSection />
-            </div>
+        <div data-aos="fade-left" data-aos-delay="200ms">
+            <NewsSection />
+        </div>
 
-            <div data-aos="fade-right" data-aos-delay="200ms">
-                <LazyAboutSection />
-            </div>
+        <div data-aos="fade-right" data-aos-delay="200ms">
+            <AboutSection />
+        </div>
 
-            <div data-aos="zoom-in" data-aos-duration="800ms">
-                <LazyKawasanKonservasi />
-            </div>
+        <div data-aos="zoom-in" data-aos-duration="800ms">
+            <KawasanKonservasi />
+        </div>
 
-            <div data-aos="fade-up" data-aos-delay="200ms">
-                <LazyFocusConservation />
-            </div>
+        <div data-aos="fade-up" data-aos-delay="200ms">
+            <FocusConservation />
+        </div>
 
-            <div
-                data-aos="zoom-in-up"
-                data-aos-duration="900ms"
-                data-aos-delay="200ms"
-            >
-                <LazyGallery />
-            </div>
+        <div
+            data-aos="zoom-in-up"
+            data-aos-duration="900ms"
+            data-aos-delay="200ms"
+        >
+            <Gallery />
+        </div>
 
-            <div data-aos="fade-down" data-aos-duration="800ms">
-                <LazyCTA />
-            </div>
+        <div data-aos="fade-down" data-aos-duration="800ms">
+            <CTA />
+        </div>
 
-            <div data-aos="fade-up" data-aos-delay="200ms">
-                <LazyBelida />
-            </div>
-        </ClientOnly>
+        <div data-aos="fade-up" data-aos-delay="200ms">
+            <Belida />
+        </div>
     </div>
 </template>
 
