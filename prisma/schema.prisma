@@ -71,12 +71,12 @@ model RefreshToken {
 // ============================================
 
 model Category {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  slug      String   @unique
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
   description String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   posts Post[]
 
@@ -84,22 +84,23 @@ model Category {
 }
 
 model Post {
-  id        String   @id @default(cuid())
-  title     String
-  slug      String   @unique
-  content   String   @db.Text
-  excerpt   String?  @db.Text
-  imageUrl  String
-  published Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  content     String    @db.Text
+  excerpt     String?   @db.Text
+  imageUrl    String
+  published   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   publishedAt DateTime?
 
   author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String
 
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  category   Category   @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   categoryId String
+  pageViews  PageView[]
 
   @@index([slug])
   @@index([authorId])
@@ -111,19 +112,34 @@ model Post {
 // 5. ANNOUNCEMENT MARQUEE
 // ============================================
 
+model AnnouncementCategory {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  announcements Announcement[]
+
+  @@index([slug])
+}
+
 model Announcement {
   id        String   @id @default(cuid())
   title     String
   date      String
-  category  String
-  href      String
+  content   String   @db.Text
   order     Int      @default(0)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  category   AnnouncementCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  categoryId String
+
   @@index([order])
   @@index([isActive])
+  @@index([categoryId])
 }
 
 // ============================================
@@ -192,14 +208,14 @@ model KawasanLocation {
 // ============================================
 
 model GalleryImage {
-  id       String     @id @default(cuid())
-  imageUrl String
-  altText  String
-  row      GalleryRow
-  order    Int        @default(0)
-  isActive Boolean    @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id        String     @id @default(cuid())
+  imageUrl  String
+  altText   String
+  row       GalleryRow
+  order     Int        @default(0)
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 
   @@index([row])
   @@index([order])
@@ -249,15 +265,15 @@ model SiteSettings {
   aboutImageUrl    String?
 
   // Hero Section
-  heroTitle       String?
-  heroSubtitle    String?
-  heroImageUrl    String?
+  heroTitle    String?
+  heroSubtitle String?
+  heroImageUrl String?
 
   // CTA Section
-  ctaTitle        String?
-  ctaDescription  String? @db.Text
-  ctaButtonText   String?
-  ctaButtonUrl    String?
+  ctaTitle       String?
+  ctaDescription String? @db.Text
+  ctaButtonText  String?
+  ctaButtonUrl   String?
 
   updatedAt DateTime @updatedAt
 }
@@ -271,7 +287,7 @@ model ImageAsset {
   filename  String
   url       String   @unique
   altText   String?
-  size      Int      // File size in bytes
+  size      Int // File size in bytes
   mimeType  String
   width     Int?
   height    Int?
@@ -287,8 +303,8 @@ model ImageAsset {
 
 model AuditLog {
   id        String   @id @default(cuid())
-  action    String   // CREATE, UPDATE, DELETE
-  entity    String   // Model name (Post, Announcement, etc.)
+  action    String // CREATE, UPDATE, DELETE
+  entity    String // Model name (Post, Announcement, etc.)
   entityId  String
   changes   String   @db.Text // JSON stringified changes
   createdAt DateTime @default(now())
@@ -299,4 +315,19 @@ model AuditLog {
   @@index([userId])
   @@index([entity])
   @@index([createdAt])
+}
+
+model PageView {
+  id        String  @id @default(cuid())
+  path      String
+  ipHash    String?
+  userAgent String?
+  postId    String?
+  post      Post?   @relation(fields: [postId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([postId])
+  @@index([path])
 }

@@ -3,65 +3,65 @@ import { useAuth } from "../../utils/auth";
 import { generateSlug, generateUniqueSlug } from "../../utils/slug";
 import { validatePostData } from "../../utils/validation";
 import { successResponse, errorResponse } from "../../utils/response";
+import { readMultipartFormData } from 'h3';
+import sharp from 'sharp';
+import path from 'path';
+import fs from 'fs/promises';
 
 export default defineEventHandler(async (event) => {
   try {
-    // Authenticate user
     const user = useAuth(event);
+    const body = await readMultipartFormData(event);
 
-    const body = await readBody(event);
-    const { title, content, excerpt, categoryId, imageUrl, published } = body;
+    const title = body.find(item => item.name === 'title')?.data.toString() || '';
+    const slug = body.find(item => item.name === 'slug')?.data.toString() || '';
+    const content = body.find(item => item.name === 'content')?.data.toString() || '';
+    const excerpt = body.find(item => item.name === 'excerpt')?.data.toString();
+    const categoryId = body.find(item => item.name === 'categoryId')?.data.toString() || '';
+    const published = body.find(item => item.name === 'published')?.data.toString() === 'true';
+    const imageFile = body.find(item => item.name === 'image');
+    let imageUrl = body.find(item => item.name === 'imageUrl')?.data.toString();
 
-    // Validate data
-    const validationErrors = validatePostData({
-      title,
-      content,
-      categoryId,
-      imageUrl,
-    });
+    if (imageFile && imageFile.data) {
+      const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'posts');
+      await fs.mkdir(uploadsDir, { recursive: true });
+      
+      const fileName = `${Date.now()}-${generateSlug(imageFile.filename || 'image')}.avif`;
+      const filePath = path.join(uploadsDir, fileName);
+
+      await sharp(imageFile.data)
+        .toFormat('avif', { quality: 80 })
+        .toFile(filePath);
+
+      imageUrl = `/uploads/posts/${fileName}`;
+    }
+
+    const validationErrors = validatePostData({ title, content, categoryId, imageUrl });
     if (validationErrors.length > 0) {
       return errorResponse("Validation failed", validationErrors);
     }
 
-    // Check if category exists
-    const category = await prisma.category.findUnique({
-      where: { id: categoryId },
-    });
-
+    const category = await prisma.category.findUnique({ where: { id: categoryId } });
     if (!category) {
       return errorResponse("Category not found");
     }
 
-    // Generate slug
-    const baseSlug = generateSlug(title);
-    const slug = await generateUniqueSlug(baseSlug, async (s) => {
-      const existing = await prisma.post.findUnique({
-        where: { slug: s },
-      });
-      return !!existing;
-    });
+    const finalSlug = await generateUniqueSlug(slug, async (s) => !!(await prisma.post.findUnique({ where: { slug: s } })));
 
-    // Create post
     const post = await prisma.post.create({
       data: {
         title,
-        slug,
+        slug: finalSlug,
         content,
-        excerpt: excerpt || null,
+        excerpt,
         imageUrl,
         categoryId,
         authorId: user.userId,
-        published: published || false,
+        published,
         publishedAt: published ? new Date() : null,
       },
       include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
+        author: { select: { id: true, name: true, email: true } },
         category: true,
       },
     });

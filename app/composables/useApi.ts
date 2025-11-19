@@ -309,6 +309,13 @@ export const useApi = () => {
     createAnnouncement,
     updateAnnouncement,
     deleteAnnouncement,
+
+    // Announcement Categories
+    getAnnouncementCategories: () => request('/announcement-categories'),
+    createAnnouncementCategory: (data: any) => request('/announcement-categories', { method: 'POST', data }),
+    updateAnnouncementCategory: (id: string, data: any) => request(`/announcement-categories/${id}`, { method: 'PUT', data }),
+    deleteAnnouncementCategory: (id: string) => request(`/announcement-categories/${id}`, { method: 'DELETE' }),
+
     // Species
     getSpecies,
     getSpeciesById,

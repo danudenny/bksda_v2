@@ -29,6 +29,9 @@
 
         <WhatsAppButton />
         <SurveyButton />
+        <ClientOnly>
+            <CookieBanner />
+        </ClientOnly>
     </div>
 </template>
 
@@ -41,6 +44,8 @@ import Navbar from '~/components/Navbar.vue';
 import SearchModal from '~/components/SearchModal.vue';
 import SurveyButton from '~/components/SurveyButton.vue';
 import WhatsAppButton from '~/components/WhatsAppButton.vue';
+import CookieBanner from '~/components/CookieBanner.vue';
+
 
 // --- TAMBAHAN UNTUK JUDUL, FAVICON, & SEO ---
 // Komposabel 'useHead' adalah cara Nuxt 3 untuk mengelola tag <head>

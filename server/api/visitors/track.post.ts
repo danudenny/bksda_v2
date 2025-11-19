@@ -1,26 +1,70 @@
 import { PrismaClient } from "@prisma/client";
+import crypto from 'crypto'
 
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-  try {
-    const ip = getRequestIP(event, { xForwardedFor: true }) || "unknown";
-    const userAgent = getHeader(event, "user-agent") || "unknown";
-    const referer = getHeader(event, "referer") || "direct";
+  const body = await readBody(event)
+  
+  if (!body.path) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Path is required',
+    })
+  }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+  const userAgent = getRequestHeader(event, 'user-agent') || 'unknown'
+  const ip = getRequestIP(event, { xForwardedFor: true }) || 'unknown'
+
+  const salt = process.env.IP_SALT || 'rahasia-dapur-coding' 
+  const ipHash = crypto
+    .createHash('sha256')
+    .update(ip + salt)
+    .digest('hex')
+
+  const postId = body.postId ? String(body.postId) : null
+
+  try {
+    const twentyFourHoursAgo = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
+
+    const existingView = await prisma.pageView.findFirst({
+      where: {
+        ipHash: ipHash,
+        postId: postId,
+        path: postId ? undefined : body.path,
+        createdAt: {
+          gte: twentyFourHoursAgo
+        }
+      }
+    })
+
+    if (existingView) {
+      return {
+        success: true,
+        message: 'View already counted within 24h',
+        skipped: true
+      }
+    }
+
+    const newView = await prisma.pageView.create({
+      data: {
+        path: body.path,
+        ipHash: ipHash,
+        userAgent: userAgent,
+        postId: postId
+      }
+    })
 
     return {
       success: true,
-      message: "Visit recorded",
-    };
-  } catch (error) {
-    console.error("Failed to record visit:", error);
+      data: newView
+    }
 
+  } catch (error) {
+    console.error('Tracking Error:', error)
     return {
       success: false,
-      message: "Failed to record visit",
-    };
+      message: 'Failed to track view'
+    }
   }
-});
+})

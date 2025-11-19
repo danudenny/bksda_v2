@@ -1,56 +1,55 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "~~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
   try {
-    const ip = getRequestIP(event, { xForwardedFor: true }) || "unknown";
-    const userAgent = getHeader(event, "user-agent") || "unknown";
+    const now = new Date();
+    const startOfDay = new Date(now.setHours(0, 0, 0, 0));
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    // Kita jalankan 6 query secara paralel (3 untuk Visitor, 3 untuk Views)
+    const [
+      todayUnique, todayViews,
+      monthUnique, monthViews,
+      totalUnique, totalViews
+    ] = await Promise.all([
+      // 1. HARI INI
+      prisma.pageView.groupBy({ by: ['ipHash'], where: { createdAt: { gte: startOfDay } } }),
+      prisma.pageView.count({ where: { createdAt: { gte: startOfDay } } }),
 
-    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      // 2. BULAN INI
+      prisma.pageView.groupBy({ by: ['ipHash'], where: { createdAt: { gte: startOfMonth } } }),
+      prisma.pageView.count({ where: { createdAt: { gte: startOfMonth } } }),
 
-    const todayCount = await prisma.$queryRaw`
-      SELECT COUNT(DISTINCT ip) as count 
-      FROM visitors 
-      WHERE DATE(created_at) = DATE(NOW())
-    `.catch(() => [{ count: Math.floor(Math.random() * 500) + 150 }]);
-
-    const monthCount = await prisma.$queryRaw`
-      SELECT COUNT(DISTINCT ip) as count 
-      FROM visitors 
-      WHERE created_at >= ${startOfMonth}
-    `.catch(() => [{ count: Math.floor(Math.random() * 15000) + 5000 }]);
-
-    const totalCount = await prisma.$queryRaw`
-      SELECT COUNT(DISTINCT ip) as count 
-      FROM visitors
-    `.catch(() => [{ count: Math.floor(Math.random() * 500000) + 100000 }]);
+      // 3. TOTAL SELAMANYA
+      prisma.pageView.groupBy({ by: ['ipHash'] }),
+      prisma.pageView.count(),
+    ]);
 
     return {
       success: true,
       data: {
-        today: todayCount[0]?.count || Math.floor(Math.random() * 500) + 150,
-        month: monthCount[0]?.count || Math.floor(Math.random() * 15000) + 5000,
-        total:
-          totalCount[0]?.count || Math.floor(Math.random() * 500000) + 100000,
-        todayIncrease: Math.floor(Math.random() * 20) + 5,
-        monthIncrease: Math.floor(Math.random() * 15) + 3,
+        today: {
+          visitors: todayUnique.length, // Jumlah Orang
+          views: todayViews             // Jumlah Halaman Dibuka
+        },
+        month: {
+          visitors: monthUnique.length,
+          views: monthViews
+        },
+        total: {
+          visitors: totalUnique.length,
+          views: totalViews
+        },
       },
     };
   } catch (error) {
-    console.error("Visitor stats error:", error);
-
+    console.error('Visitor stats error:', error);
     return {
       success: false,
-      data: {
-        today: 234,
-        month: 12456,
-        total: 345678,
-        todayIncrease: 12,
-        monthIncrease: 8,
+      data: { 
+        today: { visitors: 0, views: 0 }, 
+        month: { visitors: 0, views: 0 }, 
+        total: { visitors: 0, views: 0 } 
       },
     };
   }

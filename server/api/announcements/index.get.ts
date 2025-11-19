@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
       prisma.announcement.findMany({
         where: { isActive: true },
         orderBy: { order: "asc" },
+        include: { category: true },
         skip,
         take: limit,
       }),

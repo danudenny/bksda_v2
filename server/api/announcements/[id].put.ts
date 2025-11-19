@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const body = await readBody(event);
-    const { title, date, category, href, order, isActive } = body;
+    const { title, date, categoryId, content, order, isActive } = body;
 
     // Check if announcement exists
     const existing = await prisma.announcement.findUnique({
@@ -27,12 +27,12 @@ export default defineEventHandler(async (event) => {
     }
 
     // Validate data if provided
-    if (title || date || category || href) {
+    if (title || date || categoryId || content) {
       const validationErrors = validateAnnouncementData({
         title: title || existing.title,
         date: date || existing.date,
-        category: category || existing.category,
-        href: href || existing.href,
+        categoryId: categoryId || existing.categoryId,
+        content: content || existing.content,
       });
       if (validationErrors.length > 0) {
         return errorResponse("Validation failed", validationErrors);
@@ -45,8 +45,8 @@ export default defineEventHandler(async (event) => {
       data: {
         ...(title && { title }),
         ...(date && { date }),
-        ...(category && { category }),
-        ...(href && { href }),
+        ...(categoryId && { categoryId }),
+        ...(content && { content }),
         ...(order !== undefined && { order }),
         ...(isActive !== undefined && { isActive }),
       },

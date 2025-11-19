@@ -4,6 +4,31 @@ import AdminHeader from "@/components/admin/AdminHeader.vue";
 import AdminFooter from "@/components/admin/AdminFooter.vue";
 import ConfirmDialog from "@/components/ConfirmDialog.vue";
 import { Toaster } from "@/components/ui/sonner";
+import { useAuthStore } from '@/stores/auth';
+import { onMounted, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { toast } from 'vue-sonner';
+
+const authStore = useAuthStore();
+const router = useRouter();
+
+const handleLogout = () => {
+  authStore.clear();
+  toast.info('Session expired', { description: 'Please log in again.' });
+  router.push('/auth/login');
+};
+
+onMounted(() => {
+  if (authStore.isTokenExpired) {
+    handleLogout();
+  }
+});
+
+watch(() => authStore.isTokenExpired, (isExpired) => {
+  if (isExpired) {
+    handleLogout();
+  }
+});
 </script>
 
 <template>

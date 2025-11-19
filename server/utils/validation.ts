@@ -65,12 +65,12 @@ export const validateAnnouncementData = (data: any): ValidationError[] => {
     errors.push({ field: "date", message: "Date is required" });
   }
 
-  if (!data.category || data.category.trim().length === 0) {
-    errors.push({ field: "category", message: "Category is required" });
+  if (!data.categoryId || data.categoryId.trim().length === 0) {
+    errors.push({ field: "categoryId", message: "Category is required" });
   }
 
-  if (!data.href || data.href.trim().length === 0) {
-    errors.push({ field: "href", message: "Link is required" });
+  if (!data.content || data.content.trim().length === 0) {
+    errors.push({ field: "content", message: "Content is required" });
   }
 
   return errors;

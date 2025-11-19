@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, computed, watch, onBeforeUnmount } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Save, Loader, Upload, X } from "lucide-vue-next";
+import { ArrowLeft, Save, Loader, Upload, X, Sparkles, Wand2 } from "lucide-vue-next";
 import { useAuthStore } from "@/stores/auth";
 import { toast } from "vue-sonner";
+
+// --- QUILL EDITOR IMPORTS ---
+import { QuillEditor } from '@vueup/vue-quill';
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 definePageMeta({
   layout: "admin",
@@ -28,12 +32,33 @@ const form = ref({
   published: false,
 });
 
+// --- QUILL EDITOR CONFIGURATION ---
+const editorOptions = ref({
+  theme: 'snow',
+  placeholder: 'Tulis konten berita di sini...',
+  modules: {
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote', 'code-block'],
+      [{ list: 'ordered'}, { list: 'bullet' }],
+      [{ script: 'sub'}, { script: 'super' }],
+      [{ indent: '-1'}, { indent: '+1' }],
+      [{ color: [] }, { background: [] }],
+      ['link', 'image', 'video'],
+      ['clean'],
+    ],
+  },
+});
+
 const categories = ref<any[]>([]);
 const errors = ref<Record<string, string>>({});
 const imageSource = ref<"url" | "upload">("url");
 const uploadedFile = ref<File | null>(null);
 const fileInputRef = ref<HTMLInputElement | null>(null);
 const isUploadingImage = ref(false);
+const isGeneratingExcerpt = ref(false);
+const isEnhancingContent = ref(false);
 
 // Methods
 async function fetchCategories() {
@@ -67,7 +92,7 @@ async function fetchPost() {
         title: response.data.title,
         slug: response.data.slug,
         content: response.data.content,
-        excerpt: response.data.excerpt || "",
+        excerpt: response.data.description || "",
         imageUrl: response.data.imageUrl,
         categoryId: response.data.categoryId,
         published: response.data.published,
@@ -99,31 +124,42 @@ watch(
   }
 );
 
+const previewUrl = ref<string | null>(null);
+
+watch(uploadedFile, (newFile) => {
+  if (newFile) {
+    previewUrl.value = URL.createObjectURL(newFile);
+  } else {
+    if (previewUrl.value) {
+      URL.revokeObjectURL(previewUrl.value);
+      previewUrl.value = null;
+    }
+  }
+});
+
+onBeforeUnmount(() => {
+  if (previewUrl.value) {
+    URL.revokeObjectURL(previewUrl.value);
+  }
+});
+
 function handleFileSelect(event: Event) {
   const target = event.target as HTMLInputElement;
   const file = target.files?.[0];
   
   if (file) {
-    // Validate file type
     if (!file.type.startsWith("image/")) {
-      alert("Please select a valid image file");
+      toast.error("Invalid File Type", { description: "Please select a valid image file." });
       return;
     }
     
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert("File size must be less than 5MB");
+    if (file.size > 5 * 1024 * 1024) { // 5MB
+      toast.error("File Too Large", { description: "Image size must be less than 5MB." });
       return;
     }
     
     uploadedFile.value = file;
-    
-    // Create preview URL
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      form.value.imageUrl = e.target?.result as string;
-    };
-    reader.readAsDataURL(file);
+    // The watcher will create the preview URL
   }
 }
 
@@ -165,6 +201,56 @@ function validateForm(): boolean {
   return Object.keys(errors.value).length === 0;
 }
 
+async function generateExcerpt() {
+  if (!form.value.content) {
+    toast.warning("Content is empty", { description: "Please write some content before generating an excerpt." });
+    return;
+  }
+
+  isGeneratingExcerpt.value = true;
+  try {
+    const response = await $fetch('/api/generate-excerpt', {
+      method: 'POST',
+      body: { content: form.value.content },
+    });
+
+    if (response.success) {
+      form.value.excerpt = response.data.excerpt;
+      toast.success("Excerpt generated successfully");
+    } else {
+      toast.error("Failed to generate excerpt", { description: response.message });
+    }
+  } catch (error: any) {
+    toast.error("An error occurred", { description: error.message });
+  }
+  isGeneratingExcerpt.value = false;
+}
+
+async function enhanceContent() {
+  if (!form.value.content || form.value.content.trim().length < 20) {
+    toast.warning("Content is too short", { description: "Please write more content before enhancing it with AI." });
+    return;
+  }
+
+  isEnhancingContent.value = true;
+  try {
+    const response = await $fetch('/api/enhance-content', {
+      method: 'POST',
+      body: { content: form.value.content },
+    });
+
+    if (response.success) {
+      form.value.content = response.data.enhancedContent;
+      toast.success("Content enhanced successfully");
+    } else {
+      toast.error("Failed to enhance content", { description: response.message });
+    }
+  } catch (error: any) {
+    toast.error("An error occurred", { description: error.message });
+  }
+  isEnhancingContent.value = false;
+}
+
 async function savePost() {
   if (!validateForm()) return;
 
@@ -174,9 +260,23 @@ async function savePost() {
     const method = isNew.value ? "POST" : "PUT";
     const url = isNew.value ? "/api/posts" : `/api/posts/${route.params.id}`;
 
+    const formData = new FormData();
+    formData.append('title', form.value.title);
+    formData.append('slug', form.value.slug);
+    formData.append('content', form.value.content);
+    formData.append('excerpt', form.value.excerpt);
+    formData.append('categoryId', form.value.categoryId);
+    formData.append('published', String(form.value.published));
+
+    if (imageSource.value === 'upload' && uploadedFile.value) {
+      formData.append('image', uploadedFile.value);
+    } else {
+      formData.append('imageUrl', form.value.imageUrl);
+    }
+
     const response = await $fetch(url, {
       method,
-      body: form.value,
+      body: formData,
       headers: {
         Authorization: `Bearer ${authStore.token}`,
       },
@@ -194,7 +294,6 @@ async function savePost() {
   }
 }
 
-// Lifecycle
 onMounted(() => {
   fetchCategories();
   fetchPost();
@@ -203,7 +302,6 @@ onMounted(() => {
 
 <template>
   <div>
-    <!-- Header -->
     <div class="mb-6 flex items-center gap-4">
       <Button
         variant="ghost"
@@ -224,16 +322,12 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Loading State -->
     <div v-if="isLoading" class="flex items-center justify-center py-12">
       <Loader class="w-8 h-8 animate-spin text-primary" />
     </div>
 
-    <!-- Form -->
     <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Main Content -->
       <div class="lg:col-span-2 space-y-6">
-        <!-- Title -->
         <div class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-600">
           <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
             Title *
@@ -251,7 +345,6 @@ onMounted(() => {
           </p>
         </div>
 
-        <!-- Slug -->
         <div class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-600">
           <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
             Slug *
@@ -264,54 +357,72 @@ onMounted(() => {
             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-600 dark:border-gray-500 dark:text-white bg-gray-100 dark:bg-gray-600 cursor-not-allowed"
             :class="{ 'border-red-500': errors.slug }"
           />
-          <p v-if="errors.slug" class="text-red-600 text-sm mt-1">
-            {{ errors.slug }}
-          </p>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            Auto-generated from title (read-only)
-          </p>
         </div>
 
-        <!-- Excerpt -->
         <div class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-600">
-          <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-            Excerpt
-          </label>
+          <div class="flex justify-between items-center mb-2">
+            <label class="block text-sm font-medium text-gray-900 dark:text-white">
+              Excerpt
+            </label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              @click="generateExcerpt"
+              :disabled="isGeneratingExcerpt"
+            >
+              <Loader v-if="isGeneratingExcerpt" class="w-4 h-4 mr-2 animate-spin" />
+              <Sparkles v-else class="w-4 h-4 mr-2" />
+              Generate
+            </Button>
+          </div>
           <textarea
             v-model="form.excerpt"
-            placeholder="Brief summary of the post"
+            placeholder="A short summary of the post, or generate one from the content."
             rows="3"
             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-600 dark:border-gray-500 dark:text-white"
           />
-          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            Optional: Brief summary for preview
-          </p>
         </div>
 
-        <!-- Content -->
         <div class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-600">
-          <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-            Content *
-          </label>
-          <textarea
-            v-model="form.content"
-            placeholder="Write your post content here..."
-            rows="12"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-600 dark:border-gray-500 dark:text-white font-mono text-sm"
-            :class="{ 'border-red-500': errors.content }"
-          />
+          <div class="flex justify-between items-center mb-2">
+            <label class="block text-sm font-medium text-gray-900 dark:text-white">
+              Content *
+            </label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              @click="enhanceContent"
+              :disabled="isEnhancingContent"
+            >
+              <Loader v-if="isEnhancingContent" class="w-4 h-4 mr-2 animate-spin" />
+              <Wand2 v-else class="w-4 h-4 mr-2" />
+              Enhance with AI
+            </Button>
+          </div>
+          
+          <div class="prose-editor-wrapper" :class="{ 'border-red-500 border rounded-lg': errors.content }">
+            <ClientOnly>
+              <QuillEditor
+                v-model:content="form.content"
+                contentType="html"
+                :options="editorOptions"
+                class="min-h-[300px]"
+              />
+              <template #fallback>
+                <div class="h-64 bg-gray-100 dark:bg-gray-600 animate-pulse rounded-lg"></div>
+              </template>
+            </ClientOnly>
+          </div>
+
           <p v-if="errors.content" class="text-red-600 text-sm mt-1">
             {{ errors.content }}
-          </p>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            Supports plain text or HTML
           </p>
         </div>
       </div>
 
-      <!-- Sidebar -->
       <div class="space-y-6">
-        <!-- Category -->
         <div class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-600">
           <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
             Category *
@@ -331,129 +442,74 @@ onMounted(() => {
           </p>
         </div>
 
-        <!-- Image Source -->
         <div class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-600">
           <label class="block text-sm font-medium text-gray-900 dark:text-white mb-3">
             Image Source *
           </label>
           <div class="flex gap-4 mb-4">
             <label class="flex items-center space-x-2 cursor-pointer">
-              <input
-                v-model="imageSource"
-                type="radio"
-                value="url"
-                class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
-              />
+              <input v-model="imageSource" type="radio" value="url" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"/>
               <span class="text-sm text-gray-700 dark:text-gray-300">URL</span>
             </label>
             <label class="flex items-center space-x-2 cursor-pointer">
-              <input
-                v-model="imageSource"
-                type="radio"
-                value="upload"
-                class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
-              />
+              <input v-model="imageSource" type="radio" value="upload" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"/>
               <span class="text-sm text-gray-700 dark:text-gray-300">Upload</span>
             </label>
           </div>
 
-          <!-- URL Input -->
           <div v-if="imageSource === 'url'" class="space-y-2">
-            <input
-              v-model="form.imageUrl"
-              type="url"
-              placeholder="https://example.com/image.jpg"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-              :class="{ 'border-red-500': errors.imageUrl }"
-            />
-            <p class="text-xs text-gray-500 dark:text-gray-400">
-              Enter image URL
-            </p>
+            <input v-model="form.imageUrl" type="url" placeholder="https://example.com/image.jpg" class="w-full px-4 py-2 border border-gray-300 rounded-lg" :class="{ 'border-red-500': errors.imageUrl }"/>
           </div>
-
-          <!-- File Upload -->
           <div v-else class="space-y-2">
-            <input
-              ref="fileInputRef"
-              type="file"
-              accept="image/*"
-              class="hidden"
-              @change="handleFileSelect"
-            />
-            <Button
-              type="button"
-              variant="outline"
-              class="w-full"
-              @click="triggerFileInput"
-              :disabled="isUploadingImage"
-            >
+            <input ref="fileInputRef" type="file" accept="image/*" class="hidden" @change="handleFileSelect"/>
+            <Button type="button" variant="outline" class="w-full" @click="triggerFileInput">
               <Upload class="w-4 h-4 mr-2" />
               {{ uploadedFile ? "Change Image" : "Upload Image" }}
             </Button>
-            <p class="text-xs text-gray-500 dark:text-gray-400">
-              Max 5MB. Formats: JPG, PNG, WebP, AVIF
-            </p>
           </div>
-
-          <p v-if="errors.imageUrl" class="text-red-600 text-sm mt-2">
-            {{ errors.imageUrl }}
-          </p>
-
-          <!-- Image Preview -->
-          <div v-if="form.imageUrl" class="mt-4 relative">
-            <img
-              :src="form.imageUrl"
-              :alt="form.title"
-              class="w-full h-40 object-cover rounded-lg"
-              @error="form.imageUrl = ''"
-            />
-            <button
-              v-if="imageSource === 'upload' && uploadedFile"
-              @click="clearUploadedFile"
-              class="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-colors"
-              title="Remove image"
-            >
-              <X class="w-4 h-4" />
-            </button>
-          </div>
+           <p v-if="errors.imageUrl" class="text-red-600 text-sm mt-2">{{ errors.imageUrl }}</p>
+                      <div v-if="previewUrl || form.imageUrl" class="mt-4 relative">
+            <img :src="previewUrl || form.imageUrl" class="w-full h-40 object-cover rounded-lg"/>
+            <button v-if="imageSource === 'upload' && uploadedFile" @click="clearUploadedFile" class="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full shadow-lg hover:bg-red-600 transition-colors"><X class="w-4 h-4"/></button>
+           </div>
         </div>
 
-        <!-- Status -->
         <div class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-600">
           <label class="flex items-center space-x-3 cursor-pointer">
-            <input
-              v-model="form.published"
-              type="checkbox"
-              class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
-            />
-            <span class="text-sm font-medium text-gray-900 dark:text-white">
-              Publish immediately
-            </span>
+            <input v-model="form.published" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"/>
+            <span class="text-sm font-medium text-gray-900 dark:text-white">Publish immediately</span>
           </label>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-            {{ form.published ? "This post will be visible to public" : "This post will be saved as draft" }}
-          </p>
         </div>
 
-        <!-- Actions -->
         <div class="space-y-2">
-          <Button
-            @click="savePost"
-            :disabled="isSaving"
-            class="w-full bg-primary hover:bg-primary-600 dark:bg-green-500 dark:hover:bg-green-600"
-          >
-            <Save class="w-4 h-4 mr-2" />
-            {{ isSaving ? "Saving..." : "Save Post" }}
+          <Button @click="savePost" :disabled="isSaving" class="w-full bg-primary hover:bg-primary-600">
+            <Save class="w-4 h-4 mr-2" />{{ isSaving ? "Saving..." : "Save Post" }}
           </Button>
-          <Button
-            variant="outline"
-            @click="router.push('/admin/posts')"
-            class="w-full"
-          >
-            Cancel
-          </Button>
+          <Button variant="outline" @click="router.push('/admin/posts')" class="w-full">Cancel</Button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style>
+.prose-editor-wrapper .ql-editor {
+  min-height: 300px;
+}
+.dark .prose-editor-wrapper .ql-toolbar {
+  border-color: #4b5563;
+}
+.dark .prose-editor-wrapper .ql-container {
+  border-color: #4b5563;
+}
+.dark .prose-editor-wrapper .ql-editor {
+  background-color: #374151;
+  color: white;
+}
+.dark .prose-editor-wrapper .ql-snow .ql-stroke {
+  stroke: #e5e7eb;
+}
+.dark .prose-editor-wrapper .ql-snow .ql-picker-label {
+  color: #e5e7eb;
+}
+</style>

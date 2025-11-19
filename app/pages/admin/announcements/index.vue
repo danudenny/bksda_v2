@@ -199,7 +199,7 @@ onMounted(() => {
                 >
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <Badge variant="secondary">{{ announcement.category }}</Badge>
+                <Badge variant="secondary">{{ announcement.category.name }}</Badge>
               </td>
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300"

@@ -80,9 +80,9 @@
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/20 to-transparent z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                         ></div>
-                        <NuxtImg
-                            :src="featuredPost.imageUrl"
-                            alt=""
+                        <img
+                            :src="featuredPost.imageUrl || 'https://placehold.co/600x400?text=No+Image'"
+                            :alt="featuredPost.title"
                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                         <div
@@ -185,9 +185,9 @@
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent z-10"
                         ></div>
-                        <NuxtImg
-                            :src="post.imageUrl"
-                            alt=""
+                        <img
+                            :src="post.imageUrl || 'https://placehold.co/600x400?text=No+Image'"
+                            :alt="post.title"
                             class="aspect-[16/9] w-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
 
@@ -286,70 +286,36 @@
 <script setup>
 import { ArrowRightCircleIcon, UserIcon } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { format, parseISO } from 'date-fns';
+import { id } from 'date-fns/locale';
 
-const posts = [
+const { data: posts, pending, error } = await useAsyncData(
+    'posts-section',
+    () => $fetch('/api/posts?limit=4&published=true'),
     {
-        id: 1,
-        title: 'BKSDA Sumsel Gelar Operasi Penyelamatan Satwa Dilindungi',
-        href: '/berita/1',
-        description:
-            'Tim BKSDA berhasil menyelamatkan seekor harimau sumatera yang terjebak di area perkebunan warga, kini dalam proses rehabilitasi.',
-        imageUrl: '/news-1.jpg',
-        date: '10 April 2024',
-        datetime: '2024-04-10',
-        category: { title: 'Penyelamatan Satwa' },
-        author: {
-            name: 'Dra. Siti Nurhaliza, M.Si',
-            role: 'Kepala BKSDA Sumsel',
-        },
+        transform: (response) => response.data,
     },
-    {
-        id: 2,
-        title: 'Edukasi Konservasi: BKSDA Kunjungi Sekolah di Muara Enim',
-        href: '/berita/2',
-        description:
-            'Program edukasi interaktif untuk menumbuhkan kesadaran konservasi sejak dini.',
-        imageUrl: '/news-2.jpg',
-        date: '05 April 2024',
-        datetime: '2024-04-05',
-        category: { title: 'Edukasi' },
-        author: {
-            name: 'Dr. Budi Santoso, S.Hut., M.Sc.',
-            role: 'Koordinator Edukasi',
-        },
-    },
-    {
-        id: 3,
-        title: 'Penanaman Ribuan Bibit Pohon di Kawasan Hutan Lindung',
-        href: '/berita/3',
-        description:
-            'Kolaborasi BKSDA dengan masyarakat dalam upaya reforestasi memulihkan fungsi hutan.',
-        imageUrl: '/news-3.webp',
-        date: '28 Maret 2024',
-        datetime: '2024-03-28',
-        category: { title: 'Rehabilitasi Hutan' },
-        author: {
-            name: 'Ir. Rina Permata, M.For.Sc.',
-            role: 'Koordinator Rehabilitasi',
-        },
-    },
-    {
-        id: 4,
-        title: 'Studi Habitat Baru untuk Badak Sumatera di Taman Nasional',
-        href: '/berita/4',
-        description:
-            'Penelitian mendalam untuk menemukan zona aman dan ideal bagi pelepasliaran badak.',
-        imageUrl: '/news-4.jpg',
-        date: '20 Maret 2024',
-        datetime: '2024-03-20',
-        category: { title: 'Penelitian' },
-        author: {
-            name: 'Dr. Andi Prasetyo, S.Si., M.Biol.',
-            role: 'Kepala Laboratorium',
-        },
-    },
-];
+);
 
-const featuredPost = computed(() => posts[0]);
-const sidePosts = computed(() => posts.slice(1, 4));
+const formattedPosts = computed(() => {
+    if (!posts.value) return [];
+    return posts.value.map((post) => ({
+        ...post,
+        href: `/berita/${post.slug}`,
+        imageUrl: post.imageUrl,
+        date: format(parseISO(post.createdAt), 'dd MMMM yyyy', { locale: id }),
+        datetime: post.createdAt,
+        category: {
+            ...post.category,
+            title: post.category.name,
+        },
+        author: {
+            ...post.author,
+            role: post.author.role || 'Kontributor',
+        },
+    }));
+});
+
+const featuredPost = computed(() => formattedPosts.value[0]);
+const sidePosts = computed(() => formattedPosts.value.slice(1, 4));
 </script>

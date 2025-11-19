@@ -26,61 +26,66 @@ export const adminMenuItems: MenuItem[] = [
     href: "/admin/dashboard",
   },
   {
-    name: "Content Management",
+    name: "Konten",
     icon: FileText,
     href: "#",
     children: [
       {
-        name: "Posts & News",
+        name: "Berita",
         icon: FileText,
         href: "/admin/posts",
       },
       {
-        name: "Categories",
+        name: "Kategori Berita",
         icon: Tag,
         href: "/admin/categories",
       },
       {
-        name: "Announcements",
+        name: "Pengumuman",
         icon: Megaphone,
         href: "/admin/announcements",
       },
       {
-        name: "Gallery",
+        name: "Kategori Pengumuman",
+        icon: Tag,
+        href: "/admin/announcement-categories",
+      },
+      {
+        name: "Galeri",
         icon: Image,
         href: "/admin/gallery",
       },
     ],
   },
   {
-    name: "Conservation",
+    name: "Konservasi",
     icon: Leaf,
     href: "#",
     children: [
       {
-        name: "Focus Species",
+        name: "Spesies Fokus",
         icon: Leaf,
         href: "/admin/fokus-konservasi",
       },
       {
-        name: "Conservation Areas",
+        name: "Kawasan Konservasi",
         icon: MapPin,
         href: "/admin/kawasan",
       },
     ],
   },
   {
-    name: "External Links",
+    name: "Link Eksternal",
     icon: Link,
     href: "/admin/external-links",
   },
   {
-    name: "Users",
+    name: "Pengguna",
     icon: Users,
     href: "/admin/users",
   },
   {
-    name: "Settings",
+    name: "Pengaturan",
     icon: Settings,
     href: "/admin/settings",
   },

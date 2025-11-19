@@ -10,14 +10,14 @@ export default defineEventHandler(async (event) => {
     requireAdmin(user);
 
     const body = await readBody(event);
-    const { title, date, category, href, order } = body;
+    const { title, date, categoryId, content, order } = body;
 
     // Validate data
     const validationErrors = validateAnnouncementData({
       title,
       date,
-      category,
-      href,
+      categoryId,
+      content,
     });
     if (validationErrors.length > 0) {
       return errorResponse("Validation failed", validationErrors);
@@ -28,10 +28,12 @@ export default defineEventHandler(async (event) => {
       data: {
         title,
         date,
-        category,
-        href,
+        content,
         order: order || 0,
         isActive: true,
+        category: {
+          connect: { id: categoryId },
+        },
       },
     });
 

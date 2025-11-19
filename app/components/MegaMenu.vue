@@ -114,289 +114,55 @@
                                 <div
                                     class="grid gap-x-6 gap-y-6 sm:grid-cols-2 lg:grid-cols-3"
                                 >
-                                    <template
-                                        v-for="item in menuItems"
-                                        :key="item.label"
-                                    >
-                                        <!-- Regular menu items -->
-                                        <template v-if="!item.isAccordion">
-                                            <div
-                                                v-for="child in item.children"
-                                                :key="child.label"
-                                                class="col-span-1"
-                                            >
-                                                <template v-if="child.children">
-                                                    <div
-                                                        class="mb-2.5 flex items-center gap-2 pb-2 border-b-2 border-emerald-100"
-                                                    >
-                                                        <div
-                                                            class="flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 shadow-md"
-                                                        >
-                                                            <component
-                                                                :is="
-                                                                    iconMap[
-                                                                        item.icon ||
-                                                                            'default'
-                                                                    ]
-                                                                "
-                                                                class="h-3.5 w-3.5 text-white"
-                                                                aria-hidden="true"
-                                                            />
-                                                        </div>
-                                                        <p
-                                                            class="text-xs font-bold uppercase tracking-wider text-slate-800"
-                                                        >
-                                                            {{ child.label }}
-                                                        </p>
-                                                    </div>
-                                                    <ul class="space-y-1.5">
-                                                        <li
-                                                            v-for="grandchild in child.children"
-                                                            :key="
-                                                                grandchild.label
-                                                            "
-                                                        >
-                                                            <NuxtLink
-                                                                :to="
-                                                                    grandchild.href ||
-                                                                    '#'
-                                                                "
-                                                                class="group flex items-center gap-2 text-xs text-slate-600 transition-all duration-200 hover:text-emerald-600 hover:translate-x-1 py-1 px-2 rounded-lg hover:bg-emerald-50/50"
-                                                                @click="
-                                                                    emit(
-                                                                        'close'
-                                                                    )
-                                                                "
-                                                            >
-                                                                <svg
-                                                                    class="h-1.5 w-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                                                                    viewBox="0 0 6 6"
-                                                                    fill="currentColor"
-                                                                >
-                                                                    <circle
-                                                                        cx="3"
-                                                                        cy="3"
-                                                                        r="3"
-                                                                    />
-                                                                </svg>
-                                                                <span
-                                                                    class="font-medium"
-                                                                    >{{
-                                                                        grandchild.label
-                                                                    }}</span
-                                                                >
-                                                            </NuxtLink>
-                                                        </li>
-                                                    </ul>
-                                                </template>
-                                                <NuxtLink
-                                                    v-else
-                                                    :to="child.href || '#'"
-                                                    class="group flex items-center gap-2 text-xs font-semibold text-slate-700 transition-all duration-200 hover:translate-x-1 hover:text-emerald-600 py-1.5 px-2 rounded-lg hover:bg-emerald-50"
-                                                    @click="emit('close')"
-                                                >
-                                                    <ArrowRight
-                                                        class="h-3.5 w-3.5 text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                                                    />
-                                                    {{ child.label }}
-                                                </NuxtLink>
-                                            </div>
-                                        </template>
-
-                                        <!-- Accordion menu item (Kawasan Konservasi) - HIGHLIGHTED -->
-                                        <div
-                                            v-else
-                                            class="col-span-1 sm:col-span-2 lg:col-span-1 relative"
-                                        >
-                                            <!-- Highlight container with gradient background -->
-                                            <div
-                                                class="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50/50 to-emerald-50 rounded-xl -m-2 p-2"
-                                            >
-                                                <!-- Animated border glow -->
-                                                <div
-                                                    class="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 opacity-20 blur-sm"
-                                                ></div>
-                                            </div>
-
-                                            <!-- Badge/Label -->
-
-                                            <!-- Accordion Header -->
-                                            <div
-                                                class="relative mb-2.5 flex items-center justify-between gap-2 pb-2 border-b-2 border-emerald-400 cursor-pointer group/main transition-all duration-300"
-                                                @click="
-                                                    toggleAccordion(item.label)
-                                                "
-                                            >
-                                                <div
-                                                    class="flex items-center gap-2"
-                                                >
-                                                    <div
-                                                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 shadow-lg ring-2 ring-emerald-200 group-hover/main:ring-emerald-300 transition-all duration-300 group-hover/main:scale-110"
-                                                    >
-                                                        <component
-                                                            :is="
-                                                                iconMap[
-                                                                    item.icon ||
-                                                                        'default'
-                                                                ]
-                                                            "
-                                                            class="h-4 w-4 text-white"
-                                                            aria-hidden="true"
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <p
-                                                            class="text-sm font-extrabold uppercase tracking-wider text-emerald-700 group-hover/main:text-emerald-600 transition-colors"
-                                                        >
-                                                            {{ item.label }}
-                                                        </p>
-                                                        <p
-                                                            class="text-[10px] text-emerald-600/80 font-medium"
-                                                        >
-                                                            Area Konservasi Kami
-                                                        </p>
-                                                    </div>
+                                    <template v-for="item in menuItems" :key="item.label">
+                                        <!-- Regular Menu Item -->
+                                        <div v-if="!item.isAccordion" class="col-span-1">
+                                            <div class="mb-2.5 flex items-center gap-2 pb-2 border-b-2 border-emerald-100">
+                                                <div class="flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 shadow-md">
+                                                    <component :is="iconMap[item.icon || 'default']" class="h-3.5 w-3.5 text-white" aria-hidden="true" />
                                                 </div>
-                                                <svg
-                                                    class="h-5 w-5 text-emerald-600 transition-transform duration-300 group-hover/main:text-emerald-500"
-                                                    :class="{
-                                                        'rotate-180':
-                                                            openAccordions.includes(
-                                                                item.label
-                                                            ),
-                                                    }"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                                    stroke-width="2.5"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M19 9l-7 7-7-7"
-                                                    />
-                                                </svg>
+                                                <p class="text-xs font-bold uppercase tracking-wider text-slate-800">{{ item.label }}</p>
                                             </div>
+                                            <ul class="space-y-1.5">
+                                                <li v-for="child in item.children" :key="child.label">
+                                                    <NuxtLink :to="child.href || '#'" class="group flex items-center gap-2 text-xs text-slate-600 transition-all duration-200 hover:text-emerald-600 hover:translate-x-1 py-1 px-2 rounded-lg hover:bg-emerald-50/50" @click="emit('close')">
+                                                        <svg class="h-1.5 w-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200" viewBox="0 0 6 6" fill="currentColor">
+                                                            <circle cx="3" cy="3" r="3" />
+                                                        </svg>
+                                                        <span class="font-medium">{{ child.label }}</span>
+                                                    </NuxtLink>
+                                                </li>
+                                            </ul>
+                                        </div>
 
-                                            <!-- Accordion Content -->
-                                            <transition
-                                                enter-active-class="transition-all duration-300 ease-out"
-                                                enter-from-class="opacity-0 max-h-0"
-                                                enter-to-class="opacity-100 max-h-[500px]"
-                                                leave-active-class="transition-all duration-300 ease-in"
-                                                leave-from-class="opacity-100 max-h-[500px]"
-                                                leave-to-class="opacity-0 max-h-0"
-                                            >
-                                                <div
-                                                    v-show="
-                                                        openAccordions.includes(
-                                                            item.label
-                                                        )
-                                                    "
-                                                    class="relative space-y-3 overflow-hidden mt-3"
-                                                >
-                                                    <div
-                                                        v-for="child in item.children"
-                                                        :key="child.label"
-                                                        class="relative border-l-4 border-emerald-300 pl-3 bg-white/50 rounded-r-lg py-1"
-                                                    >
-                                                        <!-- Sub-accordion header -->
-                                                        <div
-                                                            class="flex items-center justify-between cursor-pointer group/sub py-2 px-3 rounded-lg hover:bg-emerald-100/80 transition-all duration-200"
-                                                            @click="
-                                                                toggleSubAccordion(
-                                                                    child.label
-                                                                )
-                                                            "
-                                                        >
-                                                            <div
-                                                                class="flex items-center gap-2"
-                                                            >
-                                                                <!-- Icon indicator -->
-                                                                <div
-                                                                    class="w-2 h-2 rounded-full bg-emerald-500 group-hover/sub:bg-emerald-600 transition-colors"
-                                                                ></div>
-                                                                <span
-                                                                    class="text-xs font-bold text-emerald-800 group-hover/sub:text-emerald-900 transition-colors"
-                                                                >
-                                                                    {{
-                                                                        child.label
-                                                                    }}
-                                                                </span>
-                                                            </div>
-                                                            <svg
-                                                                class="h-4 w-4 text-emerald-600 transition-transform duration-200 group-hover/sub:text-emerald-700"
-                                                                :class="{
-                                                                    'rotate-180':
-                                                                        openSubAccordions.includes(
-                                                                            child.label
-                                                                        ),
-                                                                }"
-                                                                fill="none"
-                                                                viewBox="0 0 24 24"
-                                                                stroke="currentColor"
-                                                                stroke-width="2.5"
-                                                            >
-                                                                <path
-                                                                    stroke-linecap="round"
-                                                                    stroke-linejoin="round"
-                                                                    d="M19 9l-7 7-7-7"
-                                                                />
+                                        <!-- Accordion Menu Item -->
+                                        <div v-else class="col-span-1">
+                                            <div class="mb-2.5 flex items-center justify-between gap-2 pb-2 border-b-2 border-emerald-100 cursor-pointer" @click="toggleAccordion(item.label)">
+                                                <div class="flex items-center gap-2">
+                                                    <div class="flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 shadow-md">
+                                                        <component :is="iconMap[item.icon || 'default']" class="h-3.5 w-3.5 text-white" aria-hidden="true" />
+                                                    </div>
+                                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-800">{{ item.label }}</p>
+                                                </div>
+                                                <ChevronDown class="h-4 w-4 text-slate-500 transition-transform duration-300" :class="{ 'rotate-180': openAccordions.includes(item.label) }" />
+                                            </div>
+                                            <transition enter-active-class="transition-all duration-300 ease-out" enter-from-class="opacity-0 max-h-0" enter-to-class="opacity-100 max-h-[500px]" leave-active-class="transition-all duration-300 ease-in" leave-from-class="opacity-100 max-h-[500px]" leave-to-class="opacity-0 max-h-0">
+                                                <div v-show="openAccordions.includes(item.label)" class="space-y-1.5 overflow-hidden mt-2">
+                                                    <div v-for="child in item.children" :key="child.label">
+                                                        <div class="flex items-center justify-between cursor-pointer group py-1.5 px-2 rounded-lg hover:bg-emerald-50/50" @click="toggleSubAccordion(child.label)">
+                                                            <span class="text-xs font-semibold text-slate-700 group-hover:text-emerald-700 transition-colors">{{ child.label }}</span>
+                                                            <svg class="h-3.5 w-3.5 text-slate-400 transition-transform duration-200 group-hover:text-emerald-600" :class="{ 'rotate-180': openSubAccordions.includes(child.label) }" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                                                             </svg>
                                                         </div>
-
-                                                        <!-- Sub-accordion content -->
-                                                        <transition
-                                                            enter-active-class="transition-all duration-200 ease-out"
-                                                            enter-from-class="opacity-0 max-h-0"
-                                                            enter-to-class="opacity-100 max-h-[300px]"
-                                                            leave-active-class="transition-all duration-200 ease-in"
-                                                            leave-from-class="opacity-100 max-h-[300px]"
-                                                            leave-to-class="opacity-0 max-h-0"
-                                                        >
-                                                            <ul
-                                                                v-show="
-                                                                    openSubAccordions.includes(
-                                                                        child.label
-                                                                    )
-                                                                "
-                                                                class="space-y-1 mt-1 overflow-hidden"
-                                                            >
-                                                                <li
-                                                                    v-for="grandchild in child.children"
-                                                                    :key="
-                                                                        grandchild.label
-                                                                    "
-                                                                >
-                                                                    <NuxtLink
-                                                                        :to="
-                                                                            grandchild.href ||
-                                                                            '#'
-                                                                        "
-                                                                        class="group flex items-center gap-2 text-xs text-slate-600 transition-all duration-200 hover:text-emerald-600 hover:translate-x-1 py-1 px-2 rounded-lg hover:bg-emerald-50/50"
-                                                                        @click="
-                                                                            emit(
-                                                                                'close'
-                                                                            )
-                                                                        "
-                                                                    >
-                                                                        <svg
-                                                                            class="h-1.5 w-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                                                                            viewBox="0 0 6 6"
-                                                                            fill="currentColor"
-                                                                        >
-                                                                            <circle
-                                                                                cx="3"
-                                                                                cy="3"
-                                                                                r="3"
-                                                                            />
+                                                        <transition enter-active-class="transition-all duration-200 ease-out" enter-from-class="opacity-0 max-h-0" enter-to-class="opacity-100 max-h-[300px]" leave-active-class="transition-all duration-200 ease-in" leave-from-class="opacity-100 max-h-[300px]" leave-to-class="opacity-0 max-h-0">
+                                                            <ul v-show="openSubAccordions.includes(child.label)" class="space-y-1 mt-1 overflow-hidden pl-4 border-l border-emerald-200">
+                                                                <li v-for="grandchild in child.children" :key="grandchild.label">
+                                                                    <NuxtLink :to="grandchild.href || '#'" class="group flex items-center gap-2 text-xs text-slate-600 transition-all duration-200 hover:text-emerald-600 hover:translate-x-1 py-1 px-2 rounded-lg hover:bg-emerald-50/50" @click="emit('close')">
+                                                                        <svg class="h-1.5 w-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200" viewBox="0 0 6 6" fill="currentColor">
+                                                                            <circle cx="3" cy="3" r="3" />
                                                                         </svg>
-                                                                        <span
-                                                                            class="font-medium"
-                                                                            >{{
-                                                                                grandchild.label
-                                                                            }}</span
-                                                                        >
+                                                                        <span class="font-medium">{{ grandchild.label }}</span>
                                                                     </NuxtLink>
                                                                 </li>
                                                             </ul>
@@ -418,6 +184,7 @@
 <script setup lang="ts">
 import {
     ArrowRight,
+    ChevronDown,
     FileText,
     GalleryVertical,
     Handshake,
@@ -492,31 +259,15 @@ const iconMap: any = {
     home: Home,
 };
 const menuItems: MenuItem[] = [
+    // Row 1
     {
-        label: 'Informasi Utama',
+        label: 'Profil',
         icon: 'profile',
         children: [
-            {
-                label: 'Profil BKSDA',
-                children: [
-                    { label: 'Visi & Misi', href: '#' },
-                    { label: 'Organisasi', href: '#' },
-                    { label: 'Wilayah Kerja', href: '#' },
-                    { label: 'Tentang Kami', href: '/tentang' },
-                ],
-            },
-            {
-                label: 'Publikasi',
-                children: [{ label: 'Belum Ada Sub Menu' }],
-            },
-            {
-                label: 'Aplikasi SIMAKSI',
-                children: [
-                    { label: 'Buku Panduan' },
-                    { label: 'Perizinan TSL' },
-                    { label: 'Perizinan Wisata' },
-                ],
-            },
+            { label: 'Visi & Misi', href: '#' },
+            { label: 'Struktur Organisasi', href: '#' },
+            { label: 'Wilayah Kerja', href: '#' },
+            { label: 'Tentang Kami', href: '/tentang' },
         ],
     },
     {
@@ -527,46 +278,65 @@ const menuItems: MenuItem[] = [
             {
                 label: 'Suaka Margasatwa',
                 children: [
-                    { label: 'Dangku' },
-                    { label: 'Bentayan' },
-                    { label: 'Isau Isau' },
-                    { label: 'Gumai Pasemah' },
-                    { label: 'Gunung Raya' },
+                    { label: 'Dangku', href: '#' },
+                    { label: 'Bentayan', href: '#' },
+                    { label: 'Isau Isau', href: '#' },
+                    { label: 'Gumai Pasemah', href: '#' },
+                    { label: 'Gunung Raya', href: '#' },
                 ],
             },
             {
                 label: 'Taman Wisata Alam',
                 children: [
-                    { label: 'Punti Kayu' },
-                    { label: 'Isau-Isau' },
-                    { label: 'Jering Menduyung' },
-                    { label: 'Gunung Permisan' },
+                    { label: 'Punti Kayu', href: '#' },
+                    { label: 'Gunung Permisan', href: '#' },
                 ],
             },
             {
                 label: 'Taman Nasional',
-                children: [{ label: 'Gunung Maras' }],
-            },
+                children: [
+                    { label: 'Gunung Maras', href: '#' },
+                ],
+            }
         ],
     },
     {
-        label: 'Kerjasama & Galeri',
-        icon: 'collaboration',
+        label: 'Peraturan',
+        icon: 'regulation',
         children: [
-            {
-                label: 'Kerjasama',
-                children: [
-                    { label: 'Pemulihan Ekosistem' },
-                    { label: 'Penguatan Fungsi' },
-                ],
-            },
-            {
-                label: 'Galeri',
-                children: [
-                    { label: 'Foto', href: '/galeri/foto' },
-                    { label: 'Video', href: '#' },
-                ],
-            },
+            { label: 'Undang-Undang', href: '#' },
+            { label: 'Peraturan Pemerintah', href: '#' },
+            { label: 'Peraturan Menteri', href: '#' },
+            { label: 'SK Direktur Jenderal', href: '#' },
+        ],
+    },
+    // Row 2
+    {
+        label: 'Pelayanan',
+        icon: 'simaksi',
+        children: [
+            { label: 'Aplikasi SIMAKSI', href: '#' },
+            { label: 'Perizinan TSL', href: '#' },
+            { label: 'Perizinan Wisata', href: '#' },
+            { label: 'Buku Panduan', href: '#' },
+        ],
+    },
+    {
+        label: 'Publikasi',
+        icon: 'notebookpen',
+        children: [
+            { label: 'Berita', href: '/berita' },
+            { label: 'Artikel', href: '#' },
+            { label: 'Jurnal', href: '#' },
+            { label: 'Laporan', href: '#' },
+        ],
+    },
+    {
+        label: 'Galeri',
+        icon: 'gallery',
+        children: [
+            { label: 'Galeri Foto', href: '/galeri/foto' },
+            { label: 'Galeri Video', href: '#' },
         ],
     },
 ];

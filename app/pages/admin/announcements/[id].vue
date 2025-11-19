@@ -9,6 +9,8 @@ import {
   Calendar as CalendarIcon,
 } from "lucide-vue-next";
 import { useApi } from "@/composables/useApi";
+import { QuillEditor } from '@vueup/vue-quill';
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { toast } from "vue-sonner";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -45,8 +47,8 @@ const df = new DateFormatter("en-US", {
 const form = ref({
   title: "",
   date: today(getLocalTimeZone()) as DateValue,
-  category: "",
-  href: "",
+  categoryId: "",
+  content: "",
   order: 0,
   isActive: true,
 });
@@ -55,49 +57,13 @@ const errors = ref<Record<string, string>>({});
 
 // Helper function to parse date from various formats
 function parseDateString(dateStr: string): DateValue {
-  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-    return parseDate(dateStr);
+  try {
+    // Assuming the date string is in a format that parseDate can handle, like YYYY-MM-DD
+    return parseDate(dateStr.split('T')[0]);
+  } catch (e) {
+    console.warn(`Could not parse date: ${dateStr}, using today instead`);
+    return today(getLocalTimeZone());
   }
-
-  const monthMap: Record<string, string> = {
-    Jan: "01",
-    Feb: "02",
-    Mar: "03",
-    Apr: "04",
-    Mei: "05",
-    Jun: "06",
-    Jul: "07",
-    Agu: "08",
-    Sep: "09",
-    Okt: "10",
-    Nov: "11",
-    Des: "12",
-    January: "01",
-    February: "02",
-    March: "03",
-    April: "04",
-    May: "05",
-    June: "06",
-    July: "07",
-    August: "08",
-    September: "09",
-    October: "10",
-    November: "11",
-    December: "12",
-  };
-
-  const match = dateStr.match(/(\d{1,2})\s+(\w+)\s+(\d{4})/);
-  if (match) {
-    const [, day, month, year] = match;
-    const monthNum = monthMap[month];
-    if (monthNum) {
-      const isoDate = `${year}-${monthNum}-${day.padStart(2, "0")}`;
-      return parseDate(isoDate);
-    }
-  }
-
-  console.warn(`Could not parse date: ${dateStr}, using today instead`);
-  return today(getLocalTimeZone());
 }
 
 // Methods
@@ -107,10 +73,11 @@ async function fetchAnnouncement() {
   try {
     const response = await getAnnouncement(route.params.id as string);
 
-    if (response.success) {
+    if (response.success && response.data) {
+      const { date, ...rest } = response.data;
       form.value = {
-        ...response.data,
-        date: parseDateString(response.data.date),
+        ...rest,
+        date: parseDateString(date),
       };
     } else {
       toast.error(response.message || "Failed to load announcement");
@@ -127,9 +94,9 @@ function validateForm(): boolean {
   errors.value = {};
   if (!form.value.title.trim()) errors.value.title = "Title is required";
   if (!form.value.date) errors.value.date = "Date is required";
-  if (!form.value.category.trim())
-    errors.value.category = "Category is required";
-  if (!form.value.href.trim()) errors.value.href = "Link is required";
+  if (!form.value.categoryId)
+    errors.value.categoryId = "Category is required";
+  if (!form.value.content.trim()) errors.value.content = "Content is required";
   return Object.keys(errors.value).length === 0;
 }
 
@@ -169,8 +136,22 @@ async function saveAnnouncement() {
 }
 
 // Lifecycle
+const announcementCategories = ref<any[]>([]);
+
+async function fetchAnnouncementCategories() {
+  try {
+    const response = await $fetch('/api/announcement-categories');
+    if (response.success) {
+      announcementCategories.value = response.data;
+    }
+  } catch (error) {
+    console.error('Failed to fetch announcement categories:', error);
+  }
+}
+
 onMounted(() => {
   fetchAnnouncement();
+  fetchAnnouncementCategories();
 });
 </script>
 
@@ -235,15 +216,18 @@ onMounted(() => {
             class="block text-sm font-medium text-gray-900 dark:text-white mb-2"
             >Category *</label
           >
-          <input
-            v-model="form.category"
-            type="text"
-            placeholder="Enter category"
+          <select
+            v-model="form.categoryId"
             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-            :class="{ 'border-red-500': errors.category }"
-          />
-          <p v-if="errors.category" class="text-red-600 text-sm mt-1">
-            {{ errors.category }}
+            :class="{ 'border-red-500': errors.categoryId }"
+          >
+            <option value="">Select a category</option>
+            <option v-for="cat in announcementCategories" :key="cat.id" :value="cat.id">
+              {{ cat.name }}
+            </option>
+          </select>
+          <p v-if="errors.categoryId" class="text-red-600 text-sm mt-1">
+            {{ errors.categoryId }}
           </p>
         </div>
 
@@ -281,21 +265,27 @@ onMounted(() => {
           </p>
         </div>
 
-        <!-- Link -->
+        <!-- Content -->
         <div>
           <label
             class="block text-sm font-medium text-gray-900 dark:text-white mb-2"
-            >Link *</label
+            >Content *</label
           >
-          <input
-            v-model="form.href"
-            type="url"
-            placeholder="https://example.com"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-            :class="{ 'border-red-500': errors.href }"
-          />
-          <p v-if="errors.href" class="text-red-600 text-sm mt-1">
-            {{ errors.href }}
+          <div class="prose-editor-wrapper" :class="{ 'border-red-500 border rounded-lg': errors.content }">
+            <ClientOnly>
+              <QuillEditor
+                v-model:content="form.content"
+                contentType="html"
+                theme="snow"
+                class="min-h-[200px]"
+              />
+              <template #fallback>
+                <div class="h-48 bg-gray-100 dark:bg-gray-600 animate-pulse rounded-lg"></div>
+              </template>
+            </ClientOnly>
+          </div>
+          <p v-if="errors.content" class="text-red-600 text-sm mt-1">
+            {{ errors.content }}
           </p>
         </div>
 

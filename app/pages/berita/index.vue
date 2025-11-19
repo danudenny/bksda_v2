@@ -1,284 +1,325 @@
 <template>
     <NuxtLayout name="archive">
         <template #breadcrumb>
+            <NuxtLink to="/" class="text-emerald-200 hover:text-white transition-colors">Beranda</NuxtLink>
+            <span class="text-emerald-500 mx-2">/</span>
             <span class="text-white">Berita & Kegiatan</span>
         </template>
 
         <template #badge>
-            <div class="mb-4">
+            <div class="mb-6 animate-fade-in">
                 <span
-                    class="inline-flex items-center gap-2 rounded-full bg-white/20 backdrop-blur-md border border-white/30 px-4 py-2 text-sm font-semibold text-white"
+                    class="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 text-sm font-medium text-emerald-50 shadow-sm"
                 >
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="2"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"
-                        />
-                    </svg>
-                    Informasi & Berita
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    Informasi Terkini
                 </span>
             </div>
         </template>
 
         <template #header>
-            <h1 class="text-3xl font-bold sm:text-4xl lg:text-5xl">
-                Berita & Kegiatan BKSDA Sumsel
+            <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl mb-6">
+                Berita & Kegiatan <br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-teal-400">BKSDA Sumsel</span>
             </h1>
         </template>
 
         <template #description>
-            <p class="mx-auto mt-4 max-w-2xl text-lg text-emerald-100">
-                Temukan berita terbaru dan kegiatan dari Balai Konservasi Sumber
-                Daya Alam Sumatera Selatan
+            <p class="mx-auto max-w-2xl text-lg leading-8 text-emerald-100/80">
+                Ikuti perkembangan terbaru konservasi, kegiatan lapangan, dan upaya pelestarian alam di Sumatera Selatan.
             </p>
         </template>
 
         <template #filters>
-            <div class="flex flex-col gap-4">
-                <h3 class="text-base font-semibold text-gray-900">
-                    Filter Berdasarkan Kategori
-                </h3>
-                <div class="flex flex-wrap items-center gap-2">
-                    <button
-                        v-for="category in uniqueCategories"
-                        :key="category"
-                        @click="toggleCategory(category)"
-                        :class="[
-                            'flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 transform',
-                            selectedCategories.includes(category)
-                                ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 scale-105'
-                                : 'bg-white text-gray-700 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-100 hover:scale-105',
-                        ]"
+            <div class="flex flex-col gap-4 mb-8">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-500">
+                        Filter Kategori
+                    </h3>
+                    <button 
+                        v-if="selectedCategories.length > 0"
+                        @click="resetFilters"
+                        class="text-xs text-emerald-600 hover:text-emerald-700 font-medium hover:underline"
                     >
-                        {{ category }}
+                        Reset Filter
                     </button>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-2">
+                    <template v-if="statusCategories === 'pending'">
+                        <div v-for="i in 4" :key="i" class="h-9 w-24 rounded-full bg-gray-200 animate-pulse"></div>
+                    </template>
+
+                    <template v-else>
+                        <button
+                            v-for="category in categories"
+                            :key="category.id"
+                            @click="toggleCategory(category.id)"
+                            class="relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ease-out border"
+                            :class="[
+                                selectedCategories.includes(category.id)
+                                    ? 'bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-600/20 transform scale-105'
+                                    : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-300 hover:text-emerald-600 hover:bg-emerald-50'
+                            ]"
+                        >
+                            {{ category.name }}
+                            <span v-if="selectedCategories.includes(category.id)" class="ml-1.5 opacity-75">&times;</span>
+                        </button>
+                    </template>
                 </div>
             </div>
         </template>
 
-        <!-- Empty State or Posts Grid -->
-        <div v-if="filteredPosts.length === 0" class="text-center py-16">
-            <svg
-                class="mx-auto h-16 w-16 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-            >
-                <path
-                    vector-effect="non-scaling-stroke"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-            </svg>
-            <h3 class="mt-4 text-lg font-semibold text-gray-900">
-                Tidak Ada Berita
-            </h3>
-            <p class="mt-2 text-sm text-gray-600">
-                Tidak ada berita yang ditemukan untuk kategori yang dipilih.
-            </p>
-        </div>
-
-        <div
-            v-else
-            class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
-        >
-            <article
-                v-for="post in filteredPosts"
-                :key="post.id"
-                class="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-gray-900/5 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]"
-            >
-                <NuxtLink :to="post.href" class="block">
-                    <NuxtImg
-                        :src="post.imageUrl"
-                        alt=""
-                        class="aspect-[16/9] w-full object-cover"
-                    />
-                    <div class="flex flex-1 flex-col justify-between p-6">
-                        <div>
-                            <div class="flex items-center gap-x-3 text-xs">
-                                <time
-                                    :datetime="post.datetime"
-                                    class="text-gray-500"
-                                >
-                                    {{ post.date }}
-                                </time>
-                                <span
-                                    class="rounded-full bg-emerald-100 px-2.5 py-1 font-medium text-emerald-700"
-                                >
-                                    {{ post.category.title }}
-                                </span>
-                            </div>
-                            <h3
-                                class="mt-3 text-lg font-bold leading-7 text-gray-900 group-hover:text-emerald-600 transition-colors"
-                            >
-                                <span class="absolute inset-0" />
-                                {{ post.title }}
-                            </h3>
-                            <p
-                                class="mt-3 text-sm leading-6 text-gray-600 line-clamp-3"
-                            >
-                                {{ post.description }}
-                            </p>
-                        </div>
-                        <div class="mt-4 flex items-center gap-3">
-                            <div
-                                class="h-8 w-8 overflow-hidden rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shrink-0"
-                            >
-                                <UserIcon class="h-4 w-4 text-white" />
-                            </div>
-                            <div class="min-w-0 flex-1">
-                                <p
-                                    class="text-xs font-medium text-gray-900 truncate"
-                                >
-                                    {{ post.author.name }}
-                                </p>
-                                <p class="text-xs text-gray-500 truncate">
-                                    {{ post.author.role }}
-                                </p>
-                            </div>
+        <div>
+            <div v-if="isLoading && posts.length === 0" class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <div v-for="n in 6" :key="n" class="rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 h-[400px]">
+                    <div class="h-48 bg-gray-200 animate-pulse"></div>
+                    <div class="p-6 space-y-4">
+                        <div class="h-4 w-1/3 bg-gray-200 rounded animate-pulse"></div>
+                        <div class="h-6 w-3/4 bg-gray-200 rounded animate-pulse"></div>
+                        <div class="space-y-2">
+                            <div class="h-3 w-full bg-gray-200 rounded animate-pulse"></div>
+                            <div class="h-3 w-5/6 bg-gray-200 rounded animate-pulse"></div>
                         </div>
                     </div>
-                </NuxtLink>
-            </article>
+                </div>
+            </div>
+
+            <div v-else-if="formattedPosts.length === 0 && !isLoading" class="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-300">
+                <div class="rounded-full bg-white p-4 shadow-sm ring-1 ring-gray-900/5">
+                    <svg class="h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                    </svg>
+                </div>
+                <h3 class="mt-4 text-lg font-semibold text-gray-900">Tidak Ada Berita</h3>
+                <p class="text-gray-500 text-center max-w-sm mt-2">
+                    Belum ada berita untuk kategori yang Anda pilih saat ini. Coba reset filter atau pilih kategori lain.
+                </p>
+                <button @click="resetFilters" class="mt-6 text-sm font-semibold text-emerald-600 hover:text-emerald-500">
+                    Hapus semua filter
+                </button>
+            </div>
+
+            <div v-else class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <TransitionGroup name="list">
+                    <article
+                        v-for="post in formattedPosts"
+                        :key="post.id"
+                        class="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    >
+                        <NuxtLink :to="post.href" class="flex flex-col h-full">
+                            <div class="relative aspect-[16/9] overflow-hidden sm:aspect-[2/1] lg:aspect-[3/2]">
+                                <img
+                                    :src="post.imageUrl || 'https://placehold.co/600x400?text=No+Image'"
+                                    :alt="post.title"
+                                    class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    loading="lazy"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
+                                
+                                <div class="absolute top-4 left-4">
+                                    <span class="inline-flex items-center rounded-full bg-white/90 backdrop-blur px-2.5 py-0.5 text-xs font-bold text-emerald-700 shadow-sm">
+                                        {{ post.category.title }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-1 flex-col p-6">
+                                <div class="flex items-center gap-x-3 text-xs text-gray-500 mb-3">
+                                    <time :datetime="post.datetime" class="flex items-center gap-1">
+                                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        {{ post.date }}
+                                    </time>
+                                </div>
+
+                                <h3 class="text-xl font-bold leading-snug text-gray-900 group-hover:text-emerald-600 transition-colors line-clamp-2 mb-3">
+                                    {{ post.title }}
+                                </h3>
+
+                                <p class="mt-auto text-sm leading-relaxed text-gray-600 line-clamp-3">
+                                    {{ post.description }}
+                                </p>
+
+                                <div class="mt-6 flex items-center gap-3 pt-4 border-t border-gray-100">
+                                    <div class="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+                                        <UserIcon class="h-4 w-4" />
+                                    </div>
+                                    <div class="text-xs">
+                                        <p class="font-semibold text-gray-900">{{ post.author.name }}</p>
+                                        <p class="text-gray-500">{{ post.author.role }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </NuxtLink>
+                    </article>
+                </TransitionGroup>
+            </div>
+        </div>
+
+        <div v-if="hasNextPage" class="mt-16 flex justify-center">
+            <button
+                @click="loadMore"
+                :disabled="isLoading"
+                class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-emerald-600 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-600/30 transition-all duration-300 hover:bg-emerald-700 hover:scale-105 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-70"
+            >
+                <span v-if="isLoading" class="absolute inset-0 flex items-center justify-center bg-emerald-700">
+                    <svg class="h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </span>
+                <span :class="{ 'invisible': isLoading }" class="flex items-center gap-2">
+                    Lihat Lebih Banyak
+                    <MoveDownIcon class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-1" />
+                </span>
+            </button>
+        </div>
+        <div v-else-if="formattedPosts.length > 0" class="mt-12 text-center">
+            <p class="text-sm text-gray-400 italic">Anda sudah melihat semua berita</p>
         </div>
     </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import { UserIcon } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { UserIcon, MoveDownIcon } from 'lucide-vue-next';
+import { computed, ref, watch } from 'vue';
+import { format, parseISO } from 'date-fns';
+import { id } from 'date-fns/locale';
+import type { Post } from '../../types/types';
 
+// SEO
 useSeoMeta({
     title: 'Berita & Kegiatan - BKSDA Sumatera Selatan',
-    description:
-        'Temukan berita terbaru dan kegiatan dari Balai Konservasi Sumber Daya Alam Sumatera Selatan',
+    description: 'Temukan berita terbaru dan kegiatan dari Balai Konservasi Sumber Daya Alam Sumatera Selatan',
 });
 
-const posts = [
-    {
-        id: 1,
-        title: 'BKSDA Sumsel Gelar Operasi Penyelamatan Satwa Dilindungi',
-        href: '/berita/1',
-        description:
-            'Tim BKSDA berhasil menyelamatkan seekor harimau sumatera yang terjebak di area perkebunan warga, kini dalam proses rehabilitasi.',
-        imageUrl: '/news-1.jpg',
-        date: '10 April 2024',
-        datetime: '2024-04-10',
-        category: { title: 'Penyelamatan Satwa' },
-        author: {
-            name: 'Dra. Siti Nurhaliza, M.Si',
-            role: 'Kepala BKSDA Sumsel',
-        },
-    },
-    {
-        id: 2,
-        title: 'Edukasi Konservasi: BKSDA Kunjungi Sekolah di Muara Enim',
-        href: '/berita/2',
-        description:
-            'Program edukasi interaktif untuk menumbuhkan kesadaran konservasi sejak dini.',
-        imageUrl: '/news-2.jpg',
-        date: '05 April 2024',
-        datetime: '2024-04-05',
-        category: { title: 'Edukasi' },
-        author: {
-            name: 'Dr. Budi Santoso, S.Hut., M.Sc.',
-            role: 'Koordinator Edukasi',
-        },
-    },
-    {
-        id: 3,
-        title: 'Penanaman Ribuan Bibit Pohon di Kawasan Hutan Lindung',
-        href: '/berita/3',
-        description:
-            'Kolaborasi BKSDA dengan masyarakat dalam upaya reforestasi memulihkan fungsi hutan.',
-        imageUrl: '/news-3.webp',
-        date: '28 Maret 2024',
-        datetime: '2024-03-28',
-        category: { title: 'Rehabilitasi Hutan' },
-        author: {
-            name: 'Ir. Rina Permata, M.For.Sc.',
-            role: 'Koordinator Rehabilitasi',
-        },
-    },
-    {
-        id: 4,
-        title: 'Studi Habitat Baru untuk Badak Sumatera di Taman Nasional',
-        href: '/berita/4',
-        description:
-            'Penelitian mendalam untuk menemukan zona aman dan ideal bagi pelepasliaran badak.',
-        imageUrl: '/news-4.jpg',
-        date: '20 Maret 2024',
-        datetime: '2024-03-20',
-        category: { title: 'Penelitian' },
-        author: {
-            name: 'Dr. Andi Prasetyo, S.Si., M.Biol.',
-            role: 'Kepala Laboratorium',
-        },
-    },
-    {
-        id: 5,
-        title: 'Pelatihan Teknis Pengelolaan Kawasan Konservasi untuk Staf Baru',
-        href: '/berita/5',
-        description:
-            'BKSDA Sumsel mengadakan pelatihan intensif untuk meningkatkan kapasitas staf baru dalam pengelolaan kawasan konservasi.',
-        imageUrl: '/news-5.jpg',
-        date: '15 Maret 2024',
-        datetime: '2024-03-15',
-        category: { title: 'Pelatihan' },
-        author: { name: 'Drs. H. Mulyadi, M.Si.', role: 'Koordinator SDM' },
-    },
-    {
-        id: 6,
-        title: 'Kampanye Anti Perdagangan Satwa Liar di Pasar Tradisional',
-        href: '/berita/6',
-        description:
-            'Tim edukasi BKSDA melakukan sosialisasi anti perdagangan satwa liar di pasar-pasar tradisional di Palembang.',
-        imageUrl: '/news-6.jpg',
-        date: '08 Maret 2024',
-        datetime: '2024-03-08',
-        category: { title: 'Edukasi' },
-        author: { name: 'Fitriani, S.Psi., M.Si.', role: 'Staf Edukasi' },
-    },
-];
+// 1. Fetch Categories
+const { data: categories, status: statusCategories } = await useAsyncData(
+    'categories',
+    () => $fetch('/api/categories'),
+    { transform: (res: any) => res.data }
+);
 
-const uniqueCategories = [...new Set(posts.map((post) => post.category.title))];
-
+// 2. State Management
 const selectedCategories = ref<string[]>([]);
+const posts = ref<Post[]>([]);
+const currentPage = ref(1);
+const totalPages = ref(1);
+const isLoading = ref(false);
 
-function toggleCategory(category: string) {
-    const index = selectedCategories.value.indexOf(category);
+// 3. Core Data Fetching Logic
+const fetchPosts = async (page: number, isAppend: boolean = false) => {
+    isLoading.value = true;
+
+    try {
+        const params = new URLSearchParams();
+        params.append('limit', '9');
+        params.append('published', 'true');
+        params.append('page', page.toString());
+        
+        if (selectedCategories.value.length > 0) {
+            params.append('category_ids', selectedCategories.value.join(','));
+        }
+
+        // Gunakan $fetch agar tidak bentrok dengan cache useAsyncData saat load more
+        const response: any = await $fetch(`/api/posts?${params.toString()}`);
+
+        if (isAppend) {
+            // Jika Load More: Tambahkan ke array yang ada
+            posts.value.push(...response.data);
+        } else {
+            // Jika Filter/Init: Reset array
+            posts.value = response.data;
+        }
+
+        totalPages.value = response.pagination.totalPages;
+        currentPage.value = page;
+    } catch (error) {
+        console.error('Gagal memuat berita:', error);
+    } finally {
+        isLoading.value = false;
+    }
+};
+
+// 4. Initial Load (Server Side Friendly)
+// Kita gunakan callAsync di dalam onMounted atau langsung di setup, 
+// tapi untuk Load More yang stabil, fetch di setup awal lebih baik.
+await fetchPosts(1, false); 
+
+// 5. Event Handlers
+const toggleCategory = (categoryId: string) => {
+    const index = selectedCategories.value.indexOf(categoryId);
     if (index > -1) {
         selectedCategories.value.splice(index, 1);
     } else {
-        selectedCategories.value.push(category);
+        selectedCategories.value.push(categoryId);
     }
-}
+    // Note: Watcher will handle the refetching
+};
 
-const filteredPosts = computed(() => {
-    if (selectedCategories.value.length === 0) {
-        return posts;
+const resetFilters = () => {
+    selectedCategories.value = [];
+};
+
+const loadMore = async () => {
+    if (currentPage.value < totalPages.value) {
+        await fetchPosts(currentPage.value + 1, true); // true = append mode
     }
-    return posts.filter((post) =>
-        selectedCategories.value.includes(post.category.title)
-    );
+};
+
+// 6. Watchers
+// Reset halaman ke 1 setiap kali filter berubah
+watch(selectedCategories, () => {
+    currentPage.value = 1;
+    fetchPosts(1, false);
+}, { deep: true });
+
+// 7. Computed Properties for Display
+const formattedPosts = computed(() => {
+    return posts.value.map((post) => ({
+        ...post,
+        href: `/berita/${post.slug}`,
+        imageUrl: post.coverImage, // Fallback image dihandle di template
+        date: post.createdAt ? format(parseISO(post.createdAt), 'dd MMMM yyyy', { locale: id }) : '-',
+        datetime: post.createdAt,
+        category: {
+            ...post.category,
+            title: post.category?.name || 'Umum',
+        },
+        author: {
+            ...post.author,
+            role: post.author?.role || 'Admin',
+            name: post.author?.name || 'Admin BKSDA'
+        },
+    }));
 });
+
+const hasNextPage = computed(() => currentPage.value < totalPages.value);
 </script>
 
 <style scoped>
-.line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+/* Transisi List untuk efek muncul yang halus */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Animasi kustom lainnya */
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+    animation: fade-in 0.8s ease-out forwards;
 }
 </style>

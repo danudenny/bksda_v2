@@ -41,6 +41,8 @@ export const paginatedResponse = <T>(
   limit: number,
   message: string = "Data retrieved successfully",
 ) => {
+  const totalPages = Math.ceil(total / limit);
+
   return {
     success: true,
     message,
@@ -49,6 +51,7 @@ export const paginatedResponse = <T>(
       total,
       page,
       limit,
+      totalPages,
       pages: Math.ceil(total / limit),
     },
     timestamp: new Date().toISOString(),

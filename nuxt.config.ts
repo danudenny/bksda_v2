@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-    compatibilityDate: '2025-07-15',
+    compatibilityDate: '2025-07-15', // Pastikan tanggal ini valid, atau gunakan '2024-04-03'
     devtools: { enabled: true },
     css: ['@/assets/css/tailwind.css'],
     modules: [
@@ -28,21 +28,22 @@ export default defineNuxtConfig({
     },
     image: {
         quality: 80,
-        format: ['webp', 'avif'],
+        format: ['webp', 'avif', 'png', 'jpg', 'jpeg'],
     },
     shadcn: {
         prefix: '',
-        componentDir: './components/ui',
+        componentDir: './app/components/ui',
     },
     colorMode: {
         classSuffix: '',
         preference: 'system',
         storageKey: 'nuxt-color-mode',
     },
-    // Server configuration for API routes
-    // CORS configuration for API
+    runtimeConfig: {
+        openrouterApiKey: process.env.OPENROUTER_API_KEY,
+    },
     routeRules: {
         '/api/**': { cors: true },
         '/admin/**': { ssr: false },
-    },
+    }
 });
