@@ -194,8 +194,12 @@ function validateForm(): boolean {
     errors.value.categoryId = "Category is required";
   }
 
-  if (!form.value.imageUrl.trim()) {
+  if (imageSource.value === 'url' && !form.value.imageUrl.trim()) {
     errors.value.imageUrl = "Image URL is required";
+  }
+  
+  if (imageSource.value === 'upload' && !uploadedFile.value && !form.value.imageUrl.trim()) {
+    errors.value.imageUrl = "Please select an image file or provide a URL";
   }
 
   return Object.keys(errors.value).length === 0;

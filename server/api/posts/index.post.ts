@@ -4,9 +4,7 @@ import { generateSlug, generateUniqueSlug } from "../../utils/slug";
 import { validatePostData } from "../../utils/validation";
 import { successResponse, errorResponse } from "../../utils/response";
 import { readMultipartFormData } from 'h3';
-import sharp from 'sharp';
-import path from 'path';
-import fs from 'fs/promises';
+import { uploadToCloudinary } from "../../utils/cloudinary";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -23,17 +21,15 @@ export default defineEventHandler(async (event) => {
     let imageUrl = body.find(item => item.name === 'imageUrl')?.data.toString();
 
     if (imageFile && imageFile.data) {
-      const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'posts');
-      await fs.mkdir(uploadsDir, { recursive: true });
-      
-      const fileName = `${Date.now()}-${generateSlug(imageFile.filename || 'image')}.avif`;
-      const filePath = path.join(uploadsDir, fileName);
-
-      await sharp(imageFile.data)
-        .toFormat('avif', { quality: 80 })
-        .toFile(filePath);
-
-      imageUrl = `/uploads/posts/${fileName}`;
+      try {
+        const result = await uploadToCloudinary(imageFile.data, 'bksda_v2/uploads/posts');
+        imageUrl = result.secure_url;
+      } catch (error) {
+         console.error("Failed to upload post image:", error);
+         // Optional: return error or continue without image? 
+         // Better to fail if image upload fails
+         throw new Error("Failed to upload image");
+      }
     }
 
     const validationErrors = validatePostData({ title, content, categoryId, imageUrl });

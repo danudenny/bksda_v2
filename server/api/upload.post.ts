@@ -1,8 +1,5 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import { randomUUID } from 'node:crypto';
-import sharp from 'sharp';
 import { successResponse, errorResponse } from '../utils/response';
+import { uploadToCloudinary } from '../utils/cloudinary';
 
 export default defineEventHandler(async (event) => {
   // Ensure user is authenticated/admin
@@ -38,25 +35,24 @@ export default defineEventHandler(async (event) => {
       });
   }
 
-  const fileName = `${randomUUID()}.avif`;
-  
-  // Resolve path relative to project root
-  const publicDir = path.resolve(process.cwd(), 'public/uploads');
-  const filePath = path.join(publicDir, fileName);
+  try {
+    const result = await uploadToCloudinary(file.data, 'bksda_v2/uploads');
 
-  if (!fs.existsSync(publicDir)) {
-    fs.mkdirSync(publicDir, { recursive: true });
+    return successResponse('File uploaded successfully', {
+      url: result.secure_url,
+      filename: result.public_id,
+      mimetype: result.format ? `image/${result.format}` : file.type,
+      width: result.width,
+      height: result.height,
+      format: result.format,
+      resource_type: result.resource_type
+    });
+  } catch (error: any) {
+    console.error("Cloudinary upload error:", error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'Internal Server Error',
+      data: errorResponse('Failed to upload file to Cloudinary', error.message)
+    });
   }
-
-  // Convert to AVIF using sharp
-  await sharp(file.data)
-    .avif({ quality: 80 }) // Adjust quality as needed
-    .toFile(filePath);
-
-  return successResponse('File uploaded successfully', {
-    url: `/uploads/${fileName}`,
-    filename: fileName,
-    mimetype: 'image/avif',
-    // size: fs.statSync(filePath).size // Optional: get actual size of the converted file
-  });
 });
