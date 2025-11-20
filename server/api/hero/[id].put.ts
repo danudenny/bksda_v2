@@ -1,25 +1,52 @@
 import prisma from "../../utils/db";
 import { useAuth, requireAdmin } from "../../utils/auth";
 import { successResponse, errorResponse } from "../../utils/response";
+import { uploadToCloudinary } from "../../utils/cloudinary";
 
 export default defineEventHandler(async (event) => {
   try {
     const user = useAuth(event);
     requireAdmin(user);
     const id = getRouterParam(event, 'id');
-    const body = await readBody(event);
+    if (!id) return errorResponse("ID is required");
 
-    // Prepare data object, handling order parsing if present
-    const data: any = { ...body };
-    if (data.order !== undefined) {
-        data.order = parseInt(data.order);
+    const body = await readMultipartFormData(event);
+    if (!body) return errorResponse("No data provided");
+
+    const name = body.find(item => item.name === 'name')?.data.toString();
+    const type = body.find(item => item.name === 'type')?.data.toString();
+    const location = body.find(item => item.name === 'location')?.data.toString();
+    const description = body.find(item => item.name === 'description')?.data.toString();
+    const order = body.find(item => item.name === 'order')?.data.toString();
+    const isActiveStr = body.find(item => item.name === 'isActive')?.data.toString();
+    const isActive = isActiveStr !== undefined ? isActiveStr === 'true' : undefined;
+    
+    const imageFile = body.find(item => item.name === 'image');
+    let imageUrl = body.find(item => item.name === 'imageUrl')?.data.toString();
+
+    if (imageFile && imageFile.data && imageFile.data.length > 0) {
+      try {
+        const result = await uploadToCloudinary(imageFile.data, 'bksda_v2/uploads/hero-slides');
+        imageUrl = result.secure_url;
+      } catch (error) {
+         console.error("Failed to upload hero image:", error);
+         throw new Error("Failed to upload image");
+      }
     }
-    // Remove id from data if it exists to avoid prisma error
-    delete data.id;
+
+    // Prepare update data
+    const updateData: any = {};
+    if (name !== undefined) updateData.name = name;
+    if (type !== undefined) updateData.type = type;
+    if (location !== undefined) updateData.location = location;
+    if (description !== undefined) updateData.description = description;
+    if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
+    if (order !== undefined) updateData.order = parseInt(order);
+    if (isActive !== undefined) updateData.isActive = isActive;
 
     const slide = await prisma.heroSlide.update({
       where: { id },
-      data,
+      data: updateData,
     });
 
     return successResponse("Hero slide updated successfully", slide);

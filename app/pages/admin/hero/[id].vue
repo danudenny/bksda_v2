@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { Button } from "@/components/ui/button";
 import { useApi } from "@/composables/useApi";
@@ -18,13 +18,14 @@ definePageMeta({
 
 const router = useRouter();
 const route = useRoute();
-const { getHeroSlides, createHeroSlide, updateHeroSlide, uploadImage, loading } = useApi();
+const { getHeroSlides, createHeroSlide, updateHeroSlide, loading } = useApi();
 
 // State
 const isSaving = ref(false);
-const isUploading = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
 const isNew = computed(() => route.params.id === "create");
+const selectedFile = ref<File | null>(null);
+const previewUrl = ref<string | null>(null);
 
 const form = ref({
   name: "",
@@ -39,41 +40,25 @@ const form = ref({
 const errors = ref<Record<string, string>>({});
 
 // Methods
-async function handleImageUpload(event: Event) {
+function handleImageUpload(event: Event) {
   const input = event.target as HTMLInputElement;
   if (!input.files || input.files.length === 0) return;
 
   const file = input.files[0];
-  isUploading.value = true;
-
-  try {
-    const response = await uploadImage(file);
-    if (response.success) {
-      form.value.imageUrl = response.url;
-      toast.success("Image uploaded successfully");
-    } else {
-      toast.error(response.message || "Failed to upload image");
-    }
-  } catch (error: any) {
-    toast.error("Failed to upload image");
-    console.error(error);
-  } finally {
-    isUploading.value = false;
-    input.value = ""; // Reset input
+  if (!file) return;
+  
+  selectedFile.value = file;
+  
+  // Create local preview
+  if (previewUrl.value) {
+    URL.revokeObjectURL(previewUrl.value);
   }
+  previewUrl.value = URL.createObjectURL(file);
+  form.value.imageUrl = previewUrl.value; // For validation and preview
 }
 
 async function fetchSlide() {
   if (isNew.value) return;
-
-  // Since there isn't a getHeroSlide(id) method, we'll fetch all and filter for now.
-  // Ideally, we should add a getHeroSlide(id) endpoint, but this works given the small number of slides.
-  // Wait, I can reuse the same endpoint pattern if I had a single fetch, but I only added getAll.
-  // Actually, let's just use getAll and find it client side for now as MVP, or I can quickly add getOne endpoint.
-  // Ah, I didn't add a getOne endpoint in my previous turn. I only added index.get, index.post, [id].put, [id].delete.
-  // I should probably add [id].get.ts properly.
-  // But for now, let's just fetch all and filter to save time, assuming few hero slides.
-  // Actually, wait, I CANNOT just fetch all easily if I don't have the ID in the list response... wait I do have IDs.
   
   const response = await getHeroSlides();
   if (response.success) {
@@ -92,11 +77,11 @@ async function fetchSlide() {
 
 function validateForm(): boolean {
   errors.value = {};
-  if (!form.value.name.trim()) errors.value.name = "Name is required";
-  if (!form.value.type.trim()) errors.value.type = "Type is required";
-  if (!form.value.location.trim()) errors.value.location = "Location is required";
-  if (!form.value.imageUrl.trim()) errors.value.imageUrl = "Image URL is required";
-  if (!form.value.description.trim()) errors.value.description = "Description is required";
+  if (!form.value.name?.trim()) errors.value.name = "Name is required";
+  if (!form.value.type?.trim()) errors.value.type = "Type is required";
+  if (!form.value.location?.trim()) errors.value.location = "Location is required";
+  if (!form.value.imageUrl?.trim()) errors.value.imageUrl = "Image is required";
+  if (!form.value.description?.trim()) errors.value.description = "Description is required";
   return Object.keys(errors.value).length === 0;
 }
 
@@ -106,31 +91,56 @@ async function saveSlide() {
   isSaving.value = true;
   let response;
   
-  const payload = {
-      ...form.value,
-      order: Number(form.value.order)
-  };
-
-  if (isNew.value) {
-    response = await createHeroSlide(payload);
+  const formData = new FormData();
+  formData.append('name', form.value.name);
+  formData.append('type', form.value.type);
+  formData.append('location', form.value.location);
+  formData.append('description', form.value.description);
+  formData.append('order', form.value.order.toString());
+  formData.append('isActive', form.value.isActive.toString());
+  
+  if (selectedFile.value) {
+    formData.append('image', selectedFile.value);
   } else {
-    response = await updateHeroSlide(route.params.id as string, payload);
+    // If no new file, send the existing URL
+    // But if the existing URL is a blob (which shouldn't happen unless we just selected it, covered by selectedFile check),
+    // we need to be careful.
+    // If selectedFile is null, imageUrl should be the remote URL.
+    formData.append('imageUrl', form.value.imageUrl);
   }
 
-  if (response.success) {
-    toast.success(
-      isNew.value ? "Hero slide created successfully" : "Hero slide updated successfully"
-    );
-    router.push("/admin/hero");
-  } else {
-    toast.error(response.message || "Failed to save hero slide");
+  try {
+    if (isNew.value) {
+      response = await createHeroSlide(formData);
+    } else {
+      response = await updateHeroSlide(route.params.id as string, formData);
+    }
+
+    if (response.success) {
+      toast.success(
+        isNew.value ? "Hero slide created successfully" : "Hero slide updated successfully"
+      );
+      router.push("/admin/hero");
+    } else {
+      toast.error(response.message || "Failed to save hero slide");
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error("An error occurred while saving");
+  } finally {
+    isSaving.value = false;
   }
-  isSaving.value = false;
 }
 
 // Lifecycle
 onMounted(() => {
   fetchSlide();
+});
+
+onUnmounted(() => {
+  if (previewUrl.value) {
+    URL.revokeObjectURL(previewUrl.value);
+  }
 });
 </script>
 
@@ -264,11 +274,9 @@ onMounted(() => {
               variant="outline"
               class="w-full"
               @click="fileInput?.click()"
-              :disabled="isUploading"
             >
-              <Loader v-if="isUploading" class="w-4 h-4 mr-2 animate-spin" />
-              <Upload v-else class="w-4 h-4 mr-2" />
-              {{ isUploading ? "Uploading..." : "Upload Image" }}
+              <Upload class="w-4 h-4 mr-2" />
+              {{ form.imageUrl ? "Change Image" : "Upload Image" }}
             </Button>
           </div>
           
