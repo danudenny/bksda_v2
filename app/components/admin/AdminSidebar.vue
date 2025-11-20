@@ -28,7 +28,7 @@ async function handleLogout() {
 
 <template>
   <aside
-    class="hidden lg:flex flex-col w-64 border-r bg-white dark:bg-gray-800 dark:border-gray-700 shadow-lg"
+    class="hidden lg:flex flex-col w-64 border-r bg-white dark:bg-gray-800 dark:border-gray-700 shadow-lg h-screen sticky top-0"
   >
     <!-- Logo Section -->
     <div

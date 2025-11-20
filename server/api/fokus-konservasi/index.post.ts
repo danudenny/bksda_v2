@@ -10,7 +10,20 @@ export default defineEventHandler(async (event) => {
     requireAdmin(user);
 
     const body = await readBody(event);
-    const { name, latinName, imageUrl, description, order } = body;
+    const { 
+      name, 
+      latinName, 
+      imageUrl, 
+      description, 
+      order,
+      status,
+      habitat,
+      population,
+      weight,
+      length,
+      threats,
+      efforts
+    } = body;
 
     // Validation
     if (!name || !latinName || !imageUrl) {
@@ -34,6 +47,13 @@ export default defineEventHandler(async (event) => {
         slug,
         imageUrl,
         description: description || null,
+        status: status || null,
+        habitat: habitat || null,
+        population: population || null,
+        weight: weight || null,
+        length: length || null,
+        threats: threats || [],
+        efforts: efforts || [],
         order: order || 0,
         isActive: true,
       },

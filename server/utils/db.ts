@@ -1,4 +1,7 @@
 import { PrismaClient } from "@prisma/client";
+// load dotenv
+import dotenv from "dotenv";
+dotenv.config();
 
 let prisma: PrismaClient;
 

@@ -153,6 +153,15 @@ model FokusKonservasi {
   slug        String   @unique
   imageUrl    String
   description String?  @db.Text
+  
+  status      String?
+  habitat     String?
+  population  String?
+  weight      String?
+  length      String?
+  threats     String[]
+  efforts     String[]
+
   order       Int      @default(0)
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -330,4 +339,24 @@ model PageView {
   @@index([createdAt])
   @@index([postId])
   @@index([path])
+}
+
+// ============================================
+// 13. HERO SECTION SLIDES
+// ============================================
+
+model HeroSlide {
+  id          String   @id @default(cuid())
+  name        String
+  type        String
+  location    String
+  imageUrl    String
+  description String   @db.Text
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+  @@index([isActive])
 }

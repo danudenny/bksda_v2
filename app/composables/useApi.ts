@@ -347,5 +347,41 @@ export const useApi = () => {
     // Settings
     getSettings,
     updateSettings,
+
+    // Upload
+    uploadImage: (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      return request("/upload", {
+        method: "POST",
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    },
+
+    // Hero Slides
+    getHeroSlides: (page = 1, limit = 100, activeOnly = false) =>
+      request("/hero", {
+        params: { page, limit, activeOnly },
+      }),
+
+    createHeroSlide: (data: any) =>
+      request("/hero", {
+        method: "POST",
+        data: data,
+      }),
+
+    updateHeroSlide: (id: string, data: any) =>
+      request(`/hero/${id}`, {
+        method: "PUT",
+        data: data,
+      }),
+
+    deleteHeroSlide: (id: string) =>
+      request(`/hero/${id}`, {
+        method: "DELETE",
+      }),
   };
 };

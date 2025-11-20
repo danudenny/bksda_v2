@@ -219,8 +219,7 @@
 <script setup lang="ts">
 import Autoplay from 'embla-carousel-autoplay';
 import useEmblaCarousel from 'embla-carousel-vue';
-import { onMounted, onUnmounted, ref } from 'vue';
-
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { ArrowRightCircle, ChevronLeft, ChevronRight } from 'lucide-vue-next';
 
 interface Species {
@@ -292,157 +291,16 @@ onUnmounted(() => {
     emblaApi.value?.destroy();
 });
 
-const slugify = (text: string) => {
-    return text
-        .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^\w-]+/g, '');
-};
+// Fetch data
+const { data: response } = await useFetch('/api/fokus-konservasi');
+const fokusKonservasi = computed(() => response.value?.data || []);
 
-const placeholder = (name: string) =>
-    `https://placehold.co/600x800/0f172a/34d399?text=${name.replace(/\s/g, '+')}`;
-
-const fokusKonservasi = ref<Species[]>([
-    {
-        name: 'Harimau Sumatera',
-        latinName: 'Panthera tigris sumatrae',
-        imageUrl: '/fokus_konservasi/harimau.avif',
-        description:
-            'Harimau Sumatera adalah subspesies harimau terkecil yang masih hidup. Mereka adalah predator puncak di ekosistem hutan Sumatera dan memainkan peran penting dalam menjaga keseimbangan alam.',
-        status: 'Kritis (Critically Endangered)',
-        habitat: 'Hutan Hujan Tropis',
-        population: '< 400 individu',
-        weight: '100-140 kg',
-        length: '2.2-2.5 meter',
-        threats: [
-            'Kehilangan dan fragmentasi habitat',
-            'Perburuan liar untuk perdagangan bagian tubuh',
-            'Konflik dengan manusia',
-            'Berkurangnya basis mangsa',
-        ],
-        efforts: [
-            'Patroli anti-perburuan 24/7',
-            'Pemantauan populasi dengan camera trap',
-            'Program resolusi konflik manusia-harimau',
-            'Restorasi koridor habitat',
-            'Edukasi konservasi kepada masyarakat',
-        ],
-    },
-    {
-        name: 'Gajah Sumatera',
-        latinName: 'Elephas maximus sumatranus',
-        imageUrl: '/fokus_konservasi/gajah.avif',
-        description:
-            'Gajah Sumatera adalah salah satu dari tiga subspesies gajah Asia yang tersisa. Mereka memiliki peran vital dalam menjaga kesehatan hutan sebagai spesies kunci ekosistem.',
-        status: 'Kritis (Critically Endangered)',
-        habitat: 'Hutan Dataran Rendah & Rawa',
-        population: '< 2,000 individu',
-        weight: '2,000-4,000 kg',
-        length: '2.0-3.2 meter',
-        threats: [
-            'Konversi habitat menjadi perkebunan',
-            'Konflik dengan manusia di area pertanian',
-            'Perburuan untuk gading dan bagian tubuh',
-            'Fragmentasi populasi',
-        ],
-        efforts: [
-            'Program Flying Squad untuk mitigasi konflik',
-            'Pembangunan koridor gajah',
-            'Translokasi gajah bermasalah',
-            'Pelatihan mahout dan pengelolaan CRU',
-            'Monitoring kesehatan populasi',
-        ],
-    },
-    {
-        name: 'Burung Rangkong',
-        latinName: 'Buceros rhinoceros',
-        imageUrl: '/fokus_konservasi/rangkong.avif',
-        description:
-            'Rangkong Badak adalah spesies burung berukuran besar yang menjadi indikator kesehatan hutan. Mereka berperan penting sebagai penyebar biji berbagai jenis pohon buah-buahan.',
-        status: 'Rentan (Vulnerable)',
-        habitat: 'Hutan Primer & Sekunder',
-        population: 'Menurun',
-        weight: '2-3 kg',
-        length: '90-120 cm',
-        threats: [
-            'Deforestasi dan degradasi hutan',
-            'Perburuan untuk paruh dan daging',
-            'Perdagangan satwa ilegal',
-            'Kehilangan pohon sarang',
-        ],
-        efforts: [
-            'Perlindungan pohon sarang',
-            'Program nest box buatan',
-            'Pemantauan breeding season',
-            'Enforcement terhadap perdagangan ilegal',
-            'Restorasi habitat kunci',
-        ],
-    },
-    {
-        name: 'Beruang Madu',
-        latinName: 'Helarctos malayanus',
-        imageUrl: placeholder('Beruang Madu'),
-        description:
-            'Beruang Madu adalah spesies beruang terkecil di dunia dan satu-satunya beruang yang hidup di Asia Tenggara. Mereka berperan penting dalam penyebaran biji dan pengendalian serangga.',
-        status: 'Rentan (Vulnerable)',
-        habitat: 'Hutan Tropis Dataran Rendah',
-        population: 'Menurun signifikan',
-        weight: '27-65 kg',
-        length: '1.2-1.5 meter',
-    },
-    {
-        name: 'Tapir Asia',
-        latinName: 'Tapirus indicus',
-        imageUrl: placeholder('Tapir Asia'),
-        description:
-            'Tapir Asia adalah mamalia herbivora besar yang memiliki ciri khas warna hitam-putih. Mereka adalah penyebar biji penting dan indikator kesehatan hutan dataran rendah.',
-        status: 'Terancam (Endangered)',
-        habitat: 'Hutan & Rawa Dataran Rendah',
-        population: 'Menurun',
-        weight: '250-320 kg',
-        length: '1.8-2.5 meter',
-    },
-    {
-        name: 'Kucing Emas',
-        latinName: 'Catopuma temminckii',
-        imageUrl: placeholder('Kucing Emas'),
-        status: 'Hampir Terancam (Near Threatened)',
-        habitat: 'Hutan Tropis',
-        population: 'Tidak diketahui pasti',
-    },
-    {
-        name: 'Siamang',
-        latinName: 'Symphalangus syndactylus',
-        imageUrl: placeholder('Siamang'),
-        status: 'Terancam (Endangered)',
-        habitat: 'Hutan Pegunungan',
-        population: 'Menurun',
-    },
-    {
-        name: 'Rusa Sambar',
-        latinName: 'Rusa unicolor',
-        imageUrl: placeholder('Rusa Sambar'),
-        status: 'Rentan (Vulnerable)',
-        habitat: 'Hutan & Padang Rumput',
-        population: 'Stabil',
-    },
-    {
-        name: 'Binturong',
-        latinName: 'Arctictis binturong',
-        imageUrl: placeholder('Binturong'),
-        status: 'Rentan (Vulnerable)',
-        habitat: 'Hutan Kanopi',
-        population: 'Menurun',
-    },
-    {
-        name: 'Elang Hitam',
-        latinName: 'Ictinaetus malaiensis',
-        imageUrl: placeholder('Elang Hitam'),
-        status: 'Berisiko Rendah (Least Concern)',
-        habitat: 'Hutan & Tepi Hutan',
-        population: 'Stabil',
-    },
-]);
+// Watch for data changes to re-init carousel
+watch(fokusKonservasi, () => {
+    if (emblaApi.value) {
+        emblaApi.value.reInit();
+    }
+});
 </script>
 
 <style scoped>

@@ -221,7 +221,7 @@ import {
     Pause,
     Play,
 } from 'lucide-vue-next';
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 const parallaxOffset = ref(0);
 const isScrolled = ref(false);
@@ -229,100 +229,29 @@ const currentSlide = ref(0);
 const isPlaying = ref(true);
 let autoplayInterval: NodeJS.Timeout | null = null;
 
-const kawasanKonservasi = [
-    {
-        id: 1,
-        name: 'Gunung Maras',
-        type: 'Taman Nasional',
-        location: 'Kabupaten Bangka',
-        image: '/kws_konservasi/gnmaras.avif',
-        description:
-            'Keunikan kawasan ini terdiri dari beberapa tipe ekosistem yang menjadi satu kesatuan bentang alam, yaitu ekosistem mangrove, pegunungan, dan dataran rendah.',
-    },
-    {
-        id: 2,
-        name: 'Punti Kayu',
-        type: 'Taman Wisata Alam',
-        location: 'Kota Palembang',
-        image: '/kws_konservasi/punti.avif',
-        description:
-            'Punti Kayu merupakan hutan pinus dalam kota terbesar di Indonesia. Selain menjadi tempat wisata, Punti Kayu berkontribusi dalam penyerapan karbon dioksida.',
-    },
-    {
-        id: 3,
-        name: 'Isau-Isau',
-        type: 'Taman Wisata Alam',
-        location: 'Kabupaten Lahat',
-        image: '/about-1.avif',
-        description:
-            'Kawasan ini merupakan pusat pelatihan Gajah yang ada di Sumatera Selatan. Gajah yang dikelola di kawasan ini saat ini berjumlah 10 Gajah.',
-    },
-    {
-        id: 4,
-        name: 'Dangku',
-        type: 'Suaka Margasatwa',
-        location: 'Kabupaten Musi Banyuasin',
-        image: '/kws_konservasi/dangku.avif',
-        description:
-            'Merupakan habitat Harimau Sumatera. Kawasan dengan luas 47.996,45 hektar menyimpan potensi flora fauna yang cukup beragam.',
-    },
-    {
-        id: 5,
-        name: 'Isau Isau',
-        type: 'Suaka Margasatwa',
-        location: 'Kabupaten Muara Enim',
-        image: '/about-2.avif',
-        description:
-            'Kawasan ini merupakan hutan hujan pegunungan dengan jenis tumbuhan yang didominasi oleh famili Dipterocarpaceae, Fagaceae, Lauraceae.',
-    },
-    {
-        id: 6,
-        name: 'Jering Menduyung',
-        type: 'Taman Wisata Alam',
-        location: 'Kabupaten Bangka Barat',
-        image: '/hero-background.avif',
-        description:
-            'Kawasan TWA Jering Menduyung merupakan ekosistem mangrove yang didominasi oleh dua jenis flora, yaitu bakau dan nipah.',
-    },
-    {
-        id: 7,
-        name: 'Bentayan',
-        type: 'Suaka Margasatwa',
-        location: 'Kabupaten Musi Banyuasin',
-        image: '/fokus_konservasi/gajah.avif',
-        description:
-            'Kawasan yang sejak tahun 1981 berfungsi sebagai kawasan konservasi.',
-    },
-    {
-        id: 8,
-        name: 'Gunung Permisan',
-        type: 'Taman Wisata Alam',
-        location: 'Kabupaten Bangka Selatan',
-        image: '/fokus_konservasi/harimau.avif',
-        description:
-            'Yang menjadi daya tarik adalah Bukit Nenek, karena adanya goa di puncak bukitnya dan batu yang terbelah serta dataran di puncak untuk melihat pemandangan.',
-    },
-    {
-        id: 9,
-        name: 'Gumai Pasemah',
-        type: 'Suaka Margasatwa',
-        location: 'Kabupaten Lahat',
-        image: '/fokus_konservasi/rangkong.avif',
-        description:
-            'HSA Gumai Tebing Tinggi merupakan ekosistem hutan hujan yang vegetasinya beragam dan didominasi oleh famili Dipterocapaceae.',
-    },
-    {
-        id: 10,
-        name: 'Gunung Raya',
-        type: 'Suaka Margasatwa',
-        location: 'Kabupaten OKU Selatan',
-        image: '/news-1.jpg',
-        description:
-            'SM Gunung Raya menyimpan potensi jasa lingkungan berupa penyimpanan karbon, air, wisata alam terbatas, dan wisata religi.',
-    },
-];
+// Fetch hero slides from API
+const { data: slidesData } = await useFetch('/api/hero', {
+    query: {
+        activeOnly: true,
+        limit: 20
+    }
+});
 
-const currentKawasan = computed(() => kawasanKonservasi[currentSlide.value]);
+const kawasanKonservasi = computed(() => {
+    if (slidesData.value && slidesData.value.success && slidesData.value.data) {
+        return slidesData.value.data.map((slide: any) => ({
+            id: slide.id,
+            name: slide.name,
+            type: slide.type,
+            location: slide.location,
+            image: slide.imageUrl, // Map imageUrl to image
+            description: slide.description
+        }));
+    }
+    return [];
+});
+
+const currentKawasan = computed(() => kawasanKonservasi.value[currentSlide.value] || {});
 
 const handleScroll = () => {
     if (typeof window !== 'undefined') {
@@ -332,13 +261,15 @@ const handleScroll = () => {
 };
 
 const nextSlide = () => {
-    currentSlide.value = (currentSlide.value + 1) % kawasanKonservasi.length;
+    if (kawasanKonservasi.value.length === 0) return;
+    currentSlide.value = (currentSlide.value + 1) % kawasanKonservasi.value.length;
 };
 
 const previousSlide = () => {
+    if (kawasanKonservasi.value.length === 0) return;
     currentSlide.value =
         currentSlide.value === 0
-            ? kawasanKonservasi.length - 1
+            ? kawasanKonservasi.value.length - 1
             : currentSlide.value - 1;
 };
 
@@ -358,9 +289,11 @@ const toggleAutoplay = () => {
 
 const startAutoplay = () => {
     stopAutoplay();
-    autoplayInterval = setInterval(() => {
-        nextSlide();
-    }, 4000);
+    if (kawasanKonservasi.value.length > 1) {
+        autoplayInterval = setInterval(() => {
+            nextSlide();
+        }, 4000);
+    }
 };
 
 const stopAutoplay = () => {
@@ -375,6 +308,13 @@ const resetAutoplay = () => {
         startAutoplay();
     }
 };
+
+// Watch for data changes to restart autoplay if needed
+watch(kawasanKonservasi, (newVal) => {
+    if (newVal.length > 1 && isPlaying.value) {
+        startAutoplay();
+    }
+});
 
 onMounted(() => {
     handleScroll();

@@ -31,6 +31,11 @@ export const adminMenuItems: MenuItem[] = [
     href: "#",
     children: [
       {
+        name: "Hero Section",
+        icon: Image,
+        href: "/admin/hero",
+      },
+      {
         name: "Berita",
         icon: FileText,
         href: "/admin/posts",
