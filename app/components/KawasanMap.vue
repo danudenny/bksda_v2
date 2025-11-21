@@ -14,7 +14,7 @@
             leave-to-class="-translate-x-full opacity-0"
         >
             <div
-                v-if="selectedKawasan"
+                v-if="selectedKawasan && !disablePopup"
                 class="absolute left-4 top-4 bottom-4 w-80 bg-white rounded-2xl shadow-2xl ring-1 ring-slate-900/5 overflow-hidden z-1000 flex flex-col"
             >
                 <!-- Close Button -->
@@ -64,7 +64,7 @@
                             class="flex items-start gap-3 p-3 rounded-lg bg-slate-50"
                         >
                             <MapPin
-                                class="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5"
+                                class="h-5 w-5 text-emerald-600 shrink-0 mt-0.5"
                             />
                             <div>
                                 <p class="text-sm font-semibold text-slate-900">
@@ -81,7 +81,7 @@
                             class="flex items-start gap-3 p-3 rounded-lg bg-slate-50"
                         >
                             <Navigation
-                                class="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5"
+                                class="h-5 w-5 text-emerald-600 shrink-0 mt-0.5"
                             />
                             <div>
                                 <p class="text-sm font-semibold text-slate-900">
@@ -101,7 +101,7 @@
                             class="flex items-start gap-3 p-3 rounded-lg bg-slate-50"
                         >
                             <TreeDeciduous
-                                class="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5"
+                                class="h-5 w-5 text-emerald-600 shrink-0 mt-0.5"
                             />
                             <div class="flex-1">
                                 <p
@@ -128,7 +128,7 @@
 
 <script setup lang="ts">
 import { MapPin, Navigation, TreeDeciduous, X } from 'lucide-vue-next';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 
 // Dynamic import for Leaflet (client-side only)
 let L: any = null;
@@ -146,6 +146,12 @@ interface Kawasan {
     icon: any;
 }
 
+const props = defineProps<{
+    locations?: Kawasan[];
+    initialLocation?: Kawasan;
+    disablePopup?: boolean;
+}>();
+
 const mapContainer = ref<HTMLElement | null>(null);
 const selectedKawasan = ref<Kawasan | null>(null);
 let map: any = null;
@@ -155,13 +161,18 @@ const kawasanData = ref<Kawasan[]>([]);
 // Fetch active categories and locations from API and convert to marker data
 const fetchKawasanFromApi = async () => {
     try {
-        const resp: any = await $fetch('/api/kawasan/categories?page=1&limit=20');
+        const resp: any = await $fetch(
+            '/api/kawasan/categories?page=1&limit=20'
+        );
         if (!resp?.success || !Array.isArray(resp.data)) return;
         const list: Kawasan[] = [];
         for (const cat of resp.data) {
             const locs = Array.isArray(cat.locations) ? cat.locations : [];
             for (const loc of locs) {
-                if (typeof loc.latitude === 'number' && typeof loc.longitude === 'number') {
+                if (
+                    typeof loc.latitude === 'number' &&
+                    typeof loc.longitude === 'number'
+                ) {
                     list.push({
                         id: String(loc.id),
                         name: loc.name,
@@ -233,28 +244,13 @@ const initMap = async () => {
         scrollWheelZoom: false,
     }).setView([-3.0, 104.0], 8);
 
-    // Add CartoDB Light tile layer
-    // L.tileLayer(
-    //     'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-    //     {
-    //         attribution:
-    //             '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
-    //         maxZoom: 20,
-    //         subdomains: 'abcd',
-    //     }
-    // ).addTo(map);
-
-    // Alternative tile layers you can use:
-    // 1. OpenTopoMap
-    // L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-    //   attribution: 'Map data: © OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap',
-    //   maxZoom: 17,
-    // }).addTo(map);
-
     // 2. Esri World Imagery
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'Tiles © Esri',
-    }).addTo(map);
+    L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        {
+            attribution: 'Tiles © Esri',
+        }
+    ).addTo(map);
 
     // If data already loaded, render now; otherwise wait for API
     if (kawasanData.value.length) {
@@ -266,7 +262,7 @@ const initMap = async () => {
 const renderMarkers = () => {
     if (!map || !L) return;
     // clear previous
-    markers.forEach(m => m.remove());
+    markers.forEach((m) => m.remove());
     markers = [];
     kawasanData.value.forEach((kawasan: Kawasan) => {
         const color = getColorByType(kawasan.type);
@@ -274,17 +270,27 @@ const renderMarkers = () => {
             icon: createCustomIcon(color),
             title: kawasan.name,
         }).addTo(map!);
-        marker.on('click', () => {
-            selectedKawasan.value = kawasan;
-        });
+
+        if (!props.disablePopup) {
+            marker.on('click', () => {
+                selectedKawasan.value = kawasan;
+            });
+        }
+
         markers.push(marker);
     });
 };
 
 const fitMarkersBounds = () => {
     if (!map || markers.length === 0) return;
-    const group = L.featureGroup(markers);
-    map.fitBounds(group.getBounds().pad(0.2));
+
+    if (props.initialLocation) {
+        map.setView([props.initialLocation.lat, props.initialLocation.lng], 12);
+        selectedKawasan.value = props.initialLocation;
+    } else {
+        const group = L.featureGroup(markers);
+        map.fitBounds(group.getBounds().pad(0.2));
+    }
 };
 
 const getColorByType = (type: string): string => {
@@ -303,12 +309,31 @@ const getColorByType = (type: string): string => {
 onMounted(() => {
     // Only initialize map on client-side
     if (process.client) {
+        if (props.locations) {
+            kawasanData.value = props.locations;
+        }
+
         setTimeout(() => {
             initMap();
-            fetchKawasanFromApi();
+            if (!props.locations) {
+                fetchKawasanFromApi();
+            }
         }, 100);
     }
 });
+
+watch(
+    () => props.locations,
+    (newLocations) => {
+        if (newLocations) {
+            kawasanData.value = newLocations;
+            if (map) {
+                renderMarkers();
+                fitMarkersBounds();
+            }
+        }
+    }
+);
 
 onUnmounted(() => {
     // Cleanup

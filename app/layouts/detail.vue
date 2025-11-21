@@ -20,13 +20,16 @@
 
         <!-- Hero/Header Section for Detail Pages -->
         <div
-            class="relative bg-gradient-to-br from-emerald-900 via-teal-800 to-emerald-900 text-white py-16 sm:py-20 lg:py-24"
+            class="relative bg-linear-to-br from-emerald-900 via-teal-800 to-emerald-900 text-white py-16 sm:py-20 lg:py-24"
         >
             <div
-                class="absolute inset-0 bg-[url('/hero-background.avif')] bg-cover bg-center opacity-10"
+                class="absolute inset-0 bg-cover bg-center opacity-20 transition-opacity duration-700"
+                :style="{
+                    backgroundImage: `url('${backgroundImage || '/hero-background.avif'}')`,
+                }"
             ></div>
             <div
-                class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
+                class="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent"
             ></div>
 
             <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -68,12 +71,16 @@
         </main>
 
         <BackToTop />
-        <WhatsAppButton />  
+        <WhatsAppButton />
     </div>
 </template>
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
+
+defineProps<{
+    backgroundImage?: string;
+}>();
 
 const isMegaMenuOpen = ref(false);
 const isSearchOpen = ref(false);

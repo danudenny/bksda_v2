@@ -1,5 +1,4 @@
 <template>
-    <!-- Modal Backdrop -->
     <Teleport to="body">
         <Transition
             enter-active-class="transition-opacity duration-300 ease-out"
@@ -12,12 +11,10 @@
             <div
                 v-if="isOpen"
                 class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md"
-                @click="emit('close')"
                 aria-hidden="true"
             ></div>
         </Transition>
 
-        <!-- Modal Content -->
         <Transition
             enter-active-class="transition-all duration-300 ease-out"
             enter-from-class="opacity-0 scale-95"
@@ -29,16 +26,13 @@
             <div
                 v-if="isOpen && species"
                 class="fixed inset-0 z-[101] overflow-y-auto"
-                @click="emit('close')"
             >
                 <div
                     class="flex min-h-full items-center justify-center p-4 sm:p-6"
                 >
                     <div
                         class="relative w-full max-w-6xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl shadow-2xl ring-1 ring-white/10 overflow-hidden"
-                        @click.stop
                     >
-                        <!-- Close Button -->
                         <button
                             @click="emit('close')"
                             class="absolute top-4 right-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white/70 ring-1 ring-white/20 transition-all duration-300 hover:bg-black/80 hover:text-white hover:ring-white/40 hover:scale-110"
@@ -47,13 +41,10 @@
                             <X class="h-5 w-5" />
                         </button>
 
-                        <!-- Content Grid -->
                         <div
                             class="grid grid-cols-1 lg:grid-cols-2 gap-0 max-h-[90vh] overflow-y-auto"
                         >
-                            <!-- Left Side - Image Gallery -->
                             <div class="relative bg-black">
-                                <!-- Main Image -->
                                 <div
                                     class="aspect-[4/5] lg:aspect-auto lg:h-full relative"
                                 >
@@ -66,12 +57,10 @@
                                         format="avif,webp"
                                         quality="90"
                                     />
-                                    <!-- Gradient overlay -->
                                     <div
                                         class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
                                     ></div>
 
-                                    <!-- Image Counter Badge -->
                                     <div
                                         class="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-black/60 backdrop-blur-sm px-3 py-1.5 ring-1 ring-white/20"
                                     >
@@ -86,7 +75,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Thumbnail Gallery (if available) -->
                                 <div
                                     v-if="
                                         species.gallery &&
@@ -115,11 +103,8 @@
                                 </div>
                             </div>
 
-                            <!-- Right Side - Information -->
                             <div class="p-6 sm:p-8 lg:p-10 space-y-6">
-                                <!-- Header -->
                                 <div class="space-y-3">
-                                    <!-- Status Badge -->
                                     <div
                                         class="inline-flex items-center gap-2 rounded-full bg-red-500/10 px-3 py-1 ring-1 ring-red-500/30"
                                     >
@@ -148,7 +133,6 @@
                                     </p>
                                 </div>
 
-                                <!-- Description -->
                                 <div class="space-y-3">
                                     <h3
                                         class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-emerald-400"
@@ -156,17 +140,13 @@
                                         <Info class="h-4 w-4" />
                                         Deskripsi
                                     </h3>
-                                    <p
-                                        class="text-base leading-relaxed text-gray-300"
-                                    >
-                                        {{
-                                            species.description ||
-                                            'Spesies ini merupakan salah satu satwa prioritas konservasi di Sumatera Selatan. Populasi mereka terus menurun akibat kehilangan habitat dan perburuan liar. BKSDA Sumatera Selatan berkomitmen untuk melindungi dan melestarikan spesies ini melalui berbagai program konservasi.'
-                                        }}
-                                    </p>
+
+                                    <div
+                                        class="text-base leading-relaxed text-gray-300 [&>p]:mb-2"
+                                        v-html="species.description"
+                                    ></div>
                                 </div>
 
-                                <!-- Infographic Stats -->
                                 <div
                                     class="grid grid-cols-2 gap-4 p-4 bg-white/5 rounded-xl ring-1 ring-white/10"
                                 >
@@ -229,7 +209,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Threats -->
                                 <div class="space-y-3">
                                     <h3
                                         class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-red-400"
@@ -255,7 +234,6 @@
                                     </ul>
                                 </div>
 
-                                <!-- Conservation Efforts -->
                                 <div class="space-y-3">
                                     <h3
                                         class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-emerald-400"
@@ -281,17 +259,6 @@
                                         </li>
                                     </ul>
                                 </div>
-
-                                <!-- Action Button -->
-                                <div class="pt-4">
-                                    <button
-                                        class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 ring-1 ring-emerald-400/50 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/40 hover:scale-[1.02]"
-                                    >
-                                        <BookOpen class="h-4 w-4" />
-                                        <span>Baca Selengkapnya</span>
-                                        <ArrowRight class="h-4 w-4" />
-                                    </button>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -305,8 +272,6 @@
 import {
     AlertCircle,
     AlertTriangle,
-    ArrowRight,
-    BookOpen,
     Camera,
     Info,
     MapPin,
@@ -316,6 +281,7 @@ import {
     TrendingDown,
     X,
 } from 'lucide-vue-next';
+import { onUnmounted, watch } from 'vue'; // CHANGE 4: Import these
 
 interface Species {
     name: string;
@@ -332,7 +298,7 @@ interface Species {
     gallery?: string[];
 }
 
-defineProps<{
+const props = defineProps<{
     isOpen: boolean;
     species: Species | null;
 }>();
@@ -340,6 +306,23 @@ defineProps<{
 const emit = defineEmits<{
     close: [];
 }>();
+
+// CHANGE 5: Logic to lock body scroll when modal is open
+watch(
+    () => props.isOpen,
+    (isOpen) => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    }
+);
+
+// Clean up in case the component is destroyed while modal is open
+onUnmounted(() => {
+    document.body.style.overflow = '';
+});
 </script>
 
 <style scoped>
@@ -364,5 +347,19 @@ const emit = defineEmits<{
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
     background-color: rgba(16, 185, 129, 0.5);
+}
+
+/* Optional: Basic styling for HTML content if you aren't using Tailwind Typography */
+:deep(p) {
+    margin-bottom: 0.75rem;
+}
+:deep(ul) {
+    list-style-type: disc;
+    padding-left: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+:deep(strong) {
+    color: #fff;
+    font-weight: 700;
 }
 </style>

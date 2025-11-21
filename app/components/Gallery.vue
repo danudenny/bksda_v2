@@ -86,11 +86,12 @@
                             </div>
                         </div>
                     </div>
+
                     <div
                         v-for="(image, index) in row1Images"
                         :key="`r1-dup-${index}`"
-                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item"
-                        aria-hidden="true"
+                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
+                        @click="openLightbox(image, index)"
                     >
                         <NuxtImg
                             :src="image.src"
@@ -143,11 +144,12 @@
                             </div>
                         </div>
                     </div>
+
                     <div
                         v-for="(image, index) in row2Images"
                         :key="`r2-dup-${index}`"
-                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item"
-                        aria-hidden="true"
+                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
+                        @click="openLightbox(image, row1Images.length + index)"
                     >
                         <NuxtImg
                             :src="image.src"
@@ -205,11 +207,17 @@
                             </div>
                         </div>
                     </div>
+
                     <div
                         v-for="(image, index) in row3Images"
                         :key="`r3-dup-${index}`"
-                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item"
-                        aria-hidden="true"
+                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
+                        @click="
+                            openLightbox(
+                                image,
+                                row1Images.length + row2Images.length + index
+                            )
+                        "
                     >
                         <NuxtImg
                             :src="image.src"
@@ -259,12 +267,11 @@
         >
             <div
                 v-if="lightboxOpen"
-                class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm overflow-y-auto"
-                @click="closeLightbox"
+                class="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm overflow-y-auto"
             >
                 <div class="min-h-full flex items-center justify-center p-4">
                     <button
-                        class="fixed top-4 right-4 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200 group"
+                        class="fixed top-4 right-4 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200 group z-[10000]"
                         aria-label="Close lightbox"
                         @click.stop="closeLightbox"
                     >
@@ -275,7 +282,7 @@
 
                     <button
                         v-if="currentImageIndex > 0"
-                        class="fixed left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200"
+                        class="fixed left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200 z-[10000]"
                         aria-label="Previous image"
                         @click.stop="previousImage"
                     >
@@ -284,7 +291,7 @@
 
                     <button
                         v-if="currentImageIndex < allImages.length - 1"
-                        class="fixed right-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200"
+                        class="fixed right-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200 z-[10000]"
                         aria-label="Next image"
                         @click.stop="nextImage"
                     >
@@ -328,6 +335,7 @@
         </transition>
     </Teleport>
 </template>
+
 <script setup lang="ts">
 import { useApi } from '@/composables/useApi';
 import { ArrowRight, ChevronLeft, ChevronRight, X } from 'lucide-vue-next';
@@ -340,6 +348,7 @@ const row1Images = ref<{ src: string; alt: string }[]>([]);
 const row2Images = ref<{ src: string; alt: string }[]>([]);
 const row3Images = ref<{ src: string; alt: string }[]>([]);
 
+// Menggabungkan semua gambar menjadi satu array linier
 const allImages = computed(() => [
     ...row1Images.value,
     ...row2Images.value,
@@ -348,6 +357,8 @@ const allImages = computed(() => [
 
 const currentImage = computed(() => allImages.value[currentImageIndex.value]);
 
+// Fungsi ini mencari index global berdasarkan URL gambar,
+// jadi aman digunakan meskipun di-klik dari elemen duplikat
 const openLightbox = (
     image: { src: string; alt: string },
     rowIndex: number
