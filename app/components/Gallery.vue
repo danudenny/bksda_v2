@@ -329,9 +329,9 @@
     </Teleport>
 </template>
 <script setup lang="ts">
-import { ArrowRight, ChevronLeft, ChevronRight, X } from 'lucide-vue-next';
-import { computed, ref, onMounted } from 'vue';
 import { useApi } from '@/composables/useApi';
+import { ArrowRight, ChevronLeft, ChevronRight, X } from 'lucide-vue-next';
+import { computed, onMounted, ref } from 'vue';
 
 const lightboxOpen = ref(false);
 const currentImageIndex = ref(0);
@@ -397,13 +397,22 @@ async function loadGallery() {
             getGalleryImages('ROW_3'),
         ]);
         if (r1.success && Array.isArray(r1.data)) {
-            row1Images.value = r1.data.map((it: any) => ({ src: it.imageUrl, alt: it.altText || '' }));
+            row1Images.value = r1.data.map((it: any) => ({
+                src: it.imageUrl,
+                alt: it.altText || '',
+            }));
         }
         if (r2.success && Array.isArray(r2.data)) {
-            row2Images.value = r2.data.map((it: any) => ({ src: it.imageUrl, alt: it.altText || '' }));
+            row2Images.value = r2.data.map((it: any) => ({
+                src: it.imageUrl,
+                alt: it.altText || '',
+            }));
         }
         if (r3.success && Array.isArray(r3.data)) {
-            row3Images.value = r3.data.map((it: any) => ({ src: it.imageUrl, alt: it.altText || '' }));
+            row3Images.value = r3.data.map((it: any) => ({
+                src: it.imageUrl,
+                alt: it.altText || '',
+            }));
         }
     } catch (e) {
         // ignore
