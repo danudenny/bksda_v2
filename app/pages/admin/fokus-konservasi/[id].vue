@@ -80,12 +80,6 @@ async function fetchSpecies() {
       toast.error(response.message || "Failed to load species");
       router.push("/admin/fokus-konservasi");
     }
-
-function onAssetPicked(asset: any) {
-  form.value.imageUrl = asset.url;
-  showAssetDialog.value = false;
-  toast.success("Image selected");
-}
   } catch (error) {
     console.error("Failed to fetch species:", error);
     toast.error("Failed to load species");
@@ -505,5 +499,8 @@ onMounted(() => {
     </div>
   </div>
 
-  <CloudinaryAssetPicker v-model:open="showAssetDialog" @select="onAssetPicked" />
+  <CloudinaryAssetPicker 
+    v-model:open="showAssetDialog" 
+    @select="(asset) => { form.imageUrl = asset.url; showAssetDialog = false; }" 
+  />
 </template>

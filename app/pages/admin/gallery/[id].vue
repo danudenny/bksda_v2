@@ -286,7 +286,7 @@ onMounted(() => {
             Cancel
           </Button>
         </div>
-        <CloudinaryAssetPicker v-model:open="showAssetDialog" @select="onAssetPicked" />
+        <CloudinaryAssetPicker v-model:open="showAssetDialog" @select="selectAsset" />
       </div>
     </div>
   </div>

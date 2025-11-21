@@ -113,12 +113,9 @@ const emit = defineEmits<{
   (e: 'select', asset: { url: string; public_id?: string }): void;
 }>();
 
-// State
 const open = ref(props.open);
 const { request, uploadImage } = useApi();
 
-// PERFORMANCE: Use shallowRef for large arrays. 
-// This prevents Vue from making every property of every asset reactive.
 const assets = shallowRef<any[]>([]); 
 
 const loading = ref(false);
@@ -128,22 +125,17 @@ const scrollEl = ref<HTMLElement | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
 const uploading = ref(false);
 
-// Grid / Virtual Scroll Configuration
-const GRID_GAP = 16; // px
-const MIN_TILE_WIDTH = 150; // px
-const BUFFER_ROWS = 5; // Render extra rows outside viewport to prevent white flashes
+const GRID_GAP = 16;
+const MIN_TILE_WIDTH = 150;
+const BUFFER_ROWS = 5;
 
 const columns = ref(4);
 const scrollTop = ref(0);
 const containerHeight = ref(600);
 
-// --- Computeds for Virtualization ---
-
-// Calculate item height assuming square aspect ratio
 const itemHeight = computed(() => {
   if (!scrollEl.value) return MIN_TILE_WIDTH + GRID_GAP;
-  // Approximate width based on columns
-  const containerW = scrollEl.value.clientWidth - 32; // minus padding
+  const containerW = scrollEl.value.clientWidth - 32;
   const tileW = (containerW - (columns.value - 1) * GRID_GAP) / columns.value;
   return tileW + GRID_GAP;
 });
@@ -151,7 +143,6 @@ const itemHeight = computed(() => {
 const totalRows = computed(() => Math.ceil(assets.value.length / columns.value));
 const totalHeight = computed(() => totalRows.value * itemHeight.value);
 
-// Calculate visible range
 const startIndex = computed(() => {
   const row = Math.floor(scrollTop.value / itemHeight.value);
   return Math.max(0, (row - BUFFER_ROWS) * columns.value);
@@ -171,12 +162,9 @@ const visibleAssets = computed(() => {
   return assets.value.slice(startIndex.value, endIndex.value);
 });
 
-// --- Logic ---
-
 watch(() => props.open, (v) => {
   open.value = v;
   if (v) {
-    // Reset and fetch when opened
     assets.value = [];
     nextCursor.value = null;
     search.value = '';
@@ -197,11 +185,10 @@ async function fetchAssets(reset = false) {
     const params: any = { 
       limit: 50, // 50 is a good balance
       folder: props.folder,
-      max_results: 50 
     };
     
     if (search.value) params.q = search.value; // Ensure backend supports 'q' or use Cloudinary search API syntax
-    if (!reset && nextCursor.value) params.next_cursor = nextCursor.value;
+    if (!reset && nextCursor.value) params.nextCursor = nextCursor.value;
 
     const res = await request<{ assets: any[]; nextCursor: string | null }>('/cloudinary/assets', { params });
     
@@ -210,7 +197,6 @@ async function fetchAssets(reset = false) {
       if (reset) {
         assets.value = newAssets;
       } else {
-        // Performance: Create new array reference instead of push to trigger shallowRef update efficiently
         assets.value = [...assets.value, ...newAssets];
       }
       nextCursor.value = res.data.nextCursor || null;
@@ -224,14 +210,11 @@ async function fetchAssets(reset = false) {
   }
 }
 
-// --- Optimized Scroll Handler ---
-
 let scrollTicking = false;
 
 function onScroll(e: Event) {
   const el = e.target as HTMLElement;
   
-  // 1. Update Scroll Top for Virtualization (Throttled via RAF)
   if (!scrollTicking) {
     window.requestAnimationFrame(() => {
       scrollTop.value = el.scrollTop;
@@ -240,8 +223,7 @@ function onScroll(e: Event) {
     scrollTicking = true;
   }
 
-  // 2. Infinite Scroll Trigger
-  const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 400; // Increased buffer
+  const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 400;
   if (nearBottom && nextCursor.value && !loading.value) {
     fetchAssets(false);
   }
@@ -254,10 +236,6 @@ function handleSearch() {
 }
 
 function getThumbUrl(url: string) {
-  // Cloudinary Optimization:
-  // f_auto: Let Cloudinary choose format (webp/avif)
-  // q_auto:low: Aggressive compression for thumbnails
-  // w_300, h_300, c_fill: Exact dimensions to prevent layout shift
   if (url.includes('/upload/')) {
     return url.replace('/upload/', '/upload/c_fill,w_300,h_300,q_auto:low,f_auto/');
   }
@@ -265,11 +243,10 @@ function getThumbUrl(url: string) {
 }
 
 function select(asset: any) {
-  emit('select', asset);
+  const url = asset?.url || asset?.secure_url || '';
+  emit('select', { url, public_id: asset?.public_id });
   open.value = false;
 }
-
-// --- Upload Logic ---
 
 function triggerLocalUpload() {
   fileInput.value?.click();
@@ -279,16 +256,16 @@ async function handleLocalUpload(e: Event) {
   const input = e.target as HTMLInputElement;
   if (!input.files?.length) return;
   
-  const file = input.files[0];
+  const file = input.files![0] as File;
   uploading.value = true;
   
   try {
     const res = await uploadImage(file);
     if (res.success) {
       const newAsset = res.data as any;
-      // Prepend new upload to list
       assets.value = [newAsset, ...assets.value];
-      emit('select', { url: newAsset.url });
+      emit('select', { url: newAsset.url, public_id: newAsset.public_id });
+      open.value = false;
       toast.success('Image uploaded');
     } else {
       toast.error('Upload failed');
@@ -301,17 +278,13 @@ async function handleLocalUpload(e: Event) {
   }
 }
 
-// --- Resize Observer (Better than window resize) ---
 let resizeObserver: ResizeObserver | null = null;
 
 function recalcGrid() {
   if (!scrollEl.value) return;
   const w = scrollEl.value.clientWidth;
   containerHeight.value = scrollEl.value.clientHeight;
-  
-  // Calculate columns dynamically based on width
-  // Ensure at least 2 columns, max out at large screens
-  const newCols = Math.floor((w - 32) / (MIN_TILE_WIDTH + GRID_GAP)); // 32 is padding
+  const newCols = Math.floor((w - 32) / (MIN_TILE_WIDTH + GRID_GAP));
   columns.value = Math.max(2, newCols);
 }
 
