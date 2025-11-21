@@ -8,20 +8,18 @@
                 <div class="md:col-span-2 lg:col-span-5">
                     <div class="flex items-center gap-3">
                         <NuxtImg
-                            src="/logo1.avif"
-                            alt="Logo BKSDA Sumatera Selatan"
-                            class="h-12 w-12 object-cover"
-                            width="48"
-                            height="48"
-                            loading="lazy"
+                            src="https://res.cloudinary.com/dopp3opre/image/upload/v1763652646/logo1_o93q0x.avif"
+                            alt="Kementerian LHK Logo"
+                            width="300"
+                            height="300"
+                            class="h-8 w-auto sm:h-10 object-contain transition-transform duration-300 group-hover:scale-110"
                         />
                         <NuxtImg
-                            src="/logo2.png"
-                            alt="Logo BKSDA Sumatera Selatan"
-                            class="h-12 w-12 object-cover"
-                            width="48"
-                            height="48"
-                            loading="lazy"
+                            src="https://res.cloudinary.com/dopp3opre/image/upload/v1763652647/logo2_l76b4h.png"
+                            alt="BKSDA Logo"
+                            width="300"
+                            height="300"
+                            class="h-8 w-auto sm:h-10 object-contain transition-transform duration-300 group-hover:scale-110"
                         />
                         <div>
                             <p class="text-base font-semibold text-white">

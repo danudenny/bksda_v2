@@ -15,6 +15,8 @@ import { useApi } from "@/composables/useApi";
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { toast } from "vue-sonner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog";
+import CloudinaryAssetPicker from "@/components/admin/CloudinaryAssetPicker.vue";
 
 definePageMeta({
   layout: "admin",
@@ -27,13 +29,21 @@ const {
   createSpecies, 
   updateSpecies, 
   uploadImage,
-  loading 
+  loading,
+  request,
 } = useApi();
 
 // State
 const isSaving = ref(false);
 const isNew = computed(() => route.params.id === "create");
 const uploadLoading = ref(false);
+const showAssetDialog = ref(false);
+const assets = ref<any[]>([]);
+const assetsLoading = ref(false);
+const assetSearch = ref("");
+const nextCursor = ref<string | null>(null);
+const localFileInput = ref<HTMLInputElement | null>(null);
+const assetScrollRef = ref<HTMLElement | null>(null);
 
 const form = ref({
   name: "",
@@ -70,6 +80,12 @@ async function fetchSpecies() {
       toast.error(response.message || "Failed to load species");
       router.push("/admin/fokus-konservasi");
     }
+
+function onAssetPicked(asset: any) {
+  form.value.imageUrl = asset.url;
+  showAssetDialog.value = false;
+  toast.success("Image selected");
+}
   } catch (error) {
     console.error("Failed to fetch species:", error);
     toast.error("Failed to load species");
@@ -81,7 +97,7 @@ async function handleImageUpload(event: Event) {
   const input = event.target as HTMLInputElement;
   if (!input.files?.length) return;
 
-  const file = input.files[0];
+  const file = input.files[0] as File;
   uploadLoading.value = true;
 
   try {
@@ -89,6 +105,7 @@ async function handleImageUpload(event: Event) {
     if (response.success) {
       form.value.imageUrl = response.data.url;
       toast.success("Image uploaded successfully");
+      showAssetDialog.value = false;
     } else {
       toast.error(response.message || "Failed to upload image");
     }
@@ -97,6 +114,55 @@ async function handleImageUpload(event: Event) {
     toast.error("Failed to upload image");
   } finally {
     uploadLoading.value = false;
+  }
+}
+
+async function fetchCloudinaryAssets(reset = false) {
+  if (assetsLoading.value) return;
+  assetsLoading.value = true;
+  try {
+    const params: any = { limit: 50 };
+    if (assetSearch.value) params.q = assetSearch.value;
+    if (!reset && nextCursor.value) params.nextCursor = nextCursor.value;
+
+    const res = await request<{ assets: any[]; nextCursor: string | null }>("/cloudinary/assets", {
+      params,
+    });
+    if (res.success && res.data) {
+      if (reset) assets.value = [];
+      assets.value = [...assets.value, ...res.data.assets];
+      nextCursor.value = res.data.nextCursor || null;
+    } else {
+      toast.error(res.message || "Failed to load assets");
+    }
+  } finally {
+    assetsLoading.value = false;
+  }
+}
+
+function openAssetDialog() {
+  showAssetDialog.value = true;
+  nextCursor.value = null;
+  assets.value = [];
+  fetchCloudinaryAssets(true);
+}
+
+function selectAsset(asset: any) {
+  form.value.imageUrl = asset.url;
+  showAssetDialog.value = false;
+  toast.success("Image selected");
+}
+
+function triggerLocalUpload() {
+  localFileInput.value?.click();
+}
+
+function onAssetsScroll(e: Event) {
+  const el = e.target as HTMLElement;
+  if (!el) return;
+  const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 200;
+  if (nearBottom && nextCursor.value && !assetsLoading.value) {
+    fetchCloudinaryAssets(false);
   }
 }
 
@@ -132,8 +198,8 @@ async function saveSpecies() {
     // Filter empty threats/efforts
     const payload = {
       ...form.value,
-      threats: form.value.threats.filter(t => t.trim()),
-      efforts: form.value.efforts.filter(e => e.trim()),
+      threats: form.value.threats.filter((t: string) => t.trim()),
+      efforts: form.value.efforts.filter((e: string) => e.trim()),
     };
 
     let response;
@@ -399,7 +465,8 @@ onMounted(() => {
           <h3 class="font-medium text-gray-900 dark:text-white">Featured Image *</h3>
           
           <div 
-            class="relative aspect-[3/4] w-full bg-gray-100 dark:bg-gray-600 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-500 flex items-center justify-center group"
+            class="relative aspect-[3/4] w-full bg-gray-100 dark:bg-gray-600 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-500 flex items-center justify-center group cursor-pointer"
+            @click="openAssetDialog"
           >
             <img
               v-if="form.imageUrl"
@@ -408,26 +475,19 @@ onMounted(() => {
             />
             <div v-else class="text-center p-4">
               <Upload class="w-8 h-8 mx-auto text-gray-400 mb-2" />
-              <p class="text-xs text-gray-500">Click to upload image</p>
+              <p class="text-xs text-gray-500">Click to choose or upload image</p>
             </div>
-            
-            <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer" v-if="form.imageUrl">
+            <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" v-if="form.imageUrl">
               <p class="text-white text-sm font-medium">Change Image</p>
             </div>
-
             <div class="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-gray-800/80 z-10" v-if="uploadLoading">
               <Loader class="w-8 h-8 animate-spin text-primary" />
             </div>
-
-            <input
-              type="file"
-              accept="image/*"
-              class="absolute inset-0 opacity-0 cursor-pointer z-20"
-              @change="handleImageUpload"
-              :disabled="uploadLoading"
-            />
           </div>
           <p v-if="errors.imageUrl" class="text-red-600 text-sm">{{ errors.imageUrl }}</p>
+          
+          <!-- Hidden local file input -->
+          <input ref="localFileInput" type="file" accept="image/*" class="hidden" @change="handleImageUpload" :disabled="uploadLoading" />
         </div>
 
         <!-- Order -->
@@ -444,4 +504,6 @@ onMounted(() => {
       </div>
     </div>
   </div>
+
+  <CloudinaryAssetPicker v-model:open="showAssetDialog" @select="onAssetPicked" />
 </template>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, type ComponentPublicInstance } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog";
+import CloudinaryAssetPicker from "@/components/admin/CloudinaryAssetPicker.vue";
 import { ArrowLeft, Save, Loader, Plus, Trash2, Upload } from "lucide-vue-next";
 import { useApi } from "@/composables/useApi";
 import { toast } from "vue-sonner";
@@ -31,6 +33,16 @@ const isSavingLocations = ref(false);
 const categoryFileInput = ref<HTMLInputElement | null>(null);
 const categorySelectedFile = ref<File | null>(null);
 const categoryPreviewUrl = ref<string | null>(null);
+// Cloudinary picker state
+const showAssetDialog = ref(false);
+const assets = ref<any[]>([]);
+const assetsLoading = ref(false);
+const assetSearch = ref("");
+const nextCursor = ref<string | null>(null);
+const pickerContext = ref<{ type: 'category' } | { type: 'location', id: string } | { type: 'newLocation' }>({ type: 'category' });
+const locationFileInputs = ref<Record<string, HTMLInputElement | null>>({});
+const newLocationFileInput = ref<HTMLInputElement | null>(null);
+const assetScrollRef = ref<HTMLElement | null>(null);
 
 const categoryId = ref<string | null>(null);
 
@@ -89,6 +101,98 @@ async function handleImageUpload(event: Event) {
   categoryPreviewUrl.value = URL.createObjectURL(file);
   // Show preview in sidebar and pass validation
   form.value.imageUrl = categoryPreviewUrl.value;
+}
+
+// Cloudinary assets list
+async function fetchCloudinaryAssets(reset = false) {
+  if (assetsLoading.value) return;
+  assetsLoading.value = true;
+  try {
+    const params: any = { limit: 50 };
+    if (assetSearch.value) params.q = assetSearch.value;
+    if (!reset && nextCursor.value) params.nextCursor = nextCursor.value;
+    const res = await request<{ assets: any[]; nextCursor: string | null }>("/cloudinary/assets", { params });
+    if (res.success && res.data) {
+      if (reset) assets.value = [];
+      assets.value = [...assets.value, ...res.data.assets];
+      nextCursor.value = res.data.nextCursor || null;
+    } else {
+      toast.error(res.message || "Failed to load assets");
+    }
+  } finally {
+    assetsLoading.value = false;
+  }
+}
+
+function openAssetDialogForCategory() {
+  pickerContext.value = { type: 'category' };
+  showAssetDialog.value = true;
+  nextCursor.value = null;
+  assets.value = [];
+  fetchCloudinaryAssets(true);
+}
+
+function openAssetDialogForLocation(loc: any) {
+  pickerContext.value = { type: 'location', id: loc.id };
+  showAssetDialog.value = true;
+  nextCursor.value = null;
+  assets.value = [];
+  fetchCloudinaryAssets(true);
+}
+
+function openAssetDialogForNewLocation() {
+  pickerContext.value = { type: 'newLocation' };
+  showAssetDialog.value = true;
+  nextCursor.value = null;
+  assets.value = [];
+  fetchCloudinaryAssets(true);
+}
+
+function selectAsset(asset: any) {
+  const url = asset.url;
+  if (pickerContext.value.type === 'category') {
+    form.value.imageUrl = url;
+  } else if (pickerContext.value.type === 'location') {
+    const ctx = pickerContext.value as { type: 'location'; id: string };
+    const target = locations.value.find((l: any) => l.id === ctx.id);
+    if (target) target.imageUrl = url;
+  } else if (pickerContext.value.type === 'newLocation') {
+    newLocation.value.imageUrl = url;
+  }
+  showAssetDialog.value = false;
+  toast.success('Image selected');
+}
+
+function triggerLocalUpload() {
+  if (pickerContext.value.type === 'category') {
+    categoryFileInput.value?.click();
+  } else if (pickerContext.value.type === 'location') {
+    const id = (pickerContext.value as { type: 'location'; id: string }).id;
+    locationFileInputs.value[id]?.click();
+  } else if (pickerContext.value.type === 'newLocation') {
+    newLocationFileInput.value?.click();
+  }
+}
+
+function setLocationFileInput(id: string) {
+  return (el: Element | ComponentPublicInstance | null) => {
+    locationFileInputs.value[id] = (el as HTMLInputElement) || null;
+  };
+}
+
+function onAssetPicked(asset: any) {
+  const url = asset.url;
+  if (pickerContext.value.type === 'category') {
+    form.value.imageUrl = url;
+  } else if (pickerContext.value.type === 'location') {
+    const ctx = pickerContext.value as { type: 'location'; id: string };
+    const target = locations.value.find((l: any) => l.id === ctx.id);
+    if (target) target.imageUrl = url;
+  } else if (pickerContext.value.type === 'newLocation') {
+    newLocation.value.imageUrl = url;
+  }
+  showAssetDialog.value = false;
+  toast.success('Image selected');
 }
 
 function validateForm(): boolean {
@@ -241,7 +345,7 @@ async function saveAllLocations() {
 async function removeLocation(id: string) {
   const res = await deleteKawasanLocation(id);
   if (res.success) {
-    locations.value = locations.value.filter((l) => l.id !== id);
+    locations.value = locations.value.filter((l: any) => l.id !== id);
     toast.success("Location deleted");
   } else {
     toast.error(res.message || "Failed to delete location");
@@ -423,7 +527,8 @@ onMounted(() => {
               <div class="w-24 h-16 bg-gray-100 dark:bg-gray-600 rounded overflow-hidden border border-gray-200 dark:border-gray-500">
                 <img v-if="newLocation.imageUrl" :key="newLocation.imageUrl" :src="newLocation.imageUrl" class="w-full h-full object-cover" />
               </div>
-              <input type="file" accept="image/*" @change="handleNewLocationImageUpload" />
+              <input ref="newLocationFileInput" type="file" accept="image/*" class="hidden" @change="handleNewLocationImageUpload" />
+              <Button variant="outline" size="sm" @click="openAssetDialogForNewLocation"><Upload class="w-4 h-4 mr-2" /> Choose/Upload</Button>
             </div>
 
             <!-- Existing locations -->
@@ -479,7 +584,8 @@ onMounted(() => {
                         <div class="w-28 h-20 bg-gray-100 dark:bg-gray-600 rounded overflow-hidden border border-gray-200 dark:border-gray-500">
                           <img v-if="loc.imageUrl" :key="loc.imageUrl" :src="loc.imageUrl" class="w-full h-full object-cover" />
                         </div>
-                        <input type="file" accept="image/*" @change="handleLocationImageUpload(loc, $event)" />
+                        <input :ref="setLocationFileInput(loc.id)" type="file" accept="image/*" class="hidden" @change="handleLocationImageUpload(loc, $event)" />
+                        <Button variant="outline" size="sm" @click="openAssetDialogForLocation(loc)"><Upload class="w-4 h-4 mr-2" /> Choose/Upload</Button>
                       </div>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
@@ -507,7 +613,8 @@ onMounted(() => {
           <h3 class="font-medium text-gray-900 dark:text-white">Featured Image *</h3>
 
           <div
-            class="relative aspect-[3/2] w-full bg-gray-100 dark:bg-gray-600 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-500 flex items-center justify-center"
+            class="relative aspect-[3/2] w-full bg-gray-100 dark:bg-gray-600 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-500 flex items-center justify-center cursor-pointer"
+            @click="openAssetDialogForCategory"
           >
             <img
               v-if="form.imageUrl"
@@ -517,7 +624,7 @@ onMounted(() => {
             />
             <div v-else class="text-center p-4">
               <Upload class="w-8 h-8 mx-auto text-gray-400 mb-2" />
-              <p class="text-xs text-gray-500">No image selected</p>
+              <p class="text-xs text-gray-500">Click to choose or upload image</p>
             </div>
 
             <div class="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-gray-800/80 z-10" v-if="uploadLoading">
@@ -525,13 +632,8 @@ onMounted(() => {
             </div>
           </div>
 
-          <div class="flex gap-2">
-            <input ref="categoryFileInput" type="file" accept="image/*" class="hidden" @change="handleImageUpload" />
-            <Button type="button" variant="outline" class="w-full" @click="categoryFileInput?.click()">
-              <Upload class="w-4 h-4 mr-2" />
-              {{ form.imageUrl ? "Change Image" : "Upload Image" }}
-            </Button>
-          </div>
+          <!-- Hidden local file input -->
+          <input ref="categoryFileInput" type="file" accept="image/*" class="hidden" @change="handleImageUpload" />
 
           <input
             v-if="form.imageUrl"
@@ -575,6 +677,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
+      <CloudinaryAssetPicker v-model:open="showAssetDialog" @select="onAssetPicked" />
     </div>
   </div>
 </template>

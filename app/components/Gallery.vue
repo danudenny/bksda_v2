@@ -330,62 +330,15 @@
 </template>
 <script setup lang="ts">
 import { ArrowRight, ChevronLeft, ChevronRight, X } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
+import { useApi } from '@/composables/useApi';
 
 const lightboxOpen = ref(false);
 const currentImageIndex = ref(0);
 
-const createPlaceholderUrl = (text: string) => {
-    const formattedText = text.replace(/\s+/g, '+');
-    return `https://placehold.co/600x400?text=${formattedText}`;
-};
-const row1Alts = [
-    'Harimau Sumatera',
-    'Gajah Sumatera',
-    'Orangutan',
-    'Burung Rangkong',
-    'Tapir',
-    'Bunga Rafflesia',
-];
-
-const row2Alts = [
-    'Hutan Hujan Tropis',
-    'Air Terjun',
-    'Danau',
-    'Pemandangan Gunung',
-    'Sungai di Hutan',
-    'Kabut di Hutan',
-];
-
-const row3Alts = [
-    'Tim BKSDA Patroli',
-    'Edukasi Masyarakat',
-    'Peneliti di Lapangan',
-    'Pelepasliaran Satwa',
-    'Diskusi Warga',
-    'Pos Jaga BKSDA',
-];
-
-const row1Images = computed(() =>
-    row1Alts.map((alt) => ({
-        src: createPlaceholderUrl(alt),
-        alt: alt,
-    }))
-);
-
-const row2Images = computed(() =>
-    row2Alts.map((alt) => ({
-        src: createPlaceholderUrl(alt),
-        alt: alt,
-    }))
-);
-
-const row3Images = computed(() =>
-    row3Alts.map((alt) => ({
-        src: createPlaceholderUrl(alt),
-        alt: alt,
-    }))
-);
+const row1Images = ref<{ src: string; alt: string }[]>([]);
+const row2Images = ref<{ src: string; alt: string }[]>([]);
+const row3Images = ref<{ src: string; alt: string }[]>([]);
 
 const allImages = computed(() => [
     ...row1Images.value,
@@ -433,6 +386,33 @@ if (process.client) {
         if (e.key === 'ArrowLeft') previousImage();
     });
 }
+
+const { getGalleryImages } = useApi();
+
+async function loadGallery() {
+    try {
+        const [r1, r2, r3] = await Promise.all([
+            getGalleryImages('ROW_1'),
+            getGalleryImages('ROW_2'),
+            getGalleryImages('ROW_3'),
+        ]);
+        if (r1.success && Array.isArray(r1.data)) {
+            row1Images.value = r1.data.map((it: any) => ({ src: it.imageUrl, alt: it.altText || '' }));
+        }
+        if (r2.success && Array.isArray(r2.data)) {
+            row2Images.value = r2.data.map((it: any) => ({ src: it.imageUrl, alt: it.altText || '' }));
+        }
+        if (r3.success && Array.isArray(r3.data)) {
+            row3Images.value = r3.data.map((it: any) => ({ src: it.imageUrl, alt: it.altText || '' }));
+        }
+    } catch (e) {
+        // ignore
+    }
+}
+
+onMounted(() => {
+    loadGallery();
+});
 </script>
 
 <style>

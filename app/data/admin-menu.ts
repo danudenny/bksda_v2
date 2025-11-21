@@ -9,6 +9,7 @@ import {
   Link,
   Settings,
   Tag,
+  PawPrint
 } from "lucide-vue-next";
 
 export interface MenuItem {
@@ -68,8 +69,8 @@ export const adminMenuItems: MenuItem[] = [
     href: "#",
     children: [
       {
-        name: "Spesies Fokus",
-        icon: Leaf,
+        name: "Fokus Konservasi",
+        icon:   PawPrint,
         href: "/admin/fokus-konservasi",
       },
       {
