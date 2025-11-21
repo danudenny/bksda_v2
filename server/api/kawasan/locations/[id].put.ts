@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const body = await readBody(event);
-    const { name, description, order, isActive } = body;
+    const { name, description, content, imageUrl, latitude, longitude, order, isActive } = body;
 
     // Check if location exists
     const existing = await prisma.kawasanLocation.findUnique({
@@ -53,6 +53,10 @@ export default defineEventHandler(async (event) => {
       data: {
         ...(name && { name }),
         ...(description !== undefined && { description }),
+        ...(content !== undefined && { content }),
+        ...(imageUrl !== undefined && { imageUrl }),
+        ...(latitude !== undefined && { latitude: Number(latitude) }),
+        ...(longitude !== undefined && { longitude: Number(longitude) }),
         ...(order !== undefined && { order }),
         ...(isActive !== undefined && { isActive }),
         ...(newSlug !== existing.slug && { slug: newSlug }),

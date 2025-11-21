@@ -47,71 +47,64 @@
             v-if="post"
             class="bg-white rounded-2xl shadow-xl ring-1 ring-gray-900/5 p-6 sm:p-8 lg:p-12 -mt-8"
         >
-            <!-- Share Button -->
-            <div class="mb-8 flex justify-end">
-                <div class="relative" ref="shareMenuRef">
-                    <button
-                        @click="toggleShareMenu"
-                        class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-emerald-700 hover:border-emerald-700 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
-                    >
-                        <Icon icon="mdi:share-variant-outline" class="h-4 w-4" aria-hidden="true" />
-                        Bagikan
-                    </button>
-
-                    <!-- Share Menu -->
-                    <transition
-                        enter-active-class="transition ease-out duration-100"
-                        enter-from-class="transform opacity-0 scale-95"
-                        enter-to-class="transform opacity-100 scale-100"
-                        leave-active-class="transition ease-in duration-75"
-                        leave-from-class="transform opacity-100 scale-100"
-                        leave-to-class="transform opacity-0 scale-95"
-                    >
-                        <div
-                            v-if="showShareMenu"
-                            class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-lg bg-white shadow-xl ring-1 ring-black/5"
+           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                    <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                        Bagikan:
+                    </span>
+                    
+                    <div class="flex items-center gap-2">
+                        <button
+                            v-for="social in socialShares"
+                            :key="social.name"
+                            @click="openSocialShare(social)"
+                            :class="[
+                                'group relative flex h-9 w-9 items-center justify-center rounded-full border transition-all duration-300',
+                                'hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-1',
+                                social.colorClass
+                            ]"
+                            :aria-label="'Bagikan ke ' + social.name"
+                            :title="'Bagikan ke ' + social.name"
                         >
-                            <div class="py-1">
-                                <button
-                                    @click="shareToFacebook"
-                                    class="group flex w-full items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                                >
-                                    <Icon icon="ic:baseline-facebook" />
-                                    Facebook
-                                </button>
-                                <button
-                                    @click="shareToTwitter"
-                                    class="group flex w-full items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-sky-50 hover:text-sky-600 transition-colors"
-                                >
-                                    <Icon icon="prime:twitter" />
-                                    Twitter / X
-                                </button>
-                                <button
-                                    @click="shareToWhatsApp"
-                                    class="group flex w-full items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
-                                >
-                                    <Icon icon="ic:baseline-whatsapp" />
-                                    WhatsApp
-                                </button>
-                                <button
-                                    @click="copyLink"
-                                    class="group flex w-full items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors border-t border-gray-100"
-                                >
-                                    <Icon icon="material-symbols:link"  />
-                                    Salin Tautan
-                                </button>
-                            </div>
-                        </div>
-                    </transition>
+                            <Icon 
+                                :icon="social.icon" 
+                                class="text-lg transition-transform group-hover:scale-110" 
+                            />
+                        </button>
+
+                        <button
+                            @click="copyLink"
+                            class="group relative flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-gray-600 transition-all duration-300 hover:-translate-y-1 hover:bg-gray-100 hover:shadow-lg hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-1"
+                            aria-label="Salin Tautan"
+                            title="Salin Tautan"
+                        >
+                            <Icon 
+                                :icon="copySuccess ? 'mdi:check' : 'mdi:link-variant'" 
+                                :class="[
+                                    'text-lg transition-all duration-300',
+                                    copySuccess ? 'text-emerald-600 scale-110' : ''
+                                ]" 
+                            />
+                        </button>
+                    </div>
                 </div>
+
+                <button
+                    v-if="canNativeShare"
+                    @click="handleShare"
+                    class="hidden sm:flex items-center gap-2 text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors"
+                >
+                    <Icon icon="mdi:share-variant-outline" />
+                    <span>Opsi Lainnya</span>
+                </button>
             </div>
 
-            <!-- Featured Image -->
             <div class="relative overflow-hidden rounded-xl mb-8">
-                <img
+                <NuxtImg
                     :src="post.imageUrl || 'https://placehold.co/600x400?text=No+Image'"
                     :alt="post.title"
                     class="w-full aspect-video object-cover"
+                    loading="lazy"
                 />
             </div>
 
@@ -132,9 +125,9 @@
                         class="h-16 w-16 shrink-0 overflow-hidden rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 p-0.5"
                     >
                         <div
-                            class="h-full w-full rounded-full bg-white flex items-center justify-center"
+                            class="h-full w-full text-emerald-600 rounded-full bg-white flex items-center justify-center"
                         >
-                            <UserIcon class="h-8 w-8 text-emerald-600" />
+                            {{ avatarFromName(post.author.name) }}
                         </div>
                     </div>
                     <div class="flex-1 min-w-0">
@@ -173,10 +166,11 @@
                 >
                     <NuxtLink :to="relatedPost.href" class="block">
                         <div class="relative overflow-hidden">
-                            <img
+                            <NuxtImg
                                 :src="relatedPost.imageUrl || 'https://placehold.co/600x400?text=No+Image'"
                                 :alt="relatedPost.title"
                                 class="aspect-video w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy"
                             />
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -236,28 +230,60 @@
 import { Icon } from "@iconify/vue";
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import type { Post } from '../../../types/types';
+import { format, parseISO } from 'date-fns';
+import { id } from 'date-fns/locale';
 
 const route = useRoute();
 const postId = route.params.id;
+const avatarFromName = (name: string) => {
+    const initials = name
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase())
+        .join('');
+    return initials;
+};
 
-// Share functionality
-const showShareMenu = ref(false);
-const shareMenuRef = ref<HTMLElement | null>(null);
 const copySuccess = ref(false);
+const canNativeShare = ref(false);
 
-// Close share menu when clicking outside
-const handleClickOutside = (event: MouseEvent) => {
-    if (
-        shareMenuRef.value &&
-        !shareMenuRef.value.contains(event.target as Node)
-    ) {
-        showShareMenu.value = false;
+const onShareError = (err: unknown) => {
+    console.error('Share failed:', err);
+    copyLink();
+};
+
+const handleShare = async () => {
+    if (navigator.share && post.value) {
+        try {
+            await navigator.share({
+                title: post.value.title,
+                text: post.value.description || post.value.title,
+                url: window.location.href,
+            });
+        } catch (err) {
+             // User cancelled or share failed, try fallback if not cancellation
+             if (err instanceof Error && err.name !== 'AbortError') {
+                 onShareError(err);
+             }
+        }
+    } else {
+        copyLink();
+    }
+};
+
+const copyLink = async () => {
+    try {
+        await navigator.clipboard.writeText(window.location.href);
+        copySuccess.value = true;
+        setTimeout(() => {
+            copySuccess.value = false;
+        }, 2000);
+    } catch (err) {
+        console.error('Gagal menyalin tautan: ', err);
     }
 };
 
 onMounted(() => {
-    document.addEventListener('click', handleClickOutside);
-
+    canNativeShare.value = !!navigator.share;
     if (post.value) {
         setTimeout(async () => {
             try {
@@ -275,61 +301,50 @@ onMounted(() => {
     }
 });
 
-onBeforeUnmount(() => {
-    document.removeEventListener('click', handleClickOutside);
-});
-
-const toggleShareMenu = () => {
-    showShareMenu.value = !showShareMenu.value;
-};
-
-const shareToFacebook = () => {
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(post.value?.title || 'Berita BKSDA');
-    window.open(
-        `https://www.facebook.com/sharer/sharer.php?u=${url}&t=${title}`,
-        '_blank'
-    );
-    showShareMenu.value = false;
-};
-
-const shareToTwitter = () => {
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(post.value?.title || 'Berita BKSDA');
-    window.open(
-        `https://twitter.com/intent/tweet?url=${url}&text=${title}`,
-        '_blank'
-    );
-    showShareMenu.value = false;
-};
-
-const shareToWhatsApp = () => {
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(post.value?.title || 'Berita BKSDA');
-    window.open(`https://wa.me/?text=${title}%20${url}`, '_blank');
-    showShareMenu.value = false;
-};
-
-const copyLink = async () => {
-    try {
-        await navigator.clipboard.writeText(window.location.href);
-        copySuccess.value = true;
-        setTimeout(() => {
-            copySuccess.value = false;
-        }, 2000);
-    } catch (err) {
-        console.error('Gagal menyalin tautan: ', err);
-    }
-    showShareMenu.value = false;
-};
-
-import { format, parseISO } from 'date-fns';
-import { id } from 'date-fns/locale';
-
 const { data: postData, error } = await useAsyncData<{data: Post}>(
     `post-${postId}`,
     () => $fetch(`/api/posts/${postId}`),
 );
+
+const socialShares = [
+    {
+        name: 'WhatsApp',
+        icon: 'mdi:whatsapp',
+        colorClass: 'border-green-200 bg-green-50 text-green-600 hover:bg-green-600 hover:border-green-600 hover:text-white focus:ring-green-500',
+        getUrl: (url: string, title: string) => `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`
+    },
+    {
+        name: 'Facebook',
+        icon: 'mdi:facebook',
+        colorClass: 'border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-white focus:ring-blue-500',
+        getUrl: (url: string) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`
+    },
+    {
+        name: 'X (Twitter)',
+        icon: 'ri:twitter-x-fill', // atau ri:twitter-x-fill jika ingin logo X baru
+        colorClass: 'border-gray-200 bg-gray-50 text-gray-700 hover:bg-black hover:border-black hover:text-white focus:ring-gray-800',
+        getUrl: (url: string, title: string) => `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`
+    }
+];
+
+const openSocialShare = (social: any) => {
+    if (!post.value) return;
+    
+    const url = window.location.href;
+    const title = post.value.title;
+    const shareUrl = social.getUrl(url, title);
+    
+    const width = 600;
+    const height = 400;
+    const left = (window.screen.width - width) / 2;
+    const top = (window.screen.height - height) / 2;
+    
+    window.open(
+        shareUrl,
+        'share-window',
+        `width=${width},height=${height},top=${top},left=${left},menubar=no,toolbar=no,resizable=yes,scrollbars=yes`
+    );
+};
 
 if (error.value) {
     throw createError({ statusCode: 404, statusMessage: 'Berita tidak ditemukan' });
@@ -341,7 +356,7 @@ const post = computed(() => {
     return {
         ...p,
         href: `/berita/${p.slug}`,
-        imageUrl: p.coverImage,
+        imageUrl: p.imageUrl,
         date: format(parseISO(p.createdAt), 'dd MMMM yyyy', { locale: id }),
         datetime: p.createdAt,
         category: {
@@ -358,21 +373,21 @@ const post = computed(() => {
 const { data: relatedPostsData } = useAsyncData<Post[]>(
     `related-posts-${postId}`,
     () => {
-        if (!post.value?.slug) return Promise.resolve(null)
-        return $fetch(`/api/posts?limit=3&exclude=${post.value.slug}`)
+        if (!post.value?.slug) return Promise.resolve([])
+        return $fetch(`/api/posts?limit=3&category_ids=${post.value.categoryId}&exclude=${post.value.slug}`)
+            .then((res: any) => res.data || [])
     },
     {
-        transform: (response: any) => response.data,
         watch: [() => post.value?.slug]
     },
 );
 
 const relatedPosts = computed(() => {
     if (!relatedPostsData.value) return [];
-    return relatedPostsData.value.map((p: Post) => ({
+    return relatedPostsData.value.filter((p: Post) => p.id !== post.value?.id).map((p: Post) => ({
         ...p,
         href: `/berita/${p.slug}`,
-        imageUrl: p.coverImage,
+        imageUrl: p.imageUrl,
         date: format(parseISO(p.createdAt), 'dd MMMM yyyy', { locale: id }),
         datetime: p.createdAt,
         category: {

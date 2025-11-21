@@ -68,21 +68,19 @@
         </main>
 
         <BackToTop />
-        <WhatsAppButton />
+        <WhatsAppButton />  
     </div>
 </template>
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 
-// Layout for single content pages like news detail, announcement detail, etc.
 const isMegaMenuOpen = ref(false);
 const isSearchOpen = ref(false);
 const isScrolled = ref(false);
 
 const toggleMegaMenu = () => {
     isMegaMenuOpen.value = !isMegaMenuOpen.value;
-    // Close search when opening menu
     if (isMegaMenuOpen.value) {
         isSearchOpen.value = false;
     }
@@ -94,7 +92,6 @@ const closeMegaMenu = () => {
 
 const toggleSearch = () => {
     isSearchOpen.value = !isSearchOpen.value;
-    // Close menu when opening search
     if (isSearchOpen.value) {
         isMegaMenuOpen.value = false;
     }

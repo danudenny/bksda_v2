@@ -46,6 +46,7 @@
           leave-to-class="opacity-0 scale-95"
         >
           <div
+            v-if="activeShowcase"
             :key="activeShowcase.id"
             class="grid grid-cols-1 items-center overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-gray-900/5 lg:grid-cols-2"
           >
@@ -113,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { Shield, Camera, Mountain } from "lucide-vue-next";
 
 type KawasanChild = {
@@ -136,107 +137,58 @@ const slugify = (text: string) => {
     .replace(/[^\w-]+/g, "");
 };
 
-const dataKawasan: KategoriKawasan[] = [
-  {
-    id: "suaka-margasatwa",
-    label: "Suaka Margasatwa",
-    icon: Shield,
-    description:
-      "Kawasan suaka alam yang melindungi satwa liar khas, sebagai tempat perlindungan, perkembangbiakan, dan habitat penting.",
-    imageUrl: "/kws_konservasi/dangku.avif",
-    children: [
-      {
-        label: "Dangku",
-        description:
-          "Merupakan habitat Harimau Sumatera. Kawasan dengan luas 47.996,45 hektar menyimpan potensi flora fauna yang cukup beragam.",
-      },
-      {
-        label: "Bentayan",
-        description:
-          "Kawasan yang sejak tahun 1981 berfungsi sebagai kawasan konservasi.",
-      },
-      {
-        label: "Isau Isau",
-        description:
-          "Kawasan ini merupakan hutan hujan pegunungan dengan jenis tumbuhan yang didominasi oleh famili Dipterocarpaceae, Fagaceae, Lauraceae.",
-      },
-      {
-        label: "Gumai Pasemah",
-        description:
-          "HSA Gumai Tebing Tinggi merupakan ekosistem hutan hujan yang vegetasinya beragam dan didominasi oleh famili Dipterocapaceae.",
-      },
-      {
-        label: "Gunung Raya",
-        description:
-          "SM Gunung Raya menyimpan potensi jasa lingkungan berupa penyimpanan karbon, air, wisata alam terbatas, dan wisata religi.",
-      },
-    ],
-  },
-  {
-    id: "taman-wisata-alam",
-    label: "Taman Wisata Alam",
-    icon: Camera,
-    description:
-      "Kawasan pelestarian alam yang dimanfaatkan untuk rekreasi, pariwisata alam, dan edukasi lingkungan secara berkelanjutan.",
-    imageUrl: "/kws_konservasi/punti.avif",
-    children: [
-      {
-        label: "Punti Kayu",
-        description:
-          "Punti Kayu merupakan hutan pinus dalam kota terbesar di Indonesia. Selain menjadi tempat wisata, Punti Kayu berkontribusi dalam penyerapan karbon dioksida.",
-      },
-      {
-        label: "Isau-Isau",
-        description:
-          "Kawasan ini merupakan pusat pelatihan Gajah yang ada di Sumatera Selatan. Gajah yang dikelola di kawasan ini saat ini berjumlah 10 Gajah.",
-      },
-      {
-        label: "Jering Menduyung",
-        description:
-          "Kawasan TWA Jering Menduyung merupakan ekosistem mangrove yang didominasi oleh dua jenis flora, yaitu bakau dan nipah.",
-      },
-      {
-        label: "Gunung Permisan",
-        description:
-          "Yang menjadi daya tarik adalah Bukit Nenek, karena adanya goa di puncak bukitnya dan batu yang terbelah serta dataran di puncak untuk melihat pemandangan.",
-      },
-    ],
-  },
-  {
-    id: "taman-nasional",
-    label: "Taman Nasional",
-    icon: Mountain,
-    description:
-      "Ekosistem asli yang dikelola untuk tujuan penelitian, ilmu pengetahuan, pendidikan, dan pelestarian keanekaragaman hayati.",
-    imageUrl: "/kws_konservasi/gnmaras.avif",
-    children: [
-      {
-        label: "Gunung Maras",
-        description:
-          "Keunikan kawasan ini terdiri dari beberapa tipe ekosistem yang menjadi satu kesatuan bentang alam, yaitu ekosistem mangrove, pegunungan, dan dataran rendah.",
-      },
-    ],
-  },
-];
+const dataKawasan = ref<KategoriKawasan[]>([]);
 
-const activeTab = ref<string>("suaka-margasatwa");
-const activeShowcase = computed(() => {
-  return dataKawasan.find((k) => k.id === activeTab.value)!;
+const pickIcon = (name: string) => {
+  const n = name.toLowerCase();
+  if (n.includes("suaka")) return Shield;
+  if (n.includes("wisata")) return Camera;
+  if (n.includes("nasional")) return Mountain;
+  return Shield;
+};
+
+async function loadKawasan() {
+  try {
+    const resp: any = await $fetch(`/api/kawasan/categories?page=1&limit=100`);
+    if (!resp?.success || !Array.isArray(resp.data)) return;
+    const categories = resp.data as any[];
+    const list: KategoriKawasan[] = categories.map((cat: any) => ({
+      id: cat.slug || slugify(cat.name),
+      label: cat.name,
+      icon: pickIcon(cat.name),
+      description: cat.description || "",
+      imageUrl: cat.imageUrl || "/kws_konservasi/dangku.avif",
+      children: (cat.locations || []).map((loc: any) => ({
+        label: loc.name,
+        description: loc.description || "",
+      })),
+    }));
+    dataKawasan.value = list;
+    // Set defaults
+    if (!activeTab.value && dataKawasan.value.length) {
+      activeTab.value = dataKawasan.value[0].id;
+    }
+    if (activeShowcase.value && activeShowcase.value.children.length) {
+      activeChildLabel.value = activeShowcase.value.children[0].label;
+    }
+  } catch (e) {
+    // silent
+  }
+}
+
+const activeTab = ref<string>("");
+const activeShowcase = computed<KategoriKawasan | null>(() => {
+  return dataKawasan.value.find((k: KategoriKawasan) => k.id === activeTab.value) || null;
 });
 
-const defaultActiveShowcase = dataKawasan.find((k) => k.id === activeTab.value);
-
-const initialChildLabel =
-  defaultActiveShowcase && defaultActiveShowcase.children.length > 0
-    ? defaultActiveShowcase.children[0].label
-    : null;
-
-const activeChildLabel = ref<string | null>(initialChildLabel);
+const activeChildLabel = ref<string | null>(null);
 
 const activeChildData = computed(() => {
-  if (!activeChildLabel.value) return null;
-  return activeShowcase.value.children.find(
-    (c) => c.label === activeChildLabel.value,
+  if (!activeShowcase.value || !activeChildLabel.value) return null;
+  return (
+    activeShowcase.value.children.find(
+      (c: KawasanChild) => c.label === activeChildLabel.value,
+    ) || null
   );
 });
 
@@ -253,13 +205,16 @@ const getKawasanUrl = (childLabel: string) => {
   return `/kawasan/${slugify(activeShowcase.value.id)}/${slugify(childLabel)}`;
 };
 
-watch(activeTab, (newTabId) => {
-  const newShowcase = dataKawasan.find((k) => k.id === newTabId);
-
+watch(activeTab, (newTabId: string) => {
+  const newShowcase = dataKawasan.value.find((k: KategoriKawasan) => k.id === newTabId);
   if (newShowcase && newShowcase.children.length > 0) {
     activeChildLabel.value = newShowcase.children[0].label;
   } else {
     activeChildLabel.value = null;
   }
+});
+
+onMounted(() => {
+  loadKawasan();
 });
 </script>

@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     requireAdmin(user);
 
     const body = await readBody(event);
-    const { name, categoryId, description, order } = body;
+    const { name, categoryId, description, content, imageUrl, latitude, longitude, order } = body;
 
     // Validation
     if (!name || !categoryId) {
@@ -50,6 +50,10 @@ export default defineEventHandler(async (event) => {
         slug,
         categoryId,
         description: description || null,
+        content: content || null,
+        imageUrl: imageUrl || null,
+        latitude: latitude !== undefined ? Number(latitude) : null,
+        longitude: longitude !== undefined ? Number(longitude) : null,
         order: order || 0,
         isActive: true,
       },

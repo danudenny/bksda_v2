@@ -186,9 +186,10 @@ import {
     X,
 } from 'lucide-vue-next';
 import { nextTick, ref, watch } from 'vue';
+import { watchDebounced } from '@vueuse/core';
 
 type SearchResult = {
-    id: number;
+    id: string;
     title: string;
     category: string;
     href: string;
@@ -223,50 +224,18 @@ const quickSearchLinks: QuickSearchLink[] = [
     { label: 'Regulasi', query: 'regulasi', icon: FileText },
 ];
 
-const allContent: SearchResult[] = [
-    {
-        id: 1,
-        title: 'Berita Terbaru BKSDA',
-        category: 'Berita',
-        href: '/berita',
-        icon: Newspaper,
-    },
-    {
-        id: 2,
-        title: 'Taman Wisata Alam Punti Kayu',
-        category: 'Kawasan Konservasi',
-        href: '/kawasan/punti-kayu',
-        icon: Mountain,
-    },
-    {
-        id: 3,
-        title: 'Galeri Foto Kegiatan',
-        category: 'Galeri',
-        href: '/galeri',
-        icon: ImageIcon,
-    },
-    {
-        id: 4,
-        title: 'Profil BKSDA Sumatera Selatan',
-        category: 'Profil',
-        href: '/profil',
-        icon: Users,
-    },
-    {
-        id: 5,
-        title: 'Fokus Konservasi Harimau Sumatera',
-        category: 'Konservasi',
-        href: '/konservasi/harimau',
-        icon: TreePine,
-    },
-    {
-        id: 6,
-        title: 'Peraturan dan Regulasi',
-        category: 'Regulasi',
-        href: '/regulasi',
-        icon: FileText,
-    },
-];
+const getIconByCategory = (category: string) => {
+    switch (category) {
+        case 'Berita': return Newspaper;
+        case 'Kawasan Konservasi': return Mountain;
+        case 'Fokus Konservasi': return TreePine;
+        case 'Pengumuman': return FileText;
+        case 'Galeri': return ImageIcon;
+        case 'Profil': return Users;
+        case 'Regulasi': return FileText;
+        default: return Search;
+    }
+};
 
 const clearSearch = () => {
     searchQuery.value = '';
@@ -288,25 +257,34 @@ const handleSearch = () => {
     emit('close');
 };
 
-watch(searchQuery, async (newQuery) => {
-    if (!newQuery.trim()) {
-        searchResults.value = [];
-        return;
-    }
+watchDebounced(
+    searchQuery,
+    async (newQuery) => {
+        if (!newQuery.trim()) {
+            searchResults.value = [];
+            return;
+        }
 
-    isSearching.value = true;
+        isSearching.value = true;
 
-    await new Promise((resolve) => setTimeout(resolve, 300));
-
-    const query = newQuery.toLowerCase();
-    searchResults.value = allContent.filter(
-        (item) =>
-            item.title.toLowerCase().includes(query) ||
-            item.category.toLowerCase().includes(query)
-    );
-
-    isSearching.value = false;
-});
+        try {
+            const data = await $fetch<any[]>('/api/search', {
+                query: { q: newQuery }
+            });
+            
+            searchResults.value = data.map((item) => ({
+                ...item,
+                icon: getIconByCategory(item.category)
+            }));
+        } catch (error) {
+            console.error('Search error:', error);
+            searchResults.value = [];
+        } finally {
+            isSearching.value = false;
+        }
+    },
+    { debounce: 300 }
+);
 
 watch(
     () => props.isOpen,

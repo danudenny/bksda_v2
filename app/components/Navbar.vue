@@ -14,7 +14,6 @@
             class="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8"
         >
             <nav class="flex w-full items-center justify-between py-4 lg:py-5">
-                <!-- Logo Section -->
                 <NuxtLink
                     to="/"
                     class="flex items-center gap-2 sm:gap-3 group transition duration-300"
@@ -22,19 +21,20 @@
                 >
                     <div class="flex items-center gap-2 flex-shrink-0">
                         <NuxtImg
-                            src="/logo1.avif"
-                            alt="BKSDA Logo"
-                            width="300"
-                            height="300"
-                            class="h-8 w-8 sm:h-10 sm:w-10 object-cover transition-transform duration-300 group-hover:scale-110"
-                        />
-                        <NuxtImg
-                            src="/logo2.png"
+                            src="https://res.cloudinary.com/dopp3opre/image/upload/v1763652646/logo1_o93q0x.avif"
                             alt="Kementerian LHK Logo"
                             width="300"
                             height="300"
                             class="h-8 w-auto sm:h-10 object-contain transition-transform duration-300 group-hover:scale-110"
                         />
+                        <NuxtImg
+                            src="https://res.cloudinary.com/dopp3opre/image/upload/v1763652647/logo2_l76b4h.png"
+                            alt="BKSDA Logo"
+                            width="300"
+                            height="300"
+                            class="h-8 w-auto sm:h-10 object-contain transition-transform duration-300 group-hover:scale-110"
+                        />
+                        
                     </div>
                     <div class="hidden sm:flex flex-col leading-tight">
                         <span
@@ -60,9 +60,7 @@
                     </div>
                 </NuxtLink>
 
-                <!-- Action Buttons -->
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <!-- Search Button -->
                     <button
                         type="button"
                         class="group cursor-pointer flex items-center justify-center rounded-lg border p-2 text-sm font-semibold shadow-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
@@ -80,7 +78,6 @@
                         />
                     </button>
 
-                    <!-- Menu Button -->
                     <button
                         ref="menuTrigger"
                         type="button"

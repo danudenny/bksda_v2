@@ -13,7 +13,7 @@
                     :key="kawasan.id"
                     class="absolute inset-0"
                 >
-                    <img
+                    <NuxtImg
                         :src="kawasan.image"
                         :alt="kawasan.name"
                         class="w-full h-full object-cover"
@@ -89,24 +89,7 @@
                             <div
                                 class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 backdrop-blur-md border border-amber-400/40 shadow-lg shadow-amber-500/20"
                             >
-                                <svg
-                                    class="h-4 w-4 sm:h-5 sm:w-5 text-amber-400"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="2"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                                    />
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                                    />
-                                </svg>
+                                <MapPin class="h-4 w-4 sm:h-5 sm:w-5 text-amber-400" />
                                 <span
                                     class="text-amber-50 font-medium drop-shadow-lg"
                                     style="
@@ -220,6 +203,7 @@ import {
     MountainIcon,
     Pause,
     Play,
+    MapPin
 } from 'lucide-vue-next';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 

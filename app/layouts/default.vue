@@ -47,24 +47,17 @@ import WhatsAppButton from '~/components/WhatsAppButton.vue';
 import CookieBanner from '~/components/CookieBanner.vue';
 
 
-// --- TAMBAHAN UNTUK JUDUL, FAVICON, & SEO ---
-// Komposabel 'useHead' adalah cara Nuxt 3 untuk mengelola tag <head>
 useHead({
-    // 1. Atribut Bahasa
     htmlAttrs: {
-        lang: 'id', // Memberi tahu Google bahwa bahasa situs ini adalah Indonesia
+        lang: 'id',
     },
 
-    // 2. Judul (Title)
     titleTemplate: (titleChunk) => {
-        // Ini akan membuat judul halaman seperti "Berita - BKSDA Sumsel"
-        // Jika titleChunk (judul halaman) tidak ada, gunakan default
         return titleChunk
             ? `${titleChunk} - BKSDA Sumatera Selatan`
             : 'Balai Konservasi Sumber Daya Alam Sumatera Selatan';
     },
 
-    // 3. Favicon (sesuai permintaan Anda)
     link: [
         {
             rel: 'icon',
@@ -73,22 +66,18 @@ useHead({
         },
     ],
 
-    // 4. Meta Tags (Rekomendasi SEO)
     meta: [
-        // Deskripsi default situs (muncul di Google)
         {
             name: 'description',
             content:
                 'Situs resmi Balai Konservasi Sumber Daya Alam (BKSDA) Sumatera Selatan. Temukan informasi terbaru tentang kawasan konservasi, flora, fauna, dan upaya pelestarian.',
         },
-        // Keywords (meski kurang penting untuk Google, tetap baik untuk konteks)
         {
             name: 'keywords',
             content:
                 'BKSDA, Sumatera Selatan, Konservasi, Sumber Daya Alam, Taman Nasional, Cagar Alam, Flora, Fauna, Harimau Sumatera, Gajah Sumatera',
         },
 
-        // --- Open Graph (untuk sharing ke Facebook, WA, dll) ---
         {
             property: 'og:title',
             content: 'Balai Konservasi Sumber Daya Alam Sumatera Selatan', // Judul default saat di-share
@@ -110,14 +99,12 @@ useHead({
         },
         {
             property: 'og:url',
-            // PENTING: Ganti dengan URL website Anda yang sebenarnya
             content: 'https://bksdasumsel.go.id',
         },
 
-        // --- Twitter Card (untuk sharing ke Twitter) ---
         {
             name: 'twitter:card',
-            content: 'summary_large_image', // Tipe kartu dengan gambar besar
+            content: 'summary_large_image',
         },
         {
             name: 'twitter:title',
@@ -130,12 +117,10 @@ useHead({
         },
         {
             name: 'twitter:image',
-            // PENTING: Ganti dengan URL gambar yang sama dengan og:image
             content: 'https://bksdasumsel.go.id/gambar-default-share.jpg',
         },
     ],
 });
-// --- AKHIR DARI TAMBAHAN SEO ---
 
 const route = useRoute();
 const isMenuOpen = ref(false);
@@ -149,11 +134,8 @@ const handleScroll = () => {
     isScrolled.value = window.scrollY > 50;
 };
 
-// ...sisa script Anda...
-
 const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value;
-    // Close search when opening menu
     if (isMenuOpen.value) {
         isSearchOpen.value = false;
     }
@@ -167,13 +149,11 @@ const closeMenu = (options: { restoreFocus?: boolean } = {}) => {
     isMenuOpen.value = false;
 
     if (options.restoreFocus) {
-        // Focus restoration can be added if needed
     }
 };
 
 const toggleSearch = () => {
     isSearchOpen.value = !isSearchOpen.value;
-    // Close menu when opening search
     if (isSearchOpen.value) {
         isMenuOpen.value = false;
     }
@@ -192,7 +172,6 @@ const handleClickOutside = (event: MouseEvent) => {
     const megaMenuElement = document.getElementById('mega-menu');
     const navbarElement = document.querySelector('header');
 
-    // Don't close if clicking inside the mega menu or navbar (including the menu button)
     if (
         (megaMenuElement && megaMenuElement.contains(target)) ||
         (navbarElement && navbarElement.contains(target))
@@ -200,7 +179,6 @@ const handleClickOutside = (event: MouseEvent) => {
         return;
     }
 
-    // Close the menu if clicking outside both
     closeMenu();
 };
 
@@ -219,7 +197,7 @@ onMounted(() => {
     window.addEventListener('mousedown', handleClickOutside);
     window.addEventListener('keydown', handleKeydown);
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Check initial scroll position
+    handleScroll();
 });
 
 onBeforeUnmount(() => {

@@ -4,6 +4,8 @@ import { successResponse, errorResponse } from "../../../utils/response";
 export default defineEventHandler(async (event) => {
   try {
     const id = getRouterParam(event, "id");
+    const query = getQuery(event);
+    const includeInactive = query.includeInactive === '1' || query.includeInactive === 'true';
 
     if (!id) {
       return errorResponse("Category ID is required");
@@ -13,7 +15,7 @@ export default defineEventHandler(async (event) => {
       where: { id },
       include: {
         locations: {
-          where: { isActive: true },
+          ...(includeInactive ? {} : { where: { isActive: true } }),
           orderBy: { order: "asc" },
         },
       },

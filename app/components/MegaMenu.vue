@@ -278,24 +278,24 @@ const menuItems: MenuItem[] = [
             {
                 label: 'Suaka Margasatwa',
                 children: [
-                    { label: 'Dangku', href: '#' },
-                    { label: 'Bentayan', href: '#' },
-                    { label: 'Isau Isau', href: '#' },
-                    { label: 'Gumai Pasemah', href: '#' },
-                    { label: 'Gunung Raya', href: '#' },
+                    { label: 'Dangku', href: '/kawasan/suaka-margasatwa/dangku' },
+                    { label: 'Bentayan', href: '/kawasan/suaka-margasatwa/bentayan' },
+                    { label: 'Isau Isau', href: '/kawasan/suaka-margasatwa/isau-isau' },
+                    { label: 'Gumai Pasemah', href: '/kawasan/suaka-margasatwa/gumai-pasemah' },
+                    { label: 'Gunung Raya', href: '/kawasan/suaka-margasatwa/gunung-raya' },
                 ],
             },
             {
                 label: 'Taman Wisata Alam',
                 children: [
-                    { label: 'Punti Kayu', href: '#' },
-                    { label: 'Gunung Permisan', href: '#' },
+                    { label: 'Punti Kayu', href: '/kawasan/taman-wisata-alam/punti-kayu' },
+                    { label: 'Gunung Permisan', href: '/kawasan/taman-wisata-alam/gunung-permisan' },
                 ],
             },
             {
                 label: 'Taman Nasional',
                 children: [
-                    { label: 'Gunung Maras', href: '#' },
+                    { label: 'Gunung Maras', href: '/kawasan/taman-nasional/gunung-maras' },
                 ],
             }
         ],

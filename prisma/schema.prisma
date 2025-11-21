@@ -9,6 +9,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
 }
 
 // ============================================
@@ -199,6 +200,10 @@ model KawasanLocation {
   name        String
   slug        String
   description String?  @db.Text
+  content     String?  @db.Text
+  imageUrl    String?
+  latitude    Float?
+  longitude   Float?
   order       Int      @default(0)
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())

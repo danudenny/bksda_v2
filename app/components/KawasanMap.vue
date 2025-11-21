@@ -134,9 +134,9 @@ import { onMounted, onUnmounted, ref } from 'vue';
 let L: any = null;
 
 interface Kawasan {
-    id: number;
+    id: string;
     name: string;
-    type: string;
+    type: string; // category name
     lat: number;
     lng: number;
     description: string;
@@ -150,93 +150,39 @@ const mapContainer = ref<HTMLElement | null>(null);
 const selectedKawasan = ref<Kawasan | null>(null);
 let map: any = null;
 let markers: any[] = [];
+const kawasanData = ref<Kawasan[]>([]);
 
-// Conservation areas data
-const kawasanData: Kawasan[] = [
-    {
-        id: 1,
-        name: 'Taman Nasional Sembilang',
-        type: 'Taman Nasional',
-        lat: -1.8333,
-        lng: 104.5,
-        description:
-            'Kawasan pelestarian alam dengan ekosistem mangrove dan hutan rawa yang luas, menjadi habitat penting bagi berbagai spesies satwa liar.',
-        area: '202.896 ha',
-        location: 'Kabupaten Banyuasin',
-        features: [
-            'Buaya Muara',
-            'Harimau Sumatera',
-            'Gajah Sumatera',
-            'Bekantan',
-        ],
-        icon: 'building',
-    },
-    {
-        id: 2,
-        name: 'TWA Danau Ranau',
-        type: 'Taman Wisata Alam',
-        lat: -4.85,
-        lng: 103.92,
-        description:
-            'Kawasan dengan keindahan alam danau vulkanik untuk rekreasi dan pariwisata alam yang memukau.',
-        area: '12.950 ha',
-        location: 'Kabupaten OKU Selatan',
-        features: ['Ikan Endemik Danau', 'Burung Air', 'Hutan Pegunungan'],
-        icon: 'building-2',
-    },
-    {
-        id: 3,
-        name: 'TWA Danau Tes',
-        type: 'Taman Wisata Alam',
-        lat: -3.283,
-        lng: 103.683,
-        description:
-            'Taman wisata alam dengan danau indah yang dikelilingi hutan tropis.',
-        area: '700 ha',
-        location: 'Kabupaten Lebong',
-        features: ['Burung Rangkong', 'Tapir', 'Kijang'],
-        icon: 'building-2',
-    },
-    {
-        id: 4,
-        name: 'SMS Bentayan',
-        type: 'Suaka Margasatwa',
-        lat: -2.5,
-        lng: 104.5,
-        description:
-            'Kawasan perlindungan satwa liar dan habitatnya, khususnya untuk spesies terancam punah.',
-        area: '20.000 ha',
-        location: 'Kabupaten Musi Banyuasin',
-        features: ['Harimau Sumatera', 'Gajah Sumatera', 'Siamang'],
-        icon: 'navigation',
-    },
-    {
-        id: 5,
-        name: 'SMS Dangku',
-        type: 'Suaka Margasatwa',
-        lat: -3.15,
-        lng: 103.45,
-        description:
-            'Suaka margasatwa yang melindungi habitat alami berbagai spesies endemik Sumatera.',
-        area: '15.000 ha',
-        location: 'Kabupaten Ogan Komering Ulu',
-        features: ['Rangkong', 'Beruk', 'Kuau'],
-        icon: 'navigation',
-    },
-    {
-        id: 6,
-        name: 'SMS Padang Sugihan',
-        type: 'Suaka Margasatwa',
-        lat: -2.75,
-        lng: 104.75,
-        description:
-            'Kawasan konservasi lahan basah dengan ekosistem rawa yang kaya akan keanekaragaman hayati.',
-        area: '91.215 ha',
-        location: 'Kabupaten Ogan Komering Ilir',
-        features: ['Burung Air', 'Buaya', 'Ikan Belida'],
-        icon: 'navigation',
-    },
-];
+// Fetch active categories and locations from API and convert to marker data
+const fetchKawasanFromApi = async () => {
+    try {
+        const resp: any = await $fetch('/api/kawasan/categories?page=1&limit=20');
+        if (!resp?.success || !Array.isArray(resp.data)) return;
+        const list: Kawasan[] = [];
+        for (const cat of resp.data) {
+            const locs = Array.isArray(cat.locations) ? cat.locations : [];
+            for (const loc of locs) {
+                if (typeof loc.latitude === 'number' && typeof loc.longitude === 'number') {
+                    list.push({
+                        id: String(loc.id),
+                        name: loc.name,
+                        type: cat.name,
+                        lat: loc.latitude,
+                        lng: loc.longitude,
+                        description: loc.description || '',
+                        icon: MapPin,
+                    });
+                }
+            }
+        }
+        kawasanData.value = list;
+        if (map) {
+            renderMarkers();
+            fitMarkersBounds();
+        }
+    } catch (e) {
+        // fail silently
+    }
+};
 
 const closePanel = () => {
     selectedKawasan.value = null;
@@ -288,15 +234,15 @@ const initMap = async () => {
     }).setView([-3.0, 104.0], 8);
 
     // Add CartoDB Light tile layer
-    L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-        {
-            attribution:
-                '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
-            maxZoom: 20,
-            subdomains: 'abcd',
-        }
-    ).addTo(map);
+    // L.tileLayer(
+    //     'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    //     {
+    //         attribution:
+    //             '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
+    //         maxZoom: 20,
+    //         subdomains: 'abcd',
+    //     }
+    // ).addTo(map);
 
     // Alternative tile layers you can use:
     // 1. OpenTopoMap
@@ -306,25 +252,39 @@ const initMap = async () => {
     // }).addTo(map);
 
     // 2. Esri World Imagery
-    // L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    //   attribution: 'Tiles © Esri',
-    // }).addTo(map);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles © Esri',
+    }).addTo(map);
 
-    // Add markers for each conservation area
-    kawasanData.forEach((kawasan) => {
+    // If data already loaded, render now; otherwise wait for API
+    if (kawasanData.value.length) {
+        renderMarkers();
+        fitMarkersBounds();
+    }
+};
+
+const renderMarkers = () => {
+    if (!map || !L) return;
+    // clear previous
+    markers.forEach(m => m.remove());
+    markers = [];
+    kawasanData.value.forEach((kawasan: Kawasan) => {
         const color = getColorByType(kawasan.type);
         const marker = L.marker([kawasan.lat, kawasan.lng], {
             icon: createCustomIcon(color),
             title: kawasan.name,
         }).addTo(map!);
-
-        // Add click event to show sidebar
         marker.on('click', () => {
             selectedKawasan.value = kawasan;
         });
-
         markers.push(marker);
     });
+};
+
+const fitMarkersBounds = () => {
+    if (!map || markers.length === 0) return;
+    const group = L.featureGroup(markers);
+    map.fitBounds(group.getBounds().pad(0.2));
 };
 
 const getColorByType = (type: string): string => {
@@ -345,6 +305,7 @@ onMounted(() => {
     if (process.client) {
         setTimeout(() => {
             initMap();
+            fetchKawasanFromApi();
         }, 100);
     }
 });
