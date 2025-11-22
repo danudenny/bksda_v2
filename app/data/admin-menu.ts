@@ -5,6 +5,7 @@ import {
     Link,
     MapPin,
     Megaphone,
+    Menu,
     PawPrint,
     Settings,
     Tag,
@@ -90,6 +91,16 @@ export const adminMenuGroups: MenuGroup[] = [
                 name: 'Link Eksternal',
                 icon: Link,
                 href: '/admin/external-links',
+            },
+            {
+                name: 'Manajemen Menu',
+                icon: Menu,
+                href: '/admin/menus',
+            },
+            {
+                name: 'Halaman Statis',
+                icon: FileText,
+                href: '/admin/pages',
             },
             {
                 name: 'Pengguna',

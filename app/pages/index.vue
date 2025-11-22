@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="overflow-hidden">
         <SocialMdiaFloating />
         <BackToTop />
         <WhatsAppButton />
@@ -14,9 +14,9 @@
             <NewsSection />
         </div>
 
-        <div data-aos="fade-right" data-aos-delay="200ms">
+        <!-- <div data-aos="fade-right" data-aos-delay="200ms">
             <AboutSection />
-        </div>
+        </div> -->
 
         <div data-aos="zoom-in" data-aos-duration="800ms">
             <KawasanKonservasi />

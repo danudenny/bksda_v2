@@ -1,5 +1,8 @@
 <template>
-    <section class="group relative bg-emerald-800 text-white">
+    <section
+        class="group relative bg-emerald-800 text-white"
+        v-if="announcements && announcements.length > 0"
+    >
         <transition
             mode="out-in"
             enter-active-class="transition-all duration-300 ease-out"
@@ -17,7 +20,10 @@
                         class="flex items-center animate-marquee-left py-4 sm:py-6"
                     >
                         <div
-                            v-for="n in (announcements && announcements.length > 1 ? 2 : 1)"
+                            v-for="n in announcements &&
+                            announcements.length > 1
+                                ? 2
+                                : 1"
                             :key="n"
                             class="flex flex-shrink-0 items-center"
                         >
@@ -139,35 +145,69 @@
                 leave-from-class="opacity-100 translate-y-0 sm:scale-100"
                 leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-                <div v-if="isModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" role="dialog" aria-modal="true">
-                    
-                    <div @click="closeModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity"></div>
+                <div
+                    v-if="isModalOpen"
+                    class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+                    role="dialog"
+                    aria-modal="true"
+                >
+                    <div
+                        @click="closeModal"
+                        class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity"
+                    ></div>
 
-                    <div class="relative flex flex-col w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl shadow-2xl ring-1 ring-white/10 overflow-hidden transform transition-all max-h-[85vh]">
-                        
-                        <div class="relative bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-8 sm:px-8 sm:py-10 shrink-0">
-                            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"></div>
-                            
+                    <div
+                        class="relative flex flex-col w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl shadow-2xl ring-1 ring-white/10 overflow-hidden transform transition-all max-h-[85vh]"
+                    >
+                        <div
+                            class="relative bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-8 sm:px-8 sm:py-10 shrink-0"
+                        >
+                            <div
+                                class="absolute inset-0 opacity-10"
+                                style="
+                                    background-image: radial-gradient(
+                                        #fff 1px,
+                                        transparent 1px
+                                    );
+                                    background-size: 20px 20px;
+                                "
+                            ></div>
+
                             <div class="relative flex items-start gap-4">
-                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm text-white shadow-inner">
+                                <div
+                                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm text-white shadow-inner"
+                                >
                                     <Megaphone class="h-6 w-6" />
                                 </div>
-                                
+
                                 <div class="flex-1 min-w-0 text-white">
                                     <div class="flex items-center gap-2 mb-1">
-                                        <span class="inline-flex items-center rounded-full bg-white/20 px-2 py-0.5 text-xs font-medium text-emerald-50 ring-1 ring-inset ring-white/30">
-                                            {{ selectedAnnouncement?.category?.name || 'Pengumuman' }}
+                                        <span
+                                            class="inline-flex items-center rounded-full bg-white/20 px-2 py-0.5 text-xs font-medium text-emerald-50 ring-1 ring-inset ring-white/30"
+                                        >
+                                            {{
+                                                selectedAnnouncement?.category
+                                                    ?.name || 'Pengumuman'
+                                            }}
                                         </span>
-                                        <span class="text-xs text-emerald-100 opacity-80">
-                                            {{ formatDate(selectedAnnouncement?.createdAt) }}
+                                        <span
+                                            class="text-xs text-emerald-100 opacity-80"
+                                        >
+                                            {{
+                                                formatDate(
+                                                    selectedAnnouncement?.createdAt
+                                                )
+                                            }}
                                         </span>
                                     </div>
-                                    <h2 class="text-2xl font-bold leading-tight tracking-tight text-white">
+                                    <h2
+                                        class="text-2xl font-bold leading-tight tracking-tight text-white"
+                                    >
                                         {{ selectedAnnouncement?.title }}
                                     </h2>
                                 </div>
 
-                                <button 
+                                <button
                                     @click="closeModal"
                                     class="absolute -top-4 -right-2 p-2 text-emerald-100 hover:text-white hover:bg-white/10 rounded-full transition-colors focus:outline-none"
                                 >
@@ -176,34 +216,40 @@
                             </div>
                         </div>
 
-                        <div class="flex-1 overflow-y-auto p-6 sm:p-8 custom-scrollbar bg-white dark:bg-gray-900">
-                            <div 
+                        <div
+                            class="flex-1 overflow-y-auto p-6 sm:p-8 custom-scrollbar bg-white dark:bg-gray-900"
+                        >
+                            <div
                                 class="prose prose-lg prose-emerald max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-emerald-600 hover:prose-a:text-emerald-500 prose-img:rounded-xl"
                                 v-html="selectedAnnouncement?.content"
                             ></div>
                         </div>
 
-                        <div class="flex items-center justify-end gap-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 px-6 py-4 shrink-0">
-                            <button 
+                        <div
+                            class="flex items-center justify-end gap-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 px-6 py-4 shrink-0"
+                        >
+                            <button
                                 @click="closeModal"
                                 class="inline-flex justify-center rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:w-auto transition-colors dark:bg-gray-800 dark:text-white dark:ring-gray-700 dark:hover:bg-gray-700"
                             >
                                 Tutup
                             </button>
-                            <button 
+                            <button
                                 v-if="selectedAnnouncement?.fileUrl"
                                 class="inline-flex justify-center rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 transition-colors"
                             >
                                 Download Lampiran
                             </button>
                         </div>
-
                     </div>
                 </div>
             </transition>
         </Teleport>
     </section>
-    <div class="relative z-10 flex justify-center">
+    <div
+        class="relative z-10 flex justify-center"
+        v-if="announcements && announcements.length > 0"
+    >
         <button
             @click="toggleExpanded"
             class="flex cursor-pointer items-center gap-2 rounded-b-lg bg-emerald-700 px-3 py-1.5 sm:px-4 sm:py-2 font-semibold text-white shadow-lg transition-all duration-300 hover:bg-emerald-600 hover:shadow-xl"
@@ -216,11 +262,10 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowDownCircleIcon, Megaphone, X } from 'lucide-vue-next';
-import { ref } from 'vue';
 import { format } from 'date-fns';
 import id from 'date-fns/locale/id';
-
+import { ArrowDownCircleIcon, Megaphone, X } from 'lucide-vue-next';
+import { ref } from 'vue';
 
 const isExpanded = ref(false);
 
@@ -253,8 +298,12 @@ type Announcement = {
     content: string;
 };
 
-const { data: announcements, pending, error } = useAsyncData<Announcement[]>('announcements-marquee', () => 
-    $fetch('/api/announcements?limit=10').then(res => res.data)
+const {
+    data: announcements,
+    pending,
+    error,
+} = useAsyncData<Announcement[]>('announcements-marquee', () =>
+    $fetch('/api/announcements?limit=10').then((res) => res.data)
 );
 </script>
 

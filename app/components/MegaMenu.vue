@@ -380,7 +380,6 @@ const emit = defineEmits<{
 
 const { getKawasanCategories } = useApi();
 
-// Initialize with Kawasan Konservasi expanded by default
 const openAccordions = ref<string[]>(['Kawasan Konservasi']);
 const openSubAccordions = ref<string[]>([]);
 
@@ -388,12 +387,9 @@ const toggleAccordion = (label: string) => {
     const index = openAccordions.value.indexOf(label);
     if (index > -1) {
         openAccordions.value.splice(index, 1);
-        // Close all sub-accordions when parent closes
         openSubAccordions.value = [];
     } else {
-        // Close all other accordions and open the clicked one
         openAccordions.value = [label];
-        // Close all sub-accordions when switching parent
         openSubAccordions.value = [];
     }
 };
@@ -403,7 +399,6 @@ const toggleSubAccordion = (label: string) => {
     if (index > -1) {
         openSubAccordions.value.splice(index, 1);
     } else {
-        // Close other sub-accordions and open the clicked one
         openSubAccordions.value = [label];
     }
 };
@@ -423,87 +418,133 @@ const iconMap: any = {
     home: Home,
 };
 
-const menuItems = ref<MenuItem[]>([
-    // Row 1
-    {
-        label: 'Profil',
-        icon: 'profile',
-        children: [
-            { label: 'Visi & Misi', href: '#' },
-            { label: 'Struktur Organisasi', href: '#' },
-            { label: 'Wilayah Kerja', href: '#' },
-            { label: 'Tentang Kami', href: '/tentang' },
-        ],
-    },
-    {
-        label: 'Kawasan Konservasi',
-        icon: 'conservation',
-        isAccordion: true,
-        children: [], // Will be populated dynamically
-    },
-    {
-        label: 'Peraturan',
-        icon: 'regulation',
-        children: [
-            { label: 'Undang-Undang', href: '#' },
-            { label: 'Peraturan Pemerintah', href: '#' },
-            { label: 'Peraturan Menteri', href: '#' },
-            { label: 'SK Direktur Jenderal', href: '#' },
-        ],
-    },
-    // Row 2
-    {
-        label: 'Pelayanan',
-        icon: 'simaksi',
-        children: [
-            { label: 'Aplikasi SIMAKSI', href: '#' },
-            { label: 'Perizinan TSL', href: '#' },
-            { label: 'Perizinan Wisata', href: '#' },
-            { label: 'Buku Panduan', href: '#' },
-        ],
-    },
-    {
-        label: 'Publikasi',
-        icon: 'notebookpen',
-        children: [
-            { label: 'Berita', href: '/berita' },
-            { label: 'Artikel', href: '#' },
-            { label: 'Jurnal', href: '#' },
-            { label: 'Laporan', href: '#' },
-        ],
-    },
-    {
-        label: 'Galeri',
-        icon: 'gallery',
-        children: [
-            { label: 'Galeri Foto', href: '/galeri/foto' },
-            { label: 'Galeri Video', href: '#' },
-        ],
-    },
-]);
+const menuItems = ref<MenuItem[]>([]);
 
 async function fetchKawasanMenu() {
     const response = await getKawasanCategories(1, 100); // Fetch all categories
     if (response.success && response.data) {
         const categories = response.data;
-        const kawasanItem = menuItems.value.find(
-            (item) => item.label === 'Kawasan Konservasi'
-        );
-
-        if (kawasanItem) {
-            kawasanItem.children = categories.map((cat: any) => ({
+        return {
+            label: 'Kawasan Konservasi',
+            icon: 'conservation',
+            isAccordion: true,
+            children: categories.map((cat: any) => ({
                 label: cat.name,
                 children:
                     cat.locations?.map((loc: any) => ({
                         label: loc.name,
                         href: `/kawasan/${cat.slug}/${loc.slug}`,
                     })) || [],
-            }));
+            })),
+        };
+    }
+    return null;
+}
+
+function transformMenu(menu: any): MenuItem {
+    let href = menu.href || '#';
+    if (menu.type === 'PAGE' && menu.page) {
+        href = `/${menu.page.slug}`;
+    }
+
+    return {
+        label: menu.label,
+        icon: menu.icon || 'default',
+        href,
+        isAccordion: false,
+        children: menu.children ? menu.children.map(transformMenu) : [],
+    };
+}
+
+async function fetchMenus() {
+    try {
+        const [kawasanMenu, dynamicMenusResponse] = await Promise.all([
+            fetchKawasanMenu(),
+            $fetch('/api/menus'),
+        ]);
+
+        // @ts-ignore
+        const dynamicMenus = dynamicMenusResponse.success
+            ? // @ts-ignore
+              dynamicMenusResponse.data.map(transformMenu)
+            : [];
+
+        if (dynamicMenus.length > 0) {
+            menuItems.value = [...dynamicMenus];
+
+            if (kawasanMenu) {
+                const exists = menuItems.value.find(
+                    (m) => m.label === kawasanMenu.label
+                );
+                if (!exists) {
+                    if (menuItems.value.length > 0) {
+                        menuItems.value.splice(1, 0, kawasanMenu);
+                    } else {
+                        menuItems.value.push(kawasanMenu);
+                    }
+                }
+            }
+        } else {
+            if (kawasanMenu) {
+                menuItems.value = [
+                    {
+                        label: 'Profil',
+                        icon: 'profile',
+                        children: [
+                            { label: 'Visi & Misi', href: '#' },
+                            { label: 'Struktur Organisasi', href: '#' },
+                            { label: 'Wilayah Kerja', href: '#' },
+                            { label: 'Tentang Kami', href: '/tentang' },
+                        ],
+                    },
+                    kawasanMenu,
+                    {
+                        label: 'Peraturan',
+                        icon: 'regulation',
+                        children: [
+                            { label: 'Undang-Undang', href: '#' },
+                            { label: 'Peraturan Pemerintah', href: '#' },
+                            { label: 'Peraturan Menteri', href: '#' },
+                            { label: 'SK Direktur Jenderal', href: '#' },
+                        ],
+                    },
+                    {
+                        label: 'Pelayanan',
+                        icon: 'simaksi',
+                        children: [
+                            { label: 'Aplikasi SIMAKSI', href: '#' },
+                            { label: 'Perizinan TSL', href: '#' },
+                            { label: 'Perizinan Wisata', href: '#' },
+                            { label: 'Buku Panduan', href: '#' },
+                        ],
+                    },
+                    {
+                        label: 'Publikasi',
+                        icon: 'notebookpen',
+                        children: [
+                            { label: 'Berita', href: '/berita' },
+                            { label: 'Artikel', href: '#' },
+                            { label: 'Jurnal', href: '#' },
+                            { label: 'Laporan', href: '#' },
+                        ],
+                    },
+                    {
+                        label: 'Galeri',
+                        icon: 'gallery',
+                        children: [
+                            { label: 'Galeri Foto', href: '/galeri/foto' },
+                            { label: 'Galeri Video', href: '#' },
+                        ],
+                    },
+                ];
+            }
         }
+    } catch (e) {
+        console.error('Failed to fetch menus', e);
     }
 }
 
 onMounted(() => {
-    fetchKawasanMenu();
+    fetchMenus();
 });
 </script>

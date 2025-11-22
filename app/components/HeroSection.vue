@@ -89,7 +89,9 @@
                             <div
                                 class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 backdrop-blur-md border border-amber-400/40 shadow-lg shadow-amber-500/20"
                             >
-                                <MapPin class="h-4 w-4 sm:h-5 sm:w-5 text-amber-400" />
+                                <MapPin
+                                    class="h-4 w-4 sm:h-5 sm:w-5 text-amber-400"
+                                />
                                 <span
                                     class="text-amber-50 font-medium drop-shadow-lg"
                                     style="
@@ -118,7 +120,11 @@
 
                 <div class="mt-8 sm:mt-10 flex justify-center items-center">
                     <NuxtLink
-                        to="/kawasan"
+                        :to="
+                            currentKawasan.slug
+                                ? `/kawasan/${generateSlug(currentKawasan.type)}/${currentKawasan.slug}`
+                                : '/kawasan'
+                        "
                         class="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold shadow-xl shadow-emerald-900/50 transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-900/60 hover:scale-105 hover:from-emerald-500 hover:to-teal-500"
                         style="font-size: clamp(0.9375rem, 1.5vw, 1.125rem)"
                     >
@@ -200,12 +206,13 @@ import {
     ChevronLeft,
     ChevronRight,
     CircleChevronRightIcon,
+    MapPin,
     MountainIcon,
     Pause,
     Play,
-    MapPin
 } from 'lucide-vue-next';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { generateSlug } from '../../server/utils/slug';
 
 const parallaxOffset = ref(0);
 const isScrolled = ref(false);
@@ -213,12 +220,11 @@ const currentSlide = ref(0);
 const isPlaying = ref(true);
 let autoplayInterval: NodeJS.Timeout | null = null;
 
-// Fetch hero slides from API
 const { data: slidesData } = await useFetch('/api/hero', {
     query: {
         activeOnly: true,
-        limit: 20
-    }
+        limit: 20,
+    },
 });
 
 const kawasanKonservasi = computed(() => {
@@ -229,13 +235,16 @@ const kawasanKonservasi = computed(() => {
             type: slide.type,
             location: slide.location,
             image: slide.imageUrl, // Map imageUrl to image
-            description: slide.description
+            description: slide.description,
+            slug: generateSlug(slide.name),
         }));
     }
     return [];
 });
 
-const currentKawasan = computed(() => kawasanKonservasi.value[currentSlide.value] || {});
+const currentKawasan = computed(
+    () => kawasanKonservasi.value[currentSlide.value] || {}
+);
 
 const handleScroll = () => {
     if (typeof window !== 'undefined') {
@@ -246,7 +255,8 @@ const handleScroll = () => {
 
 const nextSlide = () => {
     if (kawasanKonservasi.value.length === 0) return;
-    currentSlide.value = (currentSlide.value + 1) % kawasanKonservasi.value.length;
+    currentSlide.value =
+        (currentSlide.value + 1) % kawasanKonservasi.value.length;
 };
 
 const previousSlide = () => {
@@ -293,7 +303,6 @@ const resetAutoplay = () => {
     }
 };
 
-// Watch for data changes to restart autoplay if needed
 watch(kawasanKonservasi, (newVal) => {
     if (newVal.length > 1 && isPlaying.value) {
         startAutoplay();

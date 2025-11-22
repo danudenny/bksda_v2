@@ -8,7 +8,7 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearchPostgres"]
 }
 
@@ -31,6 +31,11 @@ enum LinkStatus {
   ACTIVE
   INACTIVE
   MAINTENANCE
+}
+
+enum MenuType {
+  LINK
+  PAGE
 }
 
 // ============================================
@@ -148,25 +153,25 @@ model Announcement {
 // ============================================
 
 model FokusKonservasi {
-  id          String   @id @default(cuid())
-  name        String   @unique
+  id          String  @id @default(cuid())
+  name        String  @unique
   latinName   String
-  slug        String   @unique
+  slug        String  @unique
   imageUrl    String
-  description String?  @db.Text
-  
-  status      String?
-  habitat     String?
-  population  String?
-  weight      String?
-  length      String?
-  threats     String[]
-  efforts     String[]
+  description String? @db.Text
 
-  order       Int      @default(0)
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status     String?
+  habitat    String?
+  population String?
+  weight     String?
+  length     String?
+  threats    String[]
+  efforts    String[]
+
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([slug])
   @@index([order])
@@ -357,6 +362,7 @@ model HeroSlide {
   location    String
   imageUrl    String
   description String   @db.Text
+  slug        String? // Optional for now to avoid breaking existing data
   order       Int      @default(0)
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -364,4 +370,54 @@ model HeroSlide {
 
   @@index([order])
   @@index([isActive])
+}
+
+// ============================================
+// 14. MENU MANAGEMENT
+// ============================================
+
+model Menu {
+  id        String   @id @default(cuid())
+  label     String
+  icon      String? // For top-level items (e.g., 'profile', 'regulation')
+  href      String?
+  type      MenuType @default(LINK)
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Self-relation for hierarchy
+  parentId String?
+  parent   Menu?   @relation("MenuHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children Menu[]  @relation("MenuHierarchy")
+
+  // Relation to Page
+  pageId String?
+  page   Page?   @relation(fields: [pageId], references: [id])
+
+  @@index([parentId])
+  @@index([pageId])
+  @@index([order])
+  @@index([isActive])
+}
+
+// ============================================
+// 15. PAGE MANAGEMENT (Static Pages)
+// ============================================
+
+model Page {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  content   String   @db.Text
+  blocks    Json?
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  menus Menu[]
+
+  @@index([slug])
+  @@index([published])
 }

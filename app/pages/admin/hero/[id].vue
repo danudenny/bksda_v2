@@ -24,6 +24,7 @@ const form = ref({
     name: '',
     type: '',
     location: '',
+    slug: '',
     imageUrl: '',
     description: '',
     order: 0,
@@ -79,6 +80,7 @@ async function saveSlide() {
     formData.append('name', form.value.name);
     formData.append('type', form.value.type);
     formData.append('location', form.value.location);
+    if (form.value.slug) formData.append('slug', form.value.slug);
     formData.append('description', form.value.description);
     formData.append('order', form.value.order.toString());
     formData.append('isActive', form.value.isActive.toString());
@@ -211,6 +213,23 @@ onMounted(() => {
                     />
                     <p v-if="errors.location" class="text-red-600 text-sm mt-1">
                         {{ errors.location }}
+                    </p>
+                </div>
+
+                <!-- Slug -->
+                <div>
+                    <label
+                        class="block text-sm font-medium text-gray-900 dark:text-white mb-2"
+                        >Slug (Optional)</label
+                    >
+                    <input
+                        v-model="form.slug"
+                        type="text"
+                        placeholder="e.g. taman-nasional-gunung-maras"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                    />
+                    <p class="text-xs text-gray-500 mt-1">
+                        Leave empty if not linking to a specific page.
                     </p>
                 </div>
 

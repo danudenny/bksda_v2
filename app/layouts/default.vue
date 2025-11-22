@@ -38,14 +38,13 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import CookieBanner from '~/components/CookieBanner.vue';
 import Footer from '~/components/Footer.vue';
 import MegaMenu from '~/components/MegaMenu.vue';
 import Navbar from '~/components/Navbar.vue';
 import SearchModal from '~/components/SearchModal.vue';
 import SurveyButton from '~/components/SurveyButton.vue';
 import WhatsAppButton from '~/components/WhatsAppButton.vue';
-import CookieBanner from '~/components/CookieBanner.vue';
-
 
 useHead({
     htmlAttrs: {
@@ -89,8 +88,6 @@ useHead({
         },
         {
             property: 'og:image',
-            // PENTING: Ganti ini dengan URL gambar default untuk sharing
-            // (misalnya logo besar atau gambar header)
             content: 'https://bksdasumsel.go.id/gambar-default-share.jpg',
         },
         {

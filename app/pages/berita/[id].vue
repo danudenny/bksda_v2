@@ -18,7 +18,7 @@
                 class="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl"
             >
                 {{ post?.title || 'Berita Tidak Ditemukan' }}
-            </h1>
+            </h1>b
         </template>
 
         <template #meta>
@@ -228,10 +228,10 @@
 
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
-import type { Post } from '../../../types/types';
 import { format, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
+import { computed, onMounted, ref } from 'vue';
+import type { Post } from '../../../types/types';
 
 const route = useRoute();
 const postId = route.params.id;
