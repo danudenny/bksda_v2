@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const body = await readBody(event);
-    const { name, description } = body;
+    const { name, description, color } = body;
 
     // Check if category exists
     const existing = await prisma.category.findUnique({
@@ -54,6 +54,7 @@ export default defineEventHandler(async (event) => {
       data: {
         ...(name && { name }),
         ...(description !== undefined && { description }),
+        ...(color !== undefined && { color }),
         ...(newSlug !== existing.slug && { slug: newSlug }),
       },
     });

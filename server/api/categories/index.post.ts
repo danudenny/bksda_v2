@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     requireAdmin(user);
 
     const body = await readBody(event);
-    const { name, description } = body;
+    const { name, description, color } = body;
 
     // Validation
     if (!name) {
@@ -41,6 +41,7 @@ export default defineEventHandler(async (event) => {
         name,
         slug,
         description: description || null,
+        color: color || null,
       },
     });
 

@@ -284,7 +284,7 @@ const formattedPosts = computed(() => {
     return posts.value.map((post) => ({
         ...post,
         href: `/berita/${post.slug}`,
-        imageUrl: post.coverImage, // Fallback image dihandle di template
+        imageUrl: post.imageUrl, // Corrected from coverImage to imageUrl
         date: post.createdAt ? format(parseISO(post.createdAt), 'dd MMMM yyyy', { locale: id }) : '-',
         datetime: post.createdAt,
         category: {

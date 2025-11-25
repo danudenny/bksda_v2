@@ -26,6 +26,7 @@ const form = ref({
   name: "",
   slug: "",
   description: "",
+  color: "#000000",
 });
 
 const isEditing = computed(() => !!props.category);
@@ -35,12 +36,13 @@ watch(
   (value) => {
     if (value) {
       if (props.category) {
-        form.value = { ...props.category };
+        form.value = { ...props.category, color: props.category.color || "#000000" };
       } else {
         form.value = {
           name: "",
           slug: "",
           description: "",
+          color: "#000000",
         };
       }
     }
@@ -86,6 +88,23 @@ function save() {
             v-model="form.description"
             class="col-span-3"
           />
+        </div>
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label for="color" class="text-right"> Color </Label>
+          <div class="col-span-3 flex items-center gap-2">
+            <Input
+              id="color"
+              type="color"
+              v-model="form.color"
+              class="w-12 h-10 p-1 cursor-pointer"
+            />
+            <Input
+              v-model="form.color"
+              class="w-full uppercase"
+              placeholder="#000000"
+              maxlength="7"
+            />
+          </div>
         </div>
       </div>
       <DialogFooter>

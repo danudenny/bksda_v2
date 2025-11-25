@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import { useAuthStore } from "@/stores/auth";
 import { useConfirmDialog } from "@/composables/useConfirmDialog";
 import { toast } from "vue-sonner";
@@ -27,12 +28,14 @@ const router = useRouter();
 
 // State
 const posts = ref<any[]>([]);
+const categories = ref<any[]>([]);
 const loading = ref(false);
 const searchQuery = ref("");
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
 const totalItems = ref(0);
 const filterPublished = ref<"all" | "published" | "draft">("all");
+const filterCategory = ref("all");
 
 // Helper function to format date
 function formatDate(dateString: string): string {
@@ -57,7 +60,10 @@ const filteredPosts = computed(() => {
       (filterPublished.value === "published" && post.published) ||
       (filterPublished.value === "draft" && !post.published);
 
-    return matchesSearch && matchesFilter;
+    const matchesCategory =
+      filterCategory.value === "all" || post.categoryId === filterCategory.value;
+
+    return matchesSearch && matchesFilter && matchesCategory;
   });
 });
 
@@ -105,6 +111,27 @@ async function fetchPosts() {
   }
 }
 
+async function fetchCategories() {
+  try {
+    const authStore = useAuthStore();
+    const response = await $fetch("/api/categories", {
+      query: {
+        page: 1,
+        limit: 100,
+      },
+      headers: {
+        Authorization: `Bearer ${authStore.token}`,
+      },
+    });
+
+    if (response.success) {
+      categories.value = response.data;
+    }
+  } catch (error) {
+    console.error("Failed to fetch categories:", error);
+  }
+}
+
 async function deletePost(id: string) {
   const { open } = useConfirmDialog();
   const confirmed = await open({
@@ -135,16 +162,19 @@ async function deletePost(id: string) {
   }
 }
 
-async function togglePublish(post: any) {
+async function togglePublish(post: any, checked: boolean) {
   try {
     const authStore = useAuthStore();
+    const formData = new FormData();
+    formData.append("published", String(checked));
+
+    // We need to include other required fields if validation fails without them,
+    // but looking at the backend, it seems to handle partial updates gracefully.
+    // However, since we use readMultipartFormData, we must send FormData.
+
     const response = await $fetch(`/api/posts/${post.id}`, {
       method: "PUT",
-      body: {
-        ...post,
-        published: !post.published,
-        publishedAt: !post.published ? new Date() : null,
-      },
+      body: formData,
       headers: {
         Authorization: `Bearer ${authStore.token}`,
       },
@@ -162,6 +192,8 @@ async function togglePublish(post: any) {
   } catch (error) {
     console.error("Failed to toggle publish:", error);
     toast.error("Failed to update post");
+    // Revert the switch state visually if API fails
+    post.published = !checked;
   }
 }
 
@@ -174,6 +206,7 @@ function goToPage(page: number) {
 // Lifecycle
 onMounted(() => {
   fetchPosts();
+  fetchCategories();
 });
 </script>
 
@@ -243,14 +276,30 @@ onMounted(() => {
         </div>
 
         <!-- Filter -->
-        <select
-          v-model="filterPublished"
-          class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-        >
-          <option value="all">All Posts</option>
-          <option value="published">Published Only</option>
-          <option value="draft">Drafts Only</option>
-        </select>
+        <div class="flex gap-4">
+          <select
+            v-model="filterCategory"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+          >
+            <option value="all">All Categories</option>
+            <option
+              v-for="category in categories"
+              :key="category.id"
+              :value="category.id"
+            >
+              {{ category.name }}
+            </option>
+          </select>
+
+          <select
+            v-model="filterPublished"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+          >
+            <option value="all">All Posts</option>
+            <option value="published">Published Only</option>
+            <option value="draft">Drafts Only</option>
+          </select>
+        </div>
       </div>
     </div>
 
@@ -271,7 +320,7 @@ onMounted(() => {
           >
             <tr>
               <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider w-[300px]"
               >
                 Title
               </th>
@@ -308,18 +357,25 @@ onMounted(() => {
               :key="post.id"
               class="hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
             >
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div>
-                  <p class="text-sm font-medium text-gray-900 dark:text-white">
+              <td class="px-6 py-4">
+                <div class="max-w-[300px]">
+                  <p class="text-sm font-medium text-gray-900 dark:text-white line-clamp-2 break-words">
                     {{ post.title }}
                   </p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">
+                  <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
                     {{ post.slug }}
                   </p>
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <Badge variant="secondary">
+                <Badge
+                  :variant="post.category?.color ? 'default' : 'secondary'"
+                  :style="
+                    post.category?.color
+                      ? { backgroundColor: post.category.color, color: '#fff' }
+                      : {}
+                  "
+                >
                   {{ post.category?.name || "N/A" }}
                 </Badge>
               </td>
@@ -351,34 +407,35 @@ onMounted(() => {
                 {{ formatDate(post.createdAt) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  @click="togglePublish(post)"
-                  :title="post.published ? 'Unpublish' : 'Publish'"
-                  class="text-blue-600 hover:text-blue-800 dark:text-blue-400"
-                >
-                  <component
-                    :is="post.published ? Eye : EyeOff"
-                    class="w-4 h-4"
-                  />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  @click="router.push(`/admin/posts/${post.id}`)"
-                  class="text-gray-600 hover:text-gray-800 dark:text-gray-400"
-                >
-                  <Edit class="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  @click="deletePost(post.id)"
-                  class="text-red-600 hover:text-red-800 dark:text-red-400"
-                >
-                  <Trash2 class="w-4 h-4" />
-                </Button>
+                <div class="flex items-center gap-4">
+                  <div class="flex items-center gap-2">
+                    <Switch
+                      v-model="post.published"
+                      @update:checked="(val) => togglePublish(post, val)"
+                    />
+                    <span class="text-xs text-gray-500">
+                      {{ post.published ? "On" : "Off" }}
+                    </span>
+                  </div>
+                  <div class="flex items-center space-x-2 border-l pl-4 border-gray-300 dark:border-gray-600">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      @click="router.push(`/admin/posts/${post.id}`)"
+                      class="text-gray-600 hover:text-gray-800 dark:text-gray-400"
+                    >
+                      <Edit class="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      @click="deletePost(post.id)"
+                      class="text-red-600 hover:text-red-800 dark:text-red-400"
+                    >
+                      <Trash2 class="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
               </td>
             </tr>
           </tbody>

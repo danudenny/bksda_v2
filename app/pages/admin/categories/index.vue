@@ -240,6 +240,11 @@ onMounted(() => {
               <th
                 class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider"
               >
+                Color
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider"
+              >
                 Date Created
               </th>
               <th
@@ -259,6 +264,17 @@ onMounted(() => {
                 <p class="text-sm font-medium text-gray-900 dark:text-white">
                   {{ category.name }}
                 </p>
+              </td>
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300"
+              >
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-4 h-4 rounded-full border border-gray-200 dark:border-gray-600"
+                    :style="{ backgroundColor: category.color || '#000000' }"
+                  ></div>
+                  <span class="uppercase">{{ category.color || 'N/A' }}</span>
+                </div>
               </td>
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300"
