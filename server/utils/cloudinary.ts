@@ -23,7 +23,7 @@ export const uploadToCloudinary = async (buffer: Buffer, folder: string = 'bksda
               font_family: 'Helvetica',
               font_size: 140,
               font_weight: 'bold',
-              text: `© ${currentYear} BKSDA SUMSEL`,
+              text: `© BKSDA SUMSEL`,
               text_align: 'left'
             }
           },
