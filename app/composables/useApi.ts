@@ -336,7 +336,6 @@ export const useApi = () => {
         createKawasanLocation,
         getKawasanLocation,
         updateKawasanLocation,
-        updateKawasanLocation,
         deleteKawasanLocation,
         getKawasanLocationBySlug: (
             categorySlug: string,

@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 
-export const uploadToCloudinary = (buffer: Buffer, folder: string = 'bksda_v2/uploads'): Promise<any> => {
+export const uploadToCloudinary = async (buffer: Buffer, folder: string = 'bksda_v2/uploads'): Promise<any> => {
   const config = useRuntimeConfig();
 
   cloudinary.config({
@@ -9,11 +9,32 @@ export const uploadToCloudinary = (buffer: Buffer, folder: string = 'bksda_v2/up
     api_secret: config.cloudinaryApiSecret,
   });
 
+  const currentYear = new Date().getFullYear();
+
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder: folder,
         resource_type: 'auto',
+        transformation: [
+          {
+            color: '#FFFFFF',
+            overlay: {
+              font_family: 'Helvetica',
+              font_size: 140,
+              font_weight: 'bold',
+              text: `© ${currentYear} BKSDA SUMSEL`,
+              text_align: 'left'
+            }
+          },
+          {
+            flags: 'layer_apply',
+            gravity: 'south_east',
+            opacity:35,
+            x: 450,
+            y: 450
+          }
+        ]
       },
       (error, result) => {
         if (error) {

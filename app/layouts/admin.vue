@@ -29,7 +29,7 @@ const router = useRouter();
 const handleLogout = () => {
     authStore.clear();
     toast.info('Session expired', { description: 'Please log in again.' });
-    router.push('/auth/login');
+    router.push('/admin/login');
 };
 
 onMounted(() => {
