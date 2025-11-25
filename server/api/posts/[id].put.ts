@@ -24,6 +24,8 @@ export default defineEventHandler(async (event) => {
     const excerpt = body.find(item => item.name === 'excerpt')?.data.toString();
     const categoryId = body.find(item => item.name === 'categoryId')?.data.toString();
     const published = body.find(item => item.name === 'published')?.data.toString() === 'true';
+    const createdAt = body.find(item => item.name === 'createdAt')?.data.toString();
+    const updatedAt = body.find(item => item.name === 'updatedAt')?.data.toString();
     const imageFile = body.find(item => item.name === 'image');
     let imageUrl = body.find(item => item.name === 'imageUrl')?.data.toString();
 
@@ -60,6 +62,8 @@ export default defineEventHandler(async (event) => {
         ...(categoryId && { categoryId }),
         ...(imageUrl && { imageUrl }),
         ...(published !== undefined && { published, publishedAt: published && !existing.publishedAt ? new Date() : existing.publishedAt }),
+        ...(createdAt && { createdAt: new Date(createdAt) }),
+        ...(updatedAt && { updatedAt: new Date(updatedAt) }),
         ...(newSlug !== existing.slug && { slug: newSlug }),
       },
       include: {

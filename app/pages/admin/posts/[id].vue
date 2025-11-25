@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Save, Loader, Upload, X, Sparkles, Wand2 } from "lucide-vue-next";
 import { useAuthStore } from "@/stores/auth";
 import { toast } from "vue-sonner";
+import { Switch } from "@/components/ui/switch";
 
 // --- QUILL EDITOR IMPORTS ---
 import { QuillEditor } from '@vueup/vue-quill';
@@ -30,6 +31,8 @@ const form = ref({
   imageUrl: "",
   categoryId: "",
   published: false,
+  createdAt: "",
+  updatedAt: "",
 });
 
 // --- QUILL EDITOR CONFIGURATION ---
@@ -96,6 +99,8 @@ async function fetchPost() {
         imageUrl: response.data.imageUrl,
         categoryId: response.data.categoryId,
         published: response.data.published,
+        createdAt: response.data.createdAt ? response.data.createdAt.split("T")[0] : "",
+        updatedAt: response.data.updatedAt ? response.data.updatedAt.split("T")[0] : "",
       };
     }
   } catch (error) {
@@ -271,6 +276,8 @@ async function savePost() {
     formData.append('excerpt', form.value.excerpt);
     formData.append('categoryId', form.value.categoryId);
     formData.append('published', String(form.value.published));
+    if (form.value.createdAt) formData.append('createdAt', new Date(form.value.createdAt).toISOString());
+    if (form.value.updatedAt) formData.append('updatedAt', new Date(form.value.updatedAt).toISOString());
 
     if (imageSource.value === 'upload' && uploadedFile.value) {
       formData.append('image', uploadedFile.value);
@@ -480,9 +487,35 @@ onMounted(() => {
 
         <div class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-600">
           <label class="flex items-center space-x-3 cursor-pointer">
-            <input v-model="form.published" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"/>
+            <Switch v-model="form.published"/>
             <span class="text-sm font-medium text-gray-900 dark:text-white">Publish immediately</span>
           </label>
+        </div>
+
+        <div v-if="!isNew" class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-600">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Dates</h3>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                Created At
+              </label>
+              <input
+                v-model="form.createdAt"
+                type="date"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                Updated At
+              </label>
+              <input
+                v-model="form.updatedAt"
+                type="date"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+              />
+            </div>
+          </div>
         </div>
 
         <div class="space-y-2">

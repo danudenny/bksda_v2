@@ -320,29 +320,34 @@ onMounted(() => {
           >
             <tr>
               <th
+                class="px-6 py-3 text-center text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider"
+              >
+                Image
+              </th>
+              <th
                 class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider w-[300px]"
               >
                 Title
               </th>
               <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider"
+                class="px-6 py-3 text-center text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider"
               >
                 Category
               </th>
               <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider"
+                class="px-6 py-3 text-center text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider"
               >
                 Author
               </th>
               <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider"
-              >
-                Status
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider"
+                class="px-6 py-3 text-center text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider"
               >
                 Date
+              </th>
+              <th
+                class="px-6 py-3 text-center text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider"
+              >
+                Published
               </th>
               <th
                 class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider"
@@ -357,6 +362,20 @@ onMounted(() => {
               :key="post.id"
               class="hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
             >
+              <td class="px-6 py-4 whitespace-nowrap">
+                <img
+                  v-if="post.imageUrl"
+                  :src="post.imageUrl"
+                  alt="Thumbnail"
+                  class="h-12 w-16 rounded-md object-cover border border-gray-200 dark:border-gray-600"
+                />
+                <div
+                  v-else
+                  class="h-12 w-16 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 flex items-center justify-center text-xs text-gray-400"
+                >
+                  No Img
+                </div>
+              </td>
               <td class="px-6 py-4">
                 <div class="max-w-[300px]">
                   <p class="text-sm font-medium text-gray-900 dark:text-white line-clamp-2 break-words">
@@ -367,7 +386,7 @@ onMounted(() => {
                   </p>
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td class="px-6 py-4 whitespace-nowrap text-center">
                 <Badge
                   :variant="post.category?.color ? 'default' : 'secondary'"
                   :style="
@@ -380,44 +399,25 @@ onMounted(() => {
                 </Badge>
               </td>
               <td
-                class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300"
+                class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 text-center"
               >
                 {{ post.author?.name || "Unknown" }}
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <Badge
-                  v-if="post.published"
-                  variant="default"
-                  class="bg-green-600 hover:bg-green-700 dark:bg-green-700"
-                >
-                  <Check class="w-3 h-3 mr-1" />
-                  Published
-                </Badge>
-                <Badge
-                  v-else
-                  variant="secondary"
-                  class="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                >
-                  Draft
-                </Badge>
-              </td>
               <td
-                class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300"
+                class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 text-center"
               >
                 {{ formatDate(post.createdAt) }}
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                <div class="flex items-center gap-4">
-                  <div class="flex items-center gap-2">
+              <td>
+                 <div class="flex items-center gap-2 flex-col">
                     <Switch
                       v-model="post.published"
                       @update:checked="(val) => togglePublish(post, val)"
                     />
-                    <span class="text-xs text-gray-500">
-                      {{ post.published ? "On" : "Off" }}
-                    </span>
                   </div>
-                  <div class="flex items-center space-x-2 border-l pl-4 border-gray-300 dark:border-gray-600">
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
+                <div class="flex items-center">
                     <Button
                       variant="ghost"
                       size="sm"
@@ -434,7 +434,6 @@ onMounted(() => {
                     >
                       <Trash2 class="w-4 h-4" />
                     </Button>
-                  </div>
                 </div>
               </td>
             </tr>
