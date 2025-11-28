@@ -33,6 +33,11 @@ const itemsPerPage = ref(10);
 const totalItems = ref(0);
 const filterPublished = ref<'all' | 'published' | 'draft'>('all');
 const filterCategory = ref('all');
+const stats = ref({
+    total: 0,
+    published: 0,
+    draft: 0,
+});
 
 // Helper function to format date
 function formatDate(dateString: string): string {
@@ -46,44 +51,9 @@ function formatDate(dateString: string): string {
 }
 
 // Computed
-const filteredPosts = computed(() => {
-    return posts.value.filter((post) => {
-        const matchesSearch =
-            post.title
-                .toLowerCase()
-                .includes(searchQuery.value.toLowerCase()) ||
-            post.slug.toLowerCase().includes(searchQuery.value.toLowerCase());
-
-        const matchesFilter =
-            filterPublished.value === 'all' ||
-            (filterPublished.value === 'published' && post.published) ||
-            (filterPublished.value === 'draft' && !post.published);
-
-        const matchesCategory =
-            filterCategory.value === 'all' ||
-            post.categoryId === filterCategory.value;
-
-        return matchesSearch && matchesFilter && matchesCategory;
-    });
-});
-
-const publishedCount = computed(
-    () => posts.value.filter((p) => p.published).length
-);
-
-const draftCount = computed(
-    () => posts.value.filter((p) => !p.published).length
-);
-
 const totalPages = computed(() =>
-    Math.ceil(filteredPosts.value.length / itemsPerPage.value)
+    Math.ceil(totalItems.value / itemsPerPage.value)
 );
-
-const paginatedPosts = computed(() => {
-    const start = (currentPage.value - 1) * itemsPerPage.value;
-    const end = start + itemsPerPage.value;
-    return filteredPosts.value.slice(start, end);
-});
 
 const visiblePages = computed(() => {
     const total = totalPages.value;
@@ -117,8 +87,14 @@ async function fetchPosts() {
         const authStore = useAuthStore();
         const response = await $fetch('/api/posts', {
             query: {
-                page: 1,
-                limit: 1000,
+                page: currentPage.value,
+                limit: itemsPerPage.value,
+                search: searchQuery.value,
+                published: filterPublished.value,
+                category_ids:
+                    filterCategory.value !== 'all'
+                        ? filterCategory.value
+                        : undefined,
             },
             headers: {
                 Authorization: `Bearer ${authStore.token}`,
@@ -127,7 +103,10 @@ async function fetchPosts() {
 
         if (response.success) {
             posts.value = response.data;
-            totalItems.value = response.total;
+            totalItems.value = response.pagination.total;
+            if (response.stats) {
+                stats.value = response.stats;
+            }
         }
     } catch (error) {
         console.error('Failed to fetch posts:', error);
@@ -181,6 +160,7 @@ async function deletePost(id: string) {
 
         posts.value = posts.value.filter((p) => p.id !== id);
         toast.success('Post deleted successfully');
+        fetchPosts(); // Re-fetch to update stats and pagination
     } catch (error) {
         console.error('Failed to delete post:', error);
         toast.error('Failed to delete post');
@@ -214,6 +194,7 @@ async function togglePublish(post: any, checked: boolean) {
                         ? 'Post published'
                         : 'Post unpublished'
                 );
+                fetchPosts(); // Re-fetch to update stats
             }
         }
     } catch (error) {
@@ -229,6 +210,25 @@ function goToPage(page: number) {
         currentPage.value = page;
     }
 }
+
+// Watchers for server-side filtering
+const debouncedSearch = useDebounceFn(() => {
+    currentPage.value = 1;
+    fetchPosts();
+}, 500);
+
+watch(searchQuery, () => {
+    debouncedSearch();
+});
+
+watch([filterPublished, filterCategory], () => {
+    currentPage.value = 1;
+    fetchPosts();
+});
+
+watch(currentPage, () => {
+    fetchPosts();
+});
 
 // Lifecycle
 onMounted(() => {
@@ -269,7 +269,7 @@ onMounted(() => {
                 <p
                     class="text-2xl font-bold text-gray-900 dark:text-white mt-1"
                 >
-                    {{ posts.length }}
+                    {{ stats.total }}
                 </p>
             </div>
             <div
@@ -281,7 +281,7 @@ onMounted(() => {
                 <p
                     class="text-2xl font-bold text-green-600 dark:text-green-400 mt-1"
                 >
-                    {{ publishedCount }}
+                    {{ stats.published }}
                 </p>
             </div>
             <div
@@ -291,7 +291,7 @@ onMounted(() => {
                 <p
                     class="text-2xl font-bold text-yellow-600 dark:text-yellow-400 mt-1"
                 >
-                    {{ draftCount }}
+                    {{ stats.draft }}
                 </p>
             </div>
         </div>
@@ -399,7 +399,7 @@ onMounted(() => {
                         class="divide-y divide-gray-200 dark:divide-gray-600"
                     >
                         <tr
-                            v-for="post in paginatedPosts"
+                            v-for="post in posts"
                             :key="post.id"
                             class="hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
                         >
@@ -503,10 +503,7 @@ onMounted(() => {
             </div>
 
             <!-- Empty State -->
-            <div
-                v-if="paginatedPosts.length === 0"
-                class="px-6 py-12 text-center"
-            >
+            <div v-if="posts.length === 0" class="px-6 py-12 text-center">
                 <p class="text-gray-600 dark:text-gray-400">
                     {{
                         searchQuery || filterPublished !== 'all'
@@ -524,10 +521,8 @@ onMounted(() => {
         >
             <div class="text-sm text-gray-600 dark:text-gray-400">
                 Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
-                {{
-                    Math.min(currentPage * itemsPerPage, filteredPosts.length)
-                }}
-                of {{ filteredPosts.length }} posts
+                {{ Math.min(currentPage * itemsPerPage, totalItems) }}
+                of {{ totalItems }} posts
             </div>
 
             <div class="flex space-x-2">
