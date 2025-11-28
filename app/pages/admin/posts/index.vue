@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { useConfirmDialog } from '@/composables/useConfirmDialog';
 import { useAuthStore } from '@/stores/auth';
+import { useDebounceFn } from '@vueuse/core';
 import {
     ChevronLeft,
     ChevronRight,
@@ -13,7 +14,7 @@ import {
     Search,
     Trash2,
 } from 'lucide-vue-next';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
 
@@ -85,7 +86,7 @@ async function fetchPosts() {
     loading.value = true;
     try {
         const authStore = useAuthStore();
-        const response = await $fetch('/api/posts', {
+        const response = await $fetch<any>('/api/posts', {
             query: {
                 page: currentPage.value,
                 limit: itemsPerPage.value,
@@ -420,7 +421,7 @@ onMounted(() => {
                             <td class="px-6 py-4">
                                 <div class="max-w-[300px]">
                                     <p
-                                        class="text-sm font-medium text-gray-900 dark:text-white line-clamp-2 break-words"
+                                        class="text-sm font-medium text-gray-900 dark:text-white line-clamp-2 wrap-break-word"
                                     >
                                         {{ post.title }}
                                     </p>
@@ -466,7 +467,8 @@ onMounted(() => {
                                     <Switch
                                         v-model="post.published"
                                         @update:checked="
-                                            (val) => togglePublish(post, val)
+                                            (val: boolean) =>
+                                                togglePublish(post, val)
                                         "
                                     />
                                 </div>
