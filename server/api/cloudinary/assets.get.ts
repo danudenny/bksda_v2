@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
         const q = (query.q as string) || '';
         const max = Math.min(100, parseInt(query.limit as string) || 50);
         const nextCursor = (query.nextCursor as string) || undefined;
+        const type = (query.type as string) || undefined;
 
         const recursive = query.recursive === 'true';
 
@@ -21,6 +22,9 @@ export default defineEventHandler(async (event) => {
         let expression = recursive ? `folder:${folder}/*` : `folder=${folder}`;
         if (q) {
             expression += ` AND (filename:${q} OR public_id:${q})`;
+        }
+        if (type) {
+            expression += ` AND resource_type:${type}`;
         }
 
         // @ts-ignore

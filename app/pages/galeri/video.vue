@@ -1,7 +1,7 @@
 <template>
     <NuxtLayout name="archive">
         <template #breadcrumb>
-            <span class="text-white">Foto</span>
+            <span class="text-white">Video</span>
         </template>
 
         <template #badge>
@@ -19,23 +19,23 @@
                         <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                            d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
                         />
                     </svg>
-                    Galeri Foto
+                    Galeri Video
                 </span>
             </div>
         </template>
 
         <template #header>
             <h1 class="text-3xl font-bold sm:text-4xl lg:text-5xl">
-                Galeri Foto BKSDA Sumsel
+                Galeri Video BKSDA Sumsel
             </h1>
         </template>
 
         <template #description>
             <p class="mx-auto mt-4 max-w-2xl text-lg text-emerald-100">
-                Dokumentasi visual kegiatan konservasi, keanekaragaman hayati,
+                Dokumentasi video kegiatan konservasi, keanekaragaman hayati,
                 dan upaya pelestarian alam di Sumatera Selatan
             </p>
         </template>
@@ -98,7 +98,7 @@
             </div>
         </template>
 
-        <!-- Photo Grid -->
+        <!-- Video Grid -->
         <div
             v-if="viewMode === 'grid'"
             class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
@@ -109,13 +109,30 @@
                 class="group relative overflow-hidden rounded-2xl bg-gray-100 shadow-lg ring-1 ring-gray-900/5 transition-all duration-300 hover:shadow-2xl hover:scale-105 cursor-pointer"
                 @click="openLightbox(asset)"
             >
-                <div class="aspect-square overflow-hidden">
+                <div class="aspect-square overflow-hidden relative">
+                    <!-- Thumbnail (using Cloudinary video thumbnail) -->
                     <img
-                        :src="asset.url"
+                        :src="getVideoThumbnail(asset.url)"
                         :alt="asset.filename"
                         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                         loading="lazy"
                     />
+                    <!-- Play Icon Overlay -->
+                    <div
+                        class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors"
+                    >
+                        <div
+                            class="w-12 h-12 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform"
+                        >
+                            <svg
+                                class="w-6 h-6 text-white ml-1"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div
                     class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -149,12 +166,30 @@
                 class="group relative mb-6 break-inside-avoid overflow-hidden rounded-2xl bg-gray-100 shadow-lg ring-1 ring-gray-900/5 transition-all duration-300 hover:shadow-2xl cursor-pointer"
                 @click="openLightbox(asset)"
             >
-                <img
-                    :src="asset.url"
-                    :alt="asset.filename"
-                    class="w-full transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                />
+                <div class="relative">
+                    <img
+                        :src="getVideoThumbnail(asset.url)"
+                        :alt="asset.filename"
+                        class="w-full transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                    />
+                    <!-- Play Icon Overlay -->
+                    <div
+                        class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors"
+                    >
+                        <div
+                            class="w-12 h-12 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform"
+                        >
+                            <svg
+                                class="w-6 h-6 text-white ml-1"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
                 <div
                     class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 >
@@ -181,7 +216,7 @@
                 <div class="text-sm text-gray-700">
                     Menampilkan
                     <span class="font-semibold">{{ assets.length }}</span> dari
-                    <span class="font-semibold">{{ totalCount }}</span> foto
+                    <span class="font-semibold">{{ totalCount }}</span> video
                 </div>
 
                 <button
@@ -214,7 +249,7 @@
             >
                 <div class="min-h-full flex items-center justify-center p-4">
                     <button
-                        class="fixed top-4 right-4 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200 group"
+                        class="fixed top-4 right-4 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200 group z-50"
                         aria-label="Close lightbox"
                         @click.stop="closeLightbox"
                     >
@@ -235,8 +270,8 @@
 
                     <button
                         v-if="currentPhotoIndex > 0"
-                        class="fixed left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200"
-                        aria-label="Previous photo"
+                        class="fixed left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200 z-50"
+                        aria-label="Previous video"
                         @click.stop="previousPhoto"
                     >
                         <svg
@@ -256,8 +291,8 @@
 
                     <button
                         v-if="currentPhotoIndex < assets.length - 1"
-                        class="fixed right-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200"
-                        aria-label="Next photo"
+                        class="fixed right-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200 z-50"
+                        aria-label="Next video"
                         @click.stop="nextPhoto"
                     >
                         <svg
@@ -293,11 +328,12 @@
                                 :key="currentPhotoIndex"
                                 class="flex flex-col items-center"
                             >
-                                <img
+                                <video
+                                    controls
+                                    autoplay
                                     :src="currentPhoto.url"
-                                    :alt="currentPhoto.filename"
                                     class="max-h-[80vh] w-auto object-contain rounded-2xl shadow-2xl"
-                                />
+                                ></video>
                                 <div class="mt-6 text-center">
                                     <h3
                                         class="text-white text-xl font-semibold"
@@ -327,16 +363,17 @@
 
 <script setup lang="ts">
 import { useApi } from '@/composables/useApi';
+import { Loader } from 'lucide-vue-next';
 import { computed, onMounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
 useSeoMeta({
-    title: 'Galeri Foto - BKSDA Sumatera Selatan',
+    title: 'Galeri Video - BKSDA Sumatera Selatan',
     description:
-        'Dokumentasi visual kegiatan konservasi, keanekaragaman hayati, dan upaya pelestarian alam di Sumatera Selatan',
-    ogTitle: 'Galeri Foto - BKSDA Sumatera Selatan',
+        'Dokumentasi video kegiatan konservasi, keanekaragaman hayati, dan upaya pelestarian alam di Sumatera Selatan',
+    ogTitle: 'Galeri Video - BKSDA Sumatera Selatan',
     ogDescription:
-        'Dokumentasi visual kegiatan konservasi, keanekaragaman hayati, dan upaya pelestarian alam di Sumatera Selatan',
+        'Dokumentasi video kegiatan konservasi, keanekaragaman hayati, dan upaya pelestarian alam di Sumatera Selatan',
 });
 
 type Asset = {
@@ -371,7 +408,7 @@ async function fetchAssets(reset = false) {
             limit: 24,
             folder: 'bksda_v2/uploads', // Default folder
             recursive: true,
-            type: 'image',
+            type: 'video',
         };
 
         if (!reset && nextCursor.value) {
@@ -394,11 +431,11 @@ async function fetchAssets(reset = false) {
             nextCursor.value = res.data.nextCursor || null;
             totalCount.value = res.data.totalCount || 0;
         } else {
-            toast.error('Gagal memuat foto');
+            toast.error('Gagal memuat video');
         }
     } catch (e) {
         console.error(e);
-        toast.error('Terjadi kesalahan saat memuat foto');
+        toast.error('Terjadi kesalahan saat memuat video');
     } finally {
         loading.value = false;
     }
@@ -414,6 +451,11 @@ const formatDate = (dateString: string) => {
         month: 'short',
         year: 'numeric',
     });
+};
+
+const getVideoThumbnail = (url: string) => {
+    // Replace extension with .jpg for thumbnail
+    return url.replace(/\.[^/.]+$/, '.jpg');
 };
 
 const currentPhoto = computed(() => assets.value[currentPhotoIndex.value]);
