@@ -48,5 +48,8 @@ export default defineNuxtConfig({
     routeRules: {
         '/api/**': { cors: true },
         '/admin/**': { ssr: false },
-    }
+    },
+    nitro: {
+        preset: 'bun',
+    },
 });
