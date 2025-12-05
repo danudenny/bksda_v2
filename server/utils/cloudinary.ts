@@ -34,7 +34,7 @@ export const uploadToCloudinary = async (
                         flags: ['layer_apply', 'relative'],
                         gravity: 'south_east',
                         opacity: 35,
-                        width: '0.5',
+                        width: '0.33',
                         crop: 'fit',
                         x: '0.02',
                         y: '0.02',

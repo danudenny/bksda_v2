@@ -75,12 +75,12 @@
                             />
                             <div>
                                 <a
-                                    href="https://wa.me/6281234567890"
+                                    href="https://wa.me/6281271412141"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     class="transition-colors duration-300 hover:text-emerald-300"
                                 >
-                                    +62 812-3456-7890
+                                    +62 812-7141-2141
                                 </a>
                                 <span
                                     class="mt-0.5 block text-xs text-gray-400/80"
@@ -178,6 +178,13 @@
                                     :to="item.href"
                                     class="text-sm transition-colors duration-300 hover:text-emerald-300"
                                     >{{ item.name }}</NuxtLink
+                                >
+                            </li>
+                            <li>
+                                <NuxtLink
+                                    to="/admin/login"
+                                    class="text-sm transition-colors duration-300 hover:text-emerald-300"
+                                    >Admin</NuxtLink
                                 >
                             </li>
                         </ul>

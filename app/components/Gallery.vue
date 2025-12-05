@@ -1,5 +1,6 @@
 <template>
     <section
+        ref="gallerySection"
         class="relative bg-gradient-to-b from-white via-slate-50/50 to-white py-12 sm:py-16 lg:py-24 overflow-hidden"
     >
         <div class="absolute inset-0 -z-10">
@@ -54,30 +55,28 @@
             </div>
         </div>
 
-        <div
-            class="mt-12 sm:mt-16 space-y-4 [mask-image:_linear-gradient(to_right,transparent_0,_black_10%,_black_90%,transparent_100%)]"
-        >
-            <div class="overflow-hidden group">
-                <div
-                    class="flex flex-shrink-0 animate-marquee-right group-hover:pause"
-                >
+        <div v-if="isVisible" class="mt-12 sm:mt-16 space-y-4 gallery-rows">
+            <!-- Row 1 -->
+            <div class="overflow-hidden gallery-row">
+                <div class="gallery-track gallery-track-right">
                     <div
                         v-for="(image, index) in row1Images"
                         :key="`r1-${index}`"
-                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
+                        class="gallery-item"
                         @click="openLightbox(image, index)"
                     >
                         <NuxtImg
                             :src="image.src"
                             :alt="image.alt"
-                            class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
+                            :width="384"
+                            :height="256"
+                            class="gallery-image"
                             draggable="false"
                             loading="lazy"
+                            sizes="sm:208px md:256px lg:384px"
                         />
-                        <div
-                            class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
-                        >
-                            <div class="absolute bottom-4 left-4 right-4">
+                        <div class="gallery-overlay">
+                            <div class="gallery-caption">
                                 <p
                                     class="text-white font-semibold text-sm line-clamp-2"
                                 >
@@ -86,24 +85,26 @@
                             </div>
                         </div>
                     </div>
-
+                    <!-- Duplicate for seamless loop -->
                     <div
                         v-for="(image, index) in row1Images"
                         :key="`r1-dup-${index}`"
-                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
+                        class="gallery-item"
                         @click="openLightbox(image, index)"
+                        aria-hidden="true"
                     >
                         <NuxtImg
                             :src="image.src"
                             :alt="image.alt"
-                            class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
+                            :width="384"
+                            :height="256"
+                            class="gallery-image"
                             draggable="false"
                             loading="lazy"
+                            sizes="sm:208px md:256px lg:384px"
                         />
-                        <div
-                            class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
-                        >
-                            <div class="absolute bottom-4 left-4 right-4">
+                        <div class="gallery-overlay">
+                            <div class="gallery-caption">
                                 <p
                                     class="text-white font-semibold text-sm line-clamp-2"
                                 >
@@ -115,27 +116,27 @@
                 </div>
             </div>
 
-            <div class="overflow-hidden group">
-                <div
-                    class="flex flex-shrink-0 animate-marquee-left group-hover:pause"
-                >
+            <!-- Row 2 -->
+            <div class="overflow-hidden gallery-row">
+                <div class="gallery-track gallery-track-left">
                     <div
                         v-for="(image, index) in row2Images"
                         :key="`r2-${index}`"
-                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
+                        class="gallery-item"
                         @click="openLightbox(image, row1Images.length + index)"
                     >
                         <NuxtImg
                             :src="image.src"
                             :alt="image.alt"
-                            class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
+                            :width="384"
+                            :height="256"
+                            class="gallery-image"
                             draggable="false"
                             loading="lazy"
+                            sizes="sm:208px md:256px lg:384px"
                         />
-                        <div
-                            class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
-                        >
-                            <div class="absolute bottom-4 left-4 right-4">
+                        <div class="gallery-overlay">
+                            <div class="gallery-caption">
                                 <p
                                     class="text-white font-semibold text-sm line-clamp-2"
                                 >
@@ -144,24 +145,26 @@
                             </div>
                         </div>
                     </div>
-
+                    <!-- Duplicate for seamless loop -->
                     <div
                         v-for="(image, index) in row2Images"
                         :key="`r2-dup-${index}`"
-                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
+                        class="gallery-item"
                         @click="openLightbox(image, row1Images.length + index)"
+                        aria-hidden="true"
                     >
                         <NuxtImg
                             :src="image.src"
                             :alt="image.alt"
-                            class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
+                            :width="384"
+                            :height="256"
+                            class="gallery-image"
                             draggable="false"
                             loading="lazy"
+                            sizes="sm:208px md:256px lg:384px"
                         />
-                        <div
-                            class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
-                        >
-                            <div class="absolute bottom-4 left-4 right-4">
+                        <div class="gallery-overlay">
+                            <div class="gallery-caption">
                                 <p
                                     class="text-white font-semibold text-sm line-clamp-2"
                                 >
@@ -173,14 +176,13 @@
                 </div>
             </div>
 
-            <div class="overflow-hidden group">
-                <div
-                    class="flex flex-shrink-0 animate-marquee-right group-hover:pause"
-                >
+            <!-- Row 3 -->
+            <div class="overflow-hidden gallery-row">
+                <div class="gallery-track gallery-track-right">
                     <div
                         v-for="(image, index) in row3Images"
                         :key="`r3-${index}`"
-                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
+                        class="gallery-item"
                         @click="
                             openLightbox(
                                 image,
@@ -191,14 +193,15 @@
                         <NuxtImg
                             :src="image.src"
                             :alt="image.alt"
-                            class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
+                            :width="384"
+                            :height="256"
+                            class="gallery-image"
                             draggable="false"
                             loading="lazy"
+                            sizes="sm:208px md:256px lg:384px"
                         />
-                        <div
-                            class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
-                        >
-                            <div class="absolute bottom-4 left-4 right-4">
+                        <div class="gallery-overlay">
+                            <div class="gallery-caption">
                                 <p
                                     class="text-white font-semibold text-sm line-clamp-2"
                                 >
@@ -207,29 +210,31 @@
                             </div>
                         </div>
                     </div>
-
+                    <!-- Duplicate for seamless loop -->
                     <div
                         v-for="(image, index) in row3Images"
                         :key="`r3-dup-${index}`"
-                        class="relative h-48 sm:h-52 lg:h-64 w-auto aspect-video mx-2 flex-shrink-0 group/item cursor-pointer"
+                        class="gallery-item"
                         @click="
                             openLightbox(
                                 image,
                                 row1Images.length + row2Images.length + index
                             )
                         "
+                        aria-hidden="true"
                     >
                         <NuxtImg
                             :src="image.src"
                             :alt="image.alt"
-                            class="h-full w-full object-cover rounded-2xl shadow-lg transition-all duration-500 group-hover/item:shadow-2xl"
+                            :width="384"
+                            :height="256"
+                            class="gallery-image"
                             draggable="false"
                             loading="lazy"
+                            sizes="sm:208px md:256px lg:384px"
                         />
-                        <div
-                            class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"
-                        >
-                            <div class="absolute bottom-4 left-4 right-4">
+                        <div class="gallery-overlay">
+                            <div class="gallery-caption">
                                 <p
                                     class="text-white font-semibold text-sm line-clamp-2"
                                 >
@@ -244,7 +249,7 @@
 
         <div class="mt-12 sm:mt-16 text-center">
             <NuxtLink
-                to="/galeri"
+                to="/galeri/foto"
                 class="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-3 font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/50 hover:scale-105"
                 style="font-size: clamp(0.875rem, 1.5vw, 1rem)"
             >
@@ -267,7 +272,8 @@
         >
             <div
                 v-if="lightboxOpen"
-                class="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm overflow-y-auto"
+                class="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm"
+                @click="closeLightbox"
             >
                 <div class="min-h-full flex items-center justify-center p-4">
                     <button
@@ -339,16 +345,19 @@
 <script setup lang="ts">
 import { useApi } from '@/composables/useApi';
 import { ArrowRight, ChevronLeft, ChevronRight, X } from 'lucide-vue-next';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 const lightboxOpen = ref(false);
 const currentImageIndex = ref(0);
+const isVisible = ref(false);
+const gallerySection = ref<HTMLElement | null>(null);
+let observer: IntersectionObserver | null = null;
+let keyboardHandler: ((e: KeyboardEvent) => void) | null = null;
 
 const row1Images = ref<{ src: string; alt: string }[]>([]);
 const row2Images = ref<{ src: string; alt: string }[]>([]);
 const row3Images = ref<{ src: string; alt: string }[]>([]);
 
-// Menggabungkan semua gambar menjadi satu array linier
 const allImages = computed(() => [
     ...row1Images.value,
     ...row2Images.value,
@@ -357,8 +366,6 @@ const allImages = computed(() => [
 
 const currentImage = computed(() => allImages.value[currentImageIndex.value]);
 
-// Fungsi ini mencari index global berdasarkan URL gambar,
-// jadi aman digunakan meskipun di-klik dari elemen duplikat
 const openLightbox = (
     image: { src: string; alt: string },
     rowIndex: number
@@ -368,12 +375,16 @@ const openLightbox = (
     );
     currentImageIndex.value = globalIndex !== -1 ? globalIndex : 0;
     lightboxOpen.value = true;
-    document.body.style.overflow = 'hidden';
+    if (process.client) {
+        document.body.style.overflow = 'hidden';
+    }
 };
 
 const closeLightbox = () => {
     lightboxOpen.value = false;
-    document.body.style.overflow = '';
+    if (process.client) {
+        document.body.style.overflow = '';
+    }
 };
 
 const nextImage = () => {
@@ -387,16 +398,6 @@ const previousImage = () => {
         currentImageIndex.value--;
     }
 };
-
-if (process.client) {
-    window.addEventListener('keydown', (e) => {
-        if (!lightboxOpen.value) return;
-
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowRight') nextImage();
-        if (e.key === 'ArrowLeft') previousImage();
-    });
-}
 
 const { getGalleryImages } = useApi();
 
@@ -432,37 +433,166 @@ async function loadGallery() {
 
 onMounted(() => {
     loadGallery();
+
+    // Setup keyboard event handler
+    if (process.client) {
+        keyboardHandler = (e: KeyboardEvent) => {
+            if (!lightboxOpen.value) return;
+
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'ArrowLeft') previousImage();
+        };
+        window.addEventListener('keydown', keyboardHandler);
+    }
+
+    // Intersection Observer to pause animations when not visible
+    if (process.client && gallerySection.value) {
+        observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    isVisible.value = entry.isIntersecting;
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(gallerySection.value);
+    }
+});
+
+onBeforeUnmount(() => {
+    if (observer) {
+        observer.disconnect();
+        observer = null;
+    }
+    if (process.client && keyboardHandler) {
+        window.removeEventListener('keydown', keyboardHandler);
+        keyboardHandler = null;
+    }
 });
 </script>
 
-<style>
+<style scoped>
+/* CSS Containment for performance */
+.gallery-rows {
+    contain: layout style paint;
+    mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        black 10%,
+        black 90%,
+        transparent 100%
+    );
+}
+
+.gallery-row {
+    contain: layout style;
+    overflow: hidden;
+}
+
+.gallery-track {
+    display: flex;
+    flex-shrink: 0;
+}
+
+.gallery-item {
+    position: relative;
+    height: 9rem; /* Reduced for mobile */
+    width: auto;
+    aspect-ratio: 16 / 9;
+    margin: 0 0.5rem;
+    flex-shrink: 0;
+    cursor: pointer;
+    contain: layout style paint;
+}
+
+@media (min-width: 640px) {
+    .gallery-item {
+        height: 13rem; /* 52 = h-52 */
+    }
+}
+
+@media (min-width: 1024px) {
+    .gallery-item {
+        height: 16rem; /* 64 = h-64 */
+    }
+}
+
+.gallery-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    transition: box-shadow 0.2s;
+}
+
+.gallery-item:hover .gallery-image {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+}
+
+.gallery-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    background: linear-gradient(
+        to top,
+        rgb(0 0 0 / 0.6),
+        transparent,
+        transparent
+    );
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+}
+
+.gallery-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+}
+
+/* Optimized animations with GPU acceleration */
 @keyframes marquee-left {
     from {
-        transform: translateX(0);
+        transform: translate3d(0, 0, 0);
     }
     to {
-        transform: translateX(-50%);
+        transform: translate3d(-50%, 0, 0);
     }
 }
 
 @keyframes marquee-right {
     from {
-        transform: translateX(-50%);
+        transform: translate3d(-50%, 0, 0);
     }
     to {
-        transform: translateX(0);
+        transform: translate3d(0, 0, 0);
     }
 }
 
-.animate-marquee-left {
+.gallery-track-left {
     animation: marquee-left 60s linear infinite;
+    transform: translate3d(0, 0, 0);
 }
 
-.animate-marquee-right {
+.gallery-track-right {
     animation: marquee-right 60s linear infinite;
+    transform: translate3d(0, 0, 0);
 }
 
-.group:hover .pause {
+.gallery-row:hover .gallery-track {
     animation-play-state: paused;
+}
+
+/* Reduce paint area on hover */
+.gallery-item:hover {
+    isolation: isolate;
 }
 </style>

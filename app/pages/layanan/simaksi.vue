@@ -1,14 +1,7 @@
 <template>
     <NuxtLayout name="detail">
         <template #breadcrumb>
-            <NuxtLink
-                to="/layanan"
-                class="text-emerald-200 transition-colors hover:text-white"
-            >
-                Layanan
-            </NuxtLink>
-            <span class="text-emerald-400">/</span>
-            <span class="text-white">SIMAKSI</span>
+            <span class="text-white">Perizinan Masuk Kawasan (Simaksi)</span>
         </template>
 
         <template #header>
@@ -33,7 +26,7 @@
                 </span>
             </div>
             <h1 class="text-3xl font-bold sm:text-4xl lg:text-5xl">
-                Prosedur Permohonan SIMAKSI
+                Prosedur Permohonan Perizinan Masuk Kawasan (Simaksi)
             </h1>
         </template>
 
@@ -79,7 +72,9 @@
                     SIMAKSI diperlukan untuk kegiatan-kegiatan sebagai berikut:
                 </p>
 
-                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div
+                    class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+                >
                     <div
                         v-for="item in scopeItems"
                         :key="item.name"
@@ -178,7 +173,7 @@
                             class="overflow-hidden rounded-xl bg-white shadow-md"
                         >
                             <div class="space-y-6 p-6 sm:p-8">
-                                <!-- Step 1 -->
+                                <div class="border-t border-gray-200"></div>
                                 <div class="flex gap-5">
                                     <div
                                         class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-bold text-white shadow-lg"
@@ -189,13 +184,100 @@
                                         <h4
                                             class="text-lg font-bold text-gray-900"
                                         >
-                                            Booking Online
+                                            Surat Permohonan
                                         </h4>
-                                        <p class="mt-2 leading-relaxed text-gray-600">
-                                            Mengisi SIMAKSI Online yang ada di
-                                            Website BKSDA Sumatera Selatan untuk
-                                            membooking kuota.
+                                        <p
+                                            class="mt-2 leading-relaxed text-gray-600"
+                                        >
+                                            Membuat Surat Permohonan yang
+                                            ditujukan kepada
+                                            <strong class="text-emerald-700"
+                                                >Kepala BKSDA Sumatera
+                                                Selatan</strong
+                                            >
+                                            dengan tembusan disampaikan kepada:
                                         </p>
+                                        <ul
+                                            class="mt-3 space-y-2 pl-6 text-gray-600"
+                                        >
+                                            <li class="flex items-start gap-2">
+                                                <svg
+                                                    class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke-width="2"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                    />
+                                                </svg>
+                                                <span
+                                                    >Kepala Pusat Penelitian dan
+                                                    Pengembangan
+                                                    Kehutanan.</span
+                                                >
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <svg
+                                                    class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke-width="2"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                    />
+                                                </svg>
+                                                <span
+                                                    >Sekretaris Direktorat
+                                                    Jenderal PHKA.</span
+                                                >
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <svg
+                                                    class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke-width="2"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                    />
+                                                </svg>
+                                                <span
+                                                    >Direktorat Konservasi
+                                                    Keanekaragaman Hayati.</span
+                                                >
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <svg
+                                                    class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke-width="2"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                    />
+                                                </svg>
+                                                <span
+                                                    >Kepala Seksi Konservasi
+                                                    Wilayah setempat.</span
+                                                >
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
 
@@ -212,49 +294,202 @@
                                         <h4
                                             class="text-lg font-bold text-gray-900"
                                         >
-                                            Surat Permohonan
+                                            Persyaratan Dokumen
                                         </h4>
-                                        <p class="mt-2 leading-relaxed text-gray-600">
-                                            Membuat Surat Permohonan yang
-                                            ditujukan kepada
-                                            <strong class="text-emerald-700"
-                                                >Kepala BKSDA Sumatera
-                                                Selatan</strong
-                                            >
-                                            dengan tembusan disampaikan kepada:
-                                        </p>
-                                        <ul
-                                            class="mt-3 space-y-2 pl-6 text-gray-600"
+                                        <p
+                                            class="mt-2 leading-relaxed text-gray-600"
                                         >
-                                            <li class="flex items-start gap-2">
-                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                                <span>Kepala Pusat Penelitian dan
-                                                Pengembangan Kehutanan.</span>
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                                <span>Sekretaris Direktorat Jenderal
-                                                PHKA.</span>
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                                <span>Direktorat Konservasi
-                                                Keanekaragaman Hayati.</span>
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                                <span>Kepala Seksi Konservasi Wilayah
-                                                setempat.</span>
-                                            </li>
-                                        </ul>
+                                            Menyerahkan fotocopy KTP dan Materai
+                                            Rp 6.000, serta melampirkan dokumen
+                                            sesuai kegiatan:
+                                        </p>
+                                        <div class="mt-4 space-y-4">
+                                            <div
+                                                class="rounded-lg border-2 border-emerald-100 bg-emerald-50/50 p-4"
+                                            >
+                                                <h5
+                                                    class="font-bold text-emerald-900"
+                                                >
+                                                    Kegiatan Penelitian,
+                                                    Pengembangan, Ilmu
+                                                    Pengetahuan, Pendidikan,
+                                                    Foto Komersial & Ekspedisi
+                                                </h5>
+                                                <ul
+                                                    class="mt-3 space-y-2 text-gray-700"
+                                                >
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
+                                                        </svg>
+                                                        <span
+                                                            >Proposal
+                                                            kegiatan.</span
+                                                        >
+                                                    </li>
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
+                                                        </svg>
+                                                        <span
+                                                            >Fotocopy tanda
+                                                            pengenal.</span
+                                                        >
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div
+                                                class="rounded-lg border-2 border-teal-100 bg-teal-50/50 p-4"
+                                            >
+                                                <h5
+                                                    class="font-bold text-teal-900"
+                                                >
+                                                    Kegiatan Pembuatan Film atau
+                                                    Videoklip
+                                                </h5>
+                                                <ul
+                                                    class="mt-3 space-y-2 text-gray-700"
+                                                >
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
+                                                        </svg>
+                                                        <span
+                                                            >Surat izin produksi
+                                                            (untuk tujuan
+                                                            komersial).</span
+                                                        >
+                                                    </li>
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
+                                                        </svg>
+                                                        <span
+                                                            >Tanda pendaftaran
+                                                            rekaman video/film
+                                                            dari Badan Informasi
+                                                            dan Komunikasi
+                                                            Nasional.</span
+                                                        >
+                                                    </li>
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
+                                                        </svg>
+                                                        <span
+                                                            >Sinopsis film yang
+                                                            akan dibuat.</span
+                                                        >
+                                                    </li>
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
+                                                        </svg>
+                                                        <span
+                                                            >Daftar crew.</span
+                                                        >
+                                                    </li>
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
+                                                        </svg>
+                                                        <span
+                                                            >Surat Peryataan
+                                                            tidak merusak
+                                                            lingkungan serta
+                                                            kesediaan mematuhi
+                                                            ketentuan
+                                                            perundang-undangan
+                                                            yang berlaku.</span
+                                                        >
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -271,106 +506,11 @@
                                         <h4
                                             class="text-lg font-bold text-gray-900"
                                         >
-                                            Persyaratan Dokumen
-                                        </h4>
-                                        <p class="mt-2 leading-relaxed text-gray-600">
-                                            Menyerahkan fotocopy KTP dan Materai
-                                            Rp 6.000, serta melampirkan dokumen
-                                            sesuai kegiatan:
-                                        </p>
-                                        <div class="mt-4 space-y-4">
-                                            <div
-                                                class="rounded-lg border-2 border-emerald-100 bg-emerald-50/50 p-4"
-                                            >
-                                                <h5
-                                                    class="font-bold text-emerald-900"
-                                                >
-                                                    Kegiatan Penelitian,
-                                                    Pengembangan, Ilmu
-                                                    Pengetahuan, Pendidikan,
-                                                    Foto Komersial & Ekspedisi
-                                                </h5>
-                                                <ul
-                                                    class="mt-3 space-y-2 text-gray-700"
-                                                >
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                        </svg>
-                                                        <span>Proposal kegiatan.</span>
-                                                    </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                        </svg>
-                                                        <span>Fotocopy tanda pengenal.</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div
-                                                class="rounded-lg border-2 border-teal-100 bg-teal-50/50 p-4"
-                                            >
-                                                <h5
-                                                    class="font-bold text-teal-900"
-                                                >
-                                                    Kegiatan Pembuatan Film atau
-                                                    Videoklip
-                                                </h5>
-                                                <ul
-                                                    class="mt-3 space-y-2 text-gray-700"
-                                                >
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                        </svg>
-                                                        <span>Surat izin produksi (untuk tujuan komersial).</span>
-                                                    </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                        </svg>
-                                                        <span>Tanda pendaftaran rekaman video/film dari Badan Informasi dan Komunikasi Nasional.</span>
-                                                    </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                        </svg>
-                                                        <span>Sinopsis film yang akan dibuat.</span>
-                                                    </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                        </svg>
-                                                        <span>Daftar crew.</span>
-                                                    </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                        </svg>
-                                                        <span>Surat Peryataan tidak merusak lingkungan serta kesediaan mematuhi ketentuan perundang-undangan yang berlaku.</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="border-t border-gray-200"></div>
-
-                                <!-- Step 4 -->
-                                <div class="flex gap-5">
-                                    <div
-                                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-bold text-white shadow-lg"
-                                    >
-                                        4
-                                    </div>
-                                    <div class="flex-1">
-                                        <h4
-                                            class="text-lg font-bold text-gray-900"
-                                        >
                                             Pengambilan SIMAKSI
                                         </h4>
-                                        <p class="mt-2 leading-relaxed text-gray-600">
+                                        <p
+                                            class="mt-2 leading-relaxed text-gray-600"
+                                        >
                                             Datang ke Kantor BKSDA Sumatera
                                             Selatan untuk menyerahkan seluruh
                                             syarat-syarat (poin 2 dan 3) dan
@@ -382,9 +522,14 @@
                             </div>
                         </div>
 
-                        <div v-else key="wna" class="overflow-hidden rounded-xl bg-white shadow-md">
+                        <div
+                            v-else
+                            key="wna"
+                            class="overflow-hidden rounded-xl bg-white shadow-md"
+                        >
                             <div class="space-y-6 p-6 sm:p-8">
-                                <!-- Similar structure for WNA, keeping the existing content but with same styling as WNI -->
+                                <div class="border-t border-gray-200"></div>
+
                                 <div class="flex gap-5">
                                     <div
                                         class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-bold text-white shadow-lg"
@@ -395,13 +540,82 @@
                                         <h4
                                             class="text-lg font-bold text-gray-900"
                                         >
-                                            Booking Online
+                                            Surat Permohonan
                                         </h4>
-                                        <p class="mt-2 leading-relaxed text-gray-600">
-                                            Mengisi SIMAKSI Online yang ada di
-                                            Website BKSDA Sumatera Selatan untuk
-                                            membooking kuota.
+                                        <p
+                                            class="mt-2 leading-relaxed text-gray-600"
+                                        >
+                                            Membuat Surat Permohonan yang
+                                            ditujukan kepada
+                                            <strong class="text-emerald-700"
+                                                >Sekretaris Direktorat Jenderal
+                                                Perlindungan Hutan dan
+                                                Konservasi Alam</strong
+                                            >
+                                            dengan tembusan kepada:
                                         </p>
+                                        <ul
+                                            class="mt-3 space-y-2 text-gray-600"
+                                        >
+                                            <li class="flex items-start gap-2">
+                                                <svg
+                                                    class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke-width="2"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                    />
+                                                </svg>
+                                                <span
+                                                    >Kepala Pusat Penelitian dan
+                                                    Pengembangan
+                                                    Kehutanan.</span
+                                                >
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <svg
+                                                    class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke-width="2"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                    />
+                                                </svg>
+                                                <span
+                                                    >Direktorat Konservasi
+                                                    Keanekaragaman Hayati.</span
+                                                >
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <svg
+                                                    class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke-width="2"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                    />
+                                                </svg>
+                                                <span
+                                                    >Kepala Balai
+                                                    setempat.</span
+                                                >
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
 
@@ -417,58 +631,11 @@
                                         <h4
                                             class="text-lg font-bold text-gray-900"
                                         >
-                                            Surat Permohonan
-                                        </h4>
-                                        <p class="mt-2 leading-relaxed text-gray-600">
-                                            Membuat Surat Permohonan yang
-                                            ditujukan kepada
-                                            <strong class="text-emerald-700"
-                                                >Sekretaris Direktorat Jenderal
-                                                Perlindungan Hutan dan
-                                                Konservasi Alam</strong
-                                            >
-                                            dengan tembusan kepada:
-                                        </p>
-                                        <ul
-                                            class="mt-3 space-y-2 text-gray-600"
-                                        >
-                                            <li class="flex items-start gap-2">
-                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                                <span>Kepala Pusat Penelitian dan Pengembangan Kehutanan.</span>
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                                <span>Direktorat Konservasi Keanekaragaman Hayati.</span>
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                                <span>Kepala Balai setempat.</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="border-t border-gray-200"></div>
-
-                                <div class="flex gap-5">
-                                    <div
-                                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-bold text-white shadow-lg"
-                                    >
-                                        3
-                                    </div>
-                                    <div class="flex-1">
-                                        <h4
-                                            class="text-lg font-bold text-gray-900"
-                                        >
                                             Persyaratan Dokumen
                                         </h4>
-                                        <p class="mt-2 leading-relaxed text-gray-600">
+                                        <p
+                                            class="mt-2 leading-relaxed text-gray-600"
+                                        >
                                             Menyerahkan fotocopy KTP dan Materai
                                             Rp 6.000, serta melampirkan dokumen
                                             sesuai kegiatan:
@@ -488,41 +655,141 @@
                                                 <ul
                                                     class="mt-3 space-y-2 text-gray-700"
                                                 >
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Surat izin dari penelitian LIPI.</span>
+                                                        <span
+                                                            >Surat izin dari
+                                                            penelitian
+                                                            LIPI.</span
+                                                        >
                                                     </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Proposal kegiatan.</span>
+                                                        <span
+                                                            >Proposal
+                                                            kegiatan.</span
+                                                        >
                                                     </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Fotocopy Passport.</span>
+                                                        <span
+                                                            >Fotocopy
+                                                            Passport.</span
+                                                        >
                                                     </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Surat Pemberitahuan Penelitian dari Direktorat Kesatuan Bangsa dan Politik Departemen Dalam Negeri.</span>
+                                                        <span
+                                                            >Surat Pemberitahuan
+                                                            Penelitian dari
+                                                            Direktorat Kesatuan
+                                                            Bangsa dan Politik
+                                                            Departemen Dalam
+                                                            Negeri.</span
+                                                        >
                                                     </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Surat Jalan dari Kepolisian.</span>
+                                                        <span
+                                                            >Surat Jalan dari
+                                                            Kepolisian.</span
+                                                        >
                                                     </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Surat peryataan tidak merusak lingkungan serta kesediaan mematuhi ketentuan perundang-undangan yang berlaku.</span>
+                                                        <span
+                                                            >Surat peryataan
+                                                            tidak merusak
+                                                            lingkungan serta
+                                                            kesediaan mematuhi
+                                                            ketentuan
+                                                            perundang-undangan
+                                                            yang berlaku.</span
+                                                        >
                                                     </li>
                                                 </ul>
                                             </div>
@@ -538,35 +805,118 @@
                                                 <ul
                                                     class="mt-3 space-y-2 text-gray-700"
                                                 >
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Surat izin produksi (untuk tujuan komersial).</span>
+                                                        <span
+                                                            >Surat izin produksi
+                                                            (untuk tujuan
+                                                            komersial).</span
+                                                        >
                                                     </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Tanda pendaftaran rekaman video/film dari Badan Informasi dan Komunikasi Nasional.</span>
+                                                        <span
+                                                            >Tanda pendaftaran
+                                                            rekaman video/film
+                                                            dari Badan Informasi
+                                                            dan Komunikasi
+                                                            Nasional.</span
+                                                        >
                                                     </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Sinopsis film yang akan dibuat.</span>
+                                                        <span
+                                                            >Sinopsis film yang
+                                                            akan dibuat.</span
+                                                        >
                                                     </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Daftar crew.</span>
+                                                        <span
+                                                            >Daftar crew.</span
+                                                        >
                                                     </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Surat Peryataan tidak merusak lingkungan serta kesedian mematuhi ketentuan perundang-undangan yang berlaku.</span>
+                                                        <span
+                                                            >Surat Peryataan
+                                                            tidak merusak
+                                                            lingkungan serta
+                                                            kesedian mematuhi
+                                                            ketentuan
+                                                            perundang-undangan
+                                                            yang berlaku.</span
+                                                        >
                                                     </li>
                                                 </ul>
                                             </div>
@@ -582,35 +932,112 @@
                                                 <ul
                                                     class="mt-3 space-y-2 text-gray-700"
                                                 >
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-blue-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
                                                         <span>Proposal.</span>
                                                     </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-blue-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Fotocopy Passport.</span>
+                                                        <span
+                                                            >Fotocopy
+                                                            Passport.</span
+                                                        >
                                                     </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-blue-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Daftar peralatan.</span>
+                                                        <span
+                                                            >Daftar
+                                                            peralatan.</span
+                                                        >
                                                     </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-blue-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Surat Jalan dari Kepolisian.</span>
+                                                        <span
+                                                            >Surat Jalan dari
+                                                            Kepolisian.</span
+                                                        >
                                                     </li>
-                                                    <li class="flex items-start gap-2">
-                                                        <svg class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <li
+                                                        class="flex items-start gap-2"
+                                                    >
+                                                        <svg
+                                                            class="h-5 w-5 shrink-0 text-blue-600 mt-0.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke-width="2"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
                                                         </svg>
-                                                        <span>Surat Peryataan tidak merusak lingkungan serta kesedian mematuhi ketentuan perundang-undangan yang berlaku.</span>
+                                                        <span
+                                                            >Surat Peryataan
+                                                            tidak merusak
+                                                            lingkungan serta
+                                                            kesedian mematuhi
+                                                            ketentuan
+                                                            perundang-undangan
+                                                            yang berlaku.</span
+                                                        >
                                                     </li>
                                                 </ul>
                                             </div>
@@ -624,7 +1051,7 @@
                                     <div
                                         class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-bold text-white shadow-lg"
                                     >
-                                        4
+                                        3
                                     </div>
                                     <div class="flex-1">
                                         <h4
@@ -632,7 +1059,9 @@
                                         >
                                             Pengambilan SIMAKSI
                                         </h4>
-                                        <p class="mt-2 leading-relaxed text-gray-600">
+                                        <p
+                                            class="mt-2 leading-relaxed text-gray-600"
+                                        >
                                             Datang ke Kantor BKSDA Sumatera
                                             Selatan untuk menyerahkan seluruh
                                             syarat-syarat (poin 2 dan 3) dan

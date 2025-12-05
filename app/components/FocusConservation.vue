@@ -37,7 +37,7 @@
 
         <div class="mx-auto max-w-screen-2xl px-6 sm:px-8 lg:px-10">
             <!-- Header Section -->
-            <div class="mx-auto max-w-3xl text-center">
+            <div class="mx-auto max-w-5xl text-center">
                 <div
                     class="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-2 ring-1 ring-inset ring-emerald-500/30 backdrop-blur-sm"
                 >
@@ -73,7 +73,15 @@
                     Sumatera Selatan adalah rumah bagi beberapa spesies paling
                     terancam di dunia. Perlindungan mereka adalah inti dari misi
                     kami, memastikan keberadaan mereka untuk generasi yang akan
-                    datang.
+                    datang. Beberapa jenis tumbuhan dan satwa yang dilindungi
+                    berdasarkan
+                    <strong
+                        ><span
+                            class="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent underline"
+                            >Permen LHK No SK106 Tahun 2018</span
+                        ></strong
+                    >
+                    Tentang Jenis Tumbuhan dan Satwa yang Dilindungi
                 </p>
             </div>
 
@@ -219,8 +227,8 @@
 <script setup lang="ts">
 import Autoplay from 'embla-carousel-autoplay';
 import useEmblaCarousel from 'embla-carousel-vue';
-import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { ArrowRightCircle, ChevronLeft, ChevronRight } from 'lucide-vue-next';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 
 interface Species {
     name: string;

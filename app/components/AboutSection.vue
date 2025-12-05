@@ -1,146 +1,187 @@
 <template>
     <section
-        class="relative overflow-hidden bg-gradient-to-b from-white via-emerald-50/30 to-white py-12 sm:py-16 lg:py-24"
+        class="relative overflow-hidden bg-gradient-to-b from-emerald-50 via-emerald-50/30 to-white py-16 sm:py-24"
     >
-        <div class="absolute inset-0 -z-10">
+        <!-- Background Decorations -->
+        <div class="absolute inset-0 -z-10 pointer-events-none">
             <div
                 class="absolute left-0 top-0 h-96 w-96 rounded-full bg-emerald-100/50 blur-3xl filter"
             ></div>
             <div
                 class="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-teal-100/50 blur-3xl filter"
             ></div>
+            <div
+                class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[800px] w-[800px] rounded-full border border-emerald-900/5"
+            ></div>
+            <div
+                class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full border border-emerald-900/5"
+            ></div>
         </div>
 
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div
-                class="grid grid-cols-1 items-center gap-x-12 gap-y-12 lg:grid-cols-2 lg:gap-x-16"
+                class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center"
             >
-                <div class="relative">
-                    <div class="max-w-xl">
-                        <div
-                            class="inline-flex items-center gap-2 rounded-full bg-emerald-600/10 px-3 py-1.5 sm:px-4 sm:py-2 ring-1 ring-inset ring-emerald-600/20"
-                        >
-                            <MapPin h="6" w="6" class="text-emerald-600"/>
+                <!-- Left Column: Content -->
+                <div class="text-left">
+                    <div
+                        class="inline-flex items-center gap-2 rounded-full bg-emerald-600/10 px-3 py-1 text-sm font-semibold text-emerald-600 ring-1 ring-inset ring-emerald-600/20 mb-6"
+                    >
+                        <span class="relative flex h-2 w-2">
                             <span
-                                class="font-semibold text-emerald-700"
-                                style="
-                                    font-size: clamp(0.75rem, 1.25vw, 0.875rem);
-                                "
-                            >
-                                Tentang Kami
-                            </span>
-                        </div>
-
-                        <h2
-                            class="mt-4 sm:mt-6 font-bold tracking-tight text-slate-900"
-                            style="font-size: clamp(1.875rem, 4vw, 3.75rem)"
-                        >
-                            Menjaga
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"
+                            ></span>
                             <span
-                                class="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent"
-                                >Jantung Hijau</span
-                            >
-                            Sumatera
-                        </h2>
+                                class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"
+                            ></span>
+                        </span>
+                        Tentang BKSDA Sumsel
+                    </div>
 
-                        <p
-                            class="mt-4 sm:mt-6 leading-7 sm:leading-8 text-slate-700"
-                            style="font-size: clamp(0.875rem, 1.5vw, 1.125rem)"
+                    <h2
+                        class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mb-6"
+                    >
+                        Menjaga Harmoni Alam, <br />
+                        <span class="text-emerald-600"
+                            >Melestarikan Kehidupan</span
                         >
+                    </h2>
+
+                    <div
+                        class="space-y-6 text-lg text-slate-600 leading-relaxed"
+                    >
+                        <p>
                             Balai Konservasi Sumber Daya Alam (BKSDA) Sumatera
-                            Selatan adalah unit pelaksana teknis yang
-                            berdedikasi untuk melindungi keanekaragaman hayati
-                            dan ekosistem unik di provinsi ini.
+                            Selatan hadir sebagai garda terdepan dalam menjaga
+                            kekayaan hayati bumi Sriwijaya. Kami berdedikasi
+                            untuk melindungi kawasan konservasi, melestarikan
+                            satwa liar, dan memberdayakan masyarakat sekitar
+                            hutan.
                         </p>
-
-                        <div
-                            class="mt-4 sm:mt-6 flex items-start gap-3 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 p-4 sm:p-5 ring-1 ring-emerald-100"
-                        >
-                            <CheckSquare h="6" w="6" class="text-emerald-600"/>
-                            <p
-                                class="leading-6 sm:leading-7 text-slate-700"
-                                style="font-size: clamp(0.875rem, 1.5vw, 1rem)"
-                            >
-                                Kami mengelola jaringan kawasan konservasi yang
-                                luas, menjadi rumah bagi spesies terancam
-                                seperti
-                                <span class="font-semibold text-emerald-700"
-                                    >Harimau Sumatera</span
-                                >,
-                                <span class="font-semibold text-emerald-700"
-                                    >Gajah</span
-                                >, dan
-                                <span class="font-semibold text-emerald-700"
-                                    >Rangkong</span
-                                >. Misi kami adalah memastikan warisan alam ini
-                                tetap lestari untuk generasi mendatang.
-                            </p>
-                        </div>
+                        <p>
+                            Dari harimau sumatera yang megah hingga gajah
+                            sumatera yang bijaksana, kami memastikan setiap
+                            makhluk hidup memiliki tempat yang aman untuk
+                            berkembang biak demi keseimbangan ekosistem masa
+                            depan.
+                        </p>
                     </div>
-                </div>
 
-                <div
-                    class="relative flex items-center justify-center lg:justify-end"
-                >
-                    <div class="relative">
+                    <!-- Stats / Features Grid -->
+                    <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
                         <div
-                            class="absolute -inset-4 rounded-3xl bg-gradient-to-r from-emerald-400 to-teal-400 opacity-20 blur-2xl"
-                        ></div>
-
-                        <NuxtImg
-                            src="/kws_konservasi/gnmaras.avif"
-                            alt="Pemandangan Danau Ranau di kawasan konservasi BKSDA Sumsel"
-                            class="relative w-full max-w-lg rounded-3xl object-cover shadow-2xl shadow-emerald-500/30 ring-1 ring-slate-900/5 aspect-[4/3] lg:max-w-none"
-                            sizes="100vw sm:512px lg:640px"
-                            loading="lazy"
-                            format="avif,webp"
-                            quality="80"
-                        />
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-16 sm:mt-20 lg:mt-28">
-                <div class="mb-6 sm:mb-8 text-center">
-                    <h3
-                        class="font-bold text-slate-900"
-                        style="font-size: clamp(1.5rem, 3vw, 1.875rem)"
-                    >
-                        Kawasan yang Kami Kelola
-                    </h3>
-                    <p
-                        class="mt-2 text-slate-600"
-                        style="font-size: clamp(0.875rem, 1.5vw, 1rem)"
-                    >
-                        Klik marker pada peta untuk melihat informasi detail
-                        kawasan konservasi
-                    </p>
-                </div>
-
-                <ClientOnly>
-                    <KawasanMap />
-                    <template #fallback>
-                        <div
-                            class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-2xl ring-1 ring-slate-900/5 bg-slate-100 flex items-center justify-center"
+                            v-for="stat in stats"
+                            :key="stat.label"
+                            class="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-emerald-100 shadow-sm hover:shadow-md transition-shadow duration-300"
                         >
-                            <div class="text-center">
-                                <div
-                                    class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-emerald-600 border-r-transparent"
-                                ></div>
-                                <p class="mt-4 text-slate-600">
-                                    Memuat peta...
-                                </p>
+                            <component
+                                :is="stat.icon"
+                                class="h-8 w-8 text-emerald-600 mb-3"
+                            />
+                            <div class="font-bold text-2xl text-slate-900">
+                                {{ stat.value }}
+                            </div>
+                            <div class="text-sm text-slate-600 font-medium">
+                                {{ stat.label }}
                             </div>
                         </div>
-                    </template>
-                </ClientOnly>
+                    </div>
+
+                    <div class="mt-10 flex flex-col sm:flex-row gap-4">
+                        <NuxtLink
+                            to="/tentang"
+                            class="inline-flex justify-center items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-500 hover:shadow-emerald-600/30 transition-all duration-300 hover:-translate-y-0.5"
+                        >
+                            Profil BKSDA Sumatera Selatan
+                            <ArrowRight class="h-4 w-4" />
+                        </NuxtLink>
+                    </div>
+                </div>
+
+                <!-- Right Column: Map -->
+                <div class="relative lg:h-[700px] flex flex-col">
+                    <div
+                        class="absolute -inset-4 bg-linear-to-r from-emerald-100 to-teal-100 rounded-[2.5rem] -z-10 blur-2xl opacity-60"
+                    ></div>
+
+                    <div
+                        class="relative flex-1 w-full rounded-2xl overflow-hidden shadow-2xl ring-1 ring-slate-900/5 bg-white"
+                    >
+                        <ClientOnly>
+                            <KawasanMap :disable-popup="false" />
+                            <template #fallback>
+                                <div
+                                    class="w-full h-full flex flex-col items-center justify-center bg-slate-50"
+                                >
+                                    <div
+                                        class="h-10 w-10 animate-spin rounded-full border-4 border-emerald-600 border-t-transparent"
+                                    ></div>
+                                    <p
+                                        class="mt-4 text-sm font-medium text-slate-500"
+                                    >
+                                        Memuat Peta Kawasan...
+                                    </p>
+                                </div>
+                            </template>
+                        </ClientOnly>
+
+                        <!-- Map Overlay Info -->
+                        <div
+                            class="absolute bottom-6 left-6 right-6 z-400 pointer-events-none"
+                        >
+                            <div
+                                class="bg-white/90 backdrop-blur-md rounded-xl p-4 shadow-lg border border-white/50 flex items-start gap-4 pointer-events-auto"
+                            >
+                                <div
+                                    class="p-2.5 bg-emerald-100 rounded-lg shrink-0"
+                                >
+                                    <Map class="h-6 w-6 text-emerald-600" />
+                                </div>
+                                <div>
+                                    <h4
+                                        class="font-semibold text-slate-900 text-sm"
+                                    >
+                                        Peta Persebaran
+                                    </h4>
+                                    <p
+                                        class="text-xs text-slate-600 mt-1 leading-relaxed"
+                                    >
+                                        Klik pada marker di peta untuk melihat
+                                        detail informasi setiap kawasan
+                                        konservasi yang kami kelola.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 </template>
 
 <script setup lang="ts">
-import { MapPin, CheckSquare } from 'lucide-vue-next'
+import { ArrowRight, Camera, Map, Mountain, Shield } from 'lucide-vue-next';
+
+const stats = [
+    {
+        label: 'Taman Nasional',
+        value: '1',
+        icon: Mountain,
+    },
+    {
+        label: 'Taman Wisata Alam',
+        value: '4',
+        icon: Camera,
+    },
+    {
+        label: 'Suaka Margasatwa',
+        value: '6',
+        icon: Shield,
+    },
+];
 </script>
 
-<style scoped></style>
+<style scoped>
+/* Custom animations if needed */
+</style>

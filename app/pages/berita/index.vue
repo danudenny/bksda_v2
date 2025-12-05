@@ -52,7 +52,7 @@
                     <button
                         v-if="selectedCategories.length > 0"
                         @click="resetFilters"
-                        class="text-xs text-emerald-600 hover:text-emerald-700 font-medium hover:underline"
+                        class="text-xs text-emerald-600 hover:text-emerald-700 font-medium hover:underline cursor-pointer"
                     >
                         Reset Filter
                     </button>
@@ -72,7 +72,7 @@
                             v-for="category in categories"
                             :key="category.id"
                             @click="toggleCategory(category.id)"
-                            class="relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ease-out border"
+                            class="cursor-pointer relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ease-out border"
                             :class="[
                                 selectedCategories.includes(category.id)
                                     ? 'bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-600/20 transform scale-105'
@@ -186,7 +186,12 @@
 
                                 <div class="absolute top-4 left-4">
                                     <span
-                                        class="inline-flex items-center rounded-full bg-white/90 backdrop-blur px-2.5 py-0.5 text-xs font-bold text-emerald-700 shadow-sm"
+                                        class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-bold shadow-sm"
+                                        :style="{
+                                            backgroundColor:
+                                                post.category.color,
+                                            color: 'white',
+                                        }"
                                     >
                                         {{ post.category.title }}
                                     </span>

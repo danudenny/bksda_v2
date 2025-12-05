@@ -9,12 +9,18 @@
             @toggle-search="toggleSearch"
         />
 
-        <MegaMenu
-            :is-open="isMegaMenuOpen"
-            :is-scrolled="isScrolled"
-            :is-homepage="false"
-            @close="closeMegaMenu"
-        />
+        <div class="hidden lg:block">
+            <MegaMenu
+                :is-open="isMegaMenuOpen"
+                :is-scrolled="isScrolled"
+                :is-homepage="false"
+                @close="closeMegaMenu"
+            />
+        </div>
+
+        <div class="lg:hidden">
+            <MegaMenuMobile :is-open="isMegaMenuOpen" @close="closeMegaMenu" />
+        </div>
 
         <SearchModal :is-open="isSearchOpen" @close="closeSearch" />
 
@@ -100,6 +106,10 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
+import MegaMenu from '~/components/MegaMenu.vue';
+import MegaMenuMobile from '~/components/MegaMenuMobile.vue';
+import Navbar from '~/components/Navbar.vue';
+import SearchModal from '~/components/SearchModal.vue';
 
 // Layout for list/archive pages like all news, all announcements, etc.
 const isMegaMenuOpen = ref(false);
@@ -146,14 +156,37 @@ const handleKeydown = (event: KeyboardEvent) => {
     }
 };
 
+const handleClickOutside = (event: MouseEvent) => {
+    if (!isMegaMenuOpen.value) return;
+
+    const target = event.target as Node | null;
+    if (!target) return;
+
+    const megaMenuElement = document.getElementById('mega-menu');
+    const megaMenuMobileElement = document.getElementById('mega-menu-mobile');
+    const navbarElement = document.querySelector('header');
+
+    if (
+        (megaMenuElement && megaMenuElement.contains(target)) ||
+        (megaMenuMobileElement && megaMenuMobileElement.contains(target)) ||
+        (navbarElement && navbarElement.contains(target))
+    ) {
+        return;
+    }
+
+    closeMegaMenu();
+};
+
 onMounted(() => {
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('keydown', handleKeydown);
+    window.addEventListener('mousedown', handleClickOutside);
 });
 
 onBeforeUnmount(() => {
     window.removeEventListener('scroll', handleScroll);
     window.removeEventListener('keydown', handleKeydown);
+    window.removeEventListener('mousedown', handleClickOutside);
 });
 </script>

@@ -81,7 +81,10 @@
                             class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/20 to-transparent z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                         ></div>
                         <img
-                            :src="featuredPost.imageUrl || 'https://placehold.co/600x400?text=No+Image'"
+                            :src="
+                                featuredPost.imageUrl ||
+                                'https://placehold.co/600x400?text=No+Image'
+                            "
                             :alt="featuredPost.title"
                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
@@ -121,7 +124,7 @@
                         </div>
 
                         <h3
-                            class="mt-4 text-3xl font-bold leading-tight text-slate-900 lg:text-4xl"
+                            class="mt-4 text-3xl font-bold leading-tight text-slate-900 lg:text-4xl capitalize"
                         >
                             <NuxtLink
                                 :to="featuredPost.href"
@@ -186,7 +189,10 @@
                             class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent z-10"
                         ></div>
                         <img
-                            :src="post.imageUrl || 'https://placehold.co/600x400?text=No+Image'"
+                            :src="
+                                post.imageUrl ||
+                                'https://placehold.co/600x400?text=No+Image'
+                            "
                             :alt="post.title"
                             class="aspect-[16/9] w-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
@@ -235,10 +241,10 @@
                     <div class="flex flex-1 flex-col justify-between p-6">
                         <div>
                             <h3
-                                class="text-xl font-bold leading-7 text-slate-900 group-hover:text-emerald-600 transition-colors"
+                                class="text-xl font-bold leading-7 text-slate-900 group-hover:text-emerald-600 transition-colors capitalize"
                             >
                                 <NuxtLink :to="post.href">
-                                    <span class="absolute inset-0" />
+                                    <span class="absolute inset-0 capitalize" />
                                     {{ post.title }}
                                 </NuxtLink>
                             </h3>
@@ -284,17 +290,21 @@
 </template>
 
 <script setup>
-import { ArrowRightCircleIcon, UserIcon } from 'lucide-vue-next';
-import { computed } from 'vue';
 import { format, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
+import { ArrowRightCircleIcon, UserIcon } from 'lucide-vue-next';
+import { computed } from 'vue';
 
-const { data: posts, pending, error } = await useAsyncData(
+const {
+    data: posts,
+    pending,
+    error,
+} = await useAsyncData(
     'posts-section',
     () => $fetch('/api/posts?limit=4&published=true'),
     {
         transform: (response) => response.data,
-    },
+    }
 );
 
 const formattedPosts = computed(() => {
@@ -302,6 +312,7 @@ const formattedPosts = computed(() => {
     return posts.value.map((post) => ({
         ...post,
         href: `/berita/${post.slug}`,
+        title: post.title.charAt(0).toUpperCase() + post.title.slice(1),
         imageUrl: post.imageUrl,
         date: format(parseISO(post.createdAt), 'dd MMMM yyyy', { locale: id }),
         datetime: post.createdAt,

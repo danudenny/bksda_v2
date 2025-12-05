@@ -18,7 +18,7 @@
                 class="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl"
             >
                 {{ post?.title || 'Berita Tidak Ditemukan' }}
-            </h1>b
+            </h1>
         </template>
 
         <template #meta>
@@ -47,12 +47,16 @@
             v-if="post"
             class="bg-white rounded-2xl shadow-xl ring-1 ring-gray-900/5 p-6 sm:p-8 lg:p-12 -mt-8"
         >
-           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-gray-100">
+            <div
+                class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-gray-100"
+            >
                 <div class="flex items-center gap-3">
-                    <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                    <span
+                        class="text-sm font-semibold text-gray-500 uppercase tracking-wider"
+                    >
                         Bagikan:
                     </span>
-                    
+
                     <div class="flex items-center gap-2">
                         <button
                             v-for="social in socialShares"
@@ -61,14 +65,14 @@
                             :class="[
                                 'group relative flex h-9 w-9 items-center justify-center rounded-full border transition-all duration-300',
                                 'hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-1',
-                                social.colorClass
+                                social.colorClass,
                             ]"
                             :aria-label="'Bagikan ke ' + social.name"
                             :title="'Bagikan ke ' + social.name"
                         >
-                            <Icon 
-                                :icon="social.icon" 
-                                class="text-lg transition-transform group-hover:scale-110" 
+                            <Icon
+                                :icon="social.icon"
+                                class="text-lg transition-transform group-hover:scale-110"
                             />
                         </button>
 
@@ -78,12 +82,18 @@
                             aria-label="Salin Tautan"
                             title="Salin Tautan"
                         >
-                            <Icon 
-                                :icon="copySuccess ? 'mdi:check' : 'mdi:link-variant'" 
+                            <Icon
+                                :icon="
+                                    copySuccess
+                                        ? 'mdi:check'
+                                        : 'mdi:link-variant'
+                                "
                                 :class="[
                                     'text-lg transition-all duration-300',
-                                    copySuccess ? 'text-emerald-600 scale-110' : ''
-                                ]" 
+                                    copySuccess
+                                        ? 'text-emerald-600 scale-110'
+                                        : '',
+                                ]"
                             />
                         </button>
                     </div>
@@ -101,7 +111,10 @@
 
             <div class="relative overflow-hidden rounded-xl mb-8">
                 <NuxtImg
-                    :src="post.imageUrl || 'https://placehold.co/600x400?text=No+Image'"
+                    :src="
+                        post.imageUrl ||
+                        'https://placehold.co/600x400?text=No+Image'
+                    "
                     :alt="post.title"
                     class="w-full aspect-video object-cover"
                     loading="lazy"
@@ -167,7 +180,10 @@
                     <NuxtLink :to="relatedPost.href" class="block">
                         <div class="relative overflow-hidden">
                             <NuxtImg
-                                :src="relatedPost.imageUrl || 'https://placehold.co/600x400?text=No+Image'"
+                                :src="
+                                    relatedPost.imageUrl ||
+                                    'https://placehold.co/600x400?text=No+Image'
+                                "
                                 :alt="relatedPost.title"
                                 class="aspect-video w-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 loading="lazy"
@@ -227,7 +243,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
+import { Icon } from '@iconify/vue';
 import { format, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { computed, onMounted, ref } from 'vue';
@@ -260,10 +276,10 @@ const handleShare = async () => {
                 url: window.location.href,
             });
         } catch (err) {
-             // User cancelled or share failed, try fallback if not cancellation
-             if (err instanceof Error && err.name !== 'AbortError') {
-                 onShareError(err);
-             }
+            // User cancelled or share failed, try fallback if not cancellation
+            if (err instanceof Error && err.name !== 'AbortError') {
+                onShareError(err);
+            }
         }
     } else {
         copyLink();
@@ -291,54 +307,67 @@ onMounted(() => {
                     method: 'POST',
                     body: {
                         path: route.path,
-                        postId: post.value?.id 
-                    }
+                        postId: post.value?.id,
+                    },
                 });
             } catch (err) {
                 console.error('Tracking failed', err);
             }
         }, 3000);
     }
+
+    const articleImages = document.querySelectorAll('.prose-lg img');
+    articleImages.forEach((img) => {
+        img.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+    });
 });
 
-const { data: postData, error } = await useAsyncData<{data: Post}>(
+const { data: postData, error } = await useAsyncData<{ data: Post }>(
     `post-${postId}`,
-    () => $fetch(`/api/posts/${postId}`),
+    () => $fetch(`/api/posts/${postId}`)
 );
 
 const socialShares = [
     {
         name: 'WhatsApp',
         icon: 'mdi:whatsapp',
-        colorClass: 'border-green-200 bg-green-50 text-green-600 hover:bg-green-600 hover:border-green-600 hover:text-white focus:ring-green-500',
-        getUrl: (url: string, title: string) => `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`
+        colorClass:
+            'border-green-200 bg-green-50 text-green-600 hover:bg-green-600 hover:border-green-600 hover:text-white focus:ring-green-500',
+        getUrl: (url: string, title: string) =>
+            `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`,
     },
     {
         name: 'Facebook',
         icon: 'mdi:facebook',
-        colorClass: 'border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-white focus:ring-blue-500',
-        getUrl: (url: string) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`
+        colorClass:
+            'border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-white focus:ring-blue-500',
+        getUrl: (url: string) =>
+            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
     },
     {
         name: 'X (Twitter)',
         icon: 'ri:twitter-x-fill', // atau ri:twitter-x-fill jika ingin logo X baru
-        colorClass: 'border-gray-200 bg-gray-50 text-gray-700 hover:bg-black hover:border-black hover:text-white focus:ring-gray-800',
-        getUrl: (url: string, title: string) => `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`
-    }
+        colorClass:
+            'border-gray-200 bg-gray-50 text-gray-700 hover:bg-black hover:border-black hover:text-white focus:ring-gray-800',
+        getUrl: (url: string, title: string) =>
+            `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
+    },
 ];
 
 const openSocialShare = (social: any) => {
     if (!post.value) return;
-    
+
     const url = window.location.href;
     const title = post.value.title;
     const shareUrl = social.getUrl(url, title);
-    
+
     const width = 600;
     const height = 400;
     const left = (window.screen.width - width) / 2;
     const top = (window.screen.height - height) / 2;
-    
+
     window.open(
         shareUrl,
         'share-window',
@@ -347,7 +376,10 @@ const openSocialShare = (social: any) => {
 };
 
 if (error.value) {
-    throw createError({ statusCode: 404, statusMessage: 'Berita tidak ditemukan' });
+    throw createError({
+        statusCode: 404,
+        statusMessage: 'Berita tidak ditemukan',
+    });
 }
 
 const post = computed(() => {
@@ -373,28 +405,31 @@ const post = computed(() => {
 const { data: relatedPostsData } = useAsyncData<Post[]>(
     `related-posts-${postId}`,
     () => {
-        if (!post.value?.slug) return Promise.resolve([])
-        return $fetch(`/api/posts?limit=3&category_ids=${post.value.categoryId}&exclude=${post.value.slug}`)
-            .then((res: any) => res.data || [])
+        if (!post.value?.slug) return Promise.resolve([]);
+        return $fetch(
+            `/api/posts?limit=3&category_ids=${post.value.categoryId}&exclude=${post.value.slug}`
+        ).then((res: any) => res.data || []);
     },
     {
-        watch: [() => post.value?.slug]
-    },
+        watch: [() => post.value?.slug],
+    }
 );
 
 const relatedPosts = computed(() => {
     if (!relatedPostsData.value) return [];
-    return relatedPostsData.value.filter((p: Post) => p.id !== post.value?.id).map((p: Post) => ({
-        ...p,
-        href: `/berita/${p.slug}`,
-        imageUrl: p.imageUrl,
-        date: format(parseISO(p.createdAt), 'dd MMMM yyyy', { locale: id }),
-        datetime: p.createdAt,
-        category: {
-            ...p.category,
-            title: p.category.name,
-        },
-    }));
+    return relatedPostsData.value
+        .filter((p: Post) => p.id !== post.value?.id)
+        .map((p: Post) => ({
+            ...p,
+            href: `/berita/${p.slug}`,
+            imageUrl: p.imageUrl,
+            date: format(parseISO(p.createdAt), 'dd MMMM yyyy', { locale: id }),
+            datetime: p.createdAt,
+            category: {
+                ...p.category,
+                title: p.category.name,
+            },
+        }));
 });
 
 // Set page title dynamically
@@ -411,8 +446,26 @@ useSeoMeta({
 
 <style>
 .prose-lg :where(p) {
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
-  line-height: 1.8;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    line-height: 1.8;
+}
+
+.prose-lg :where(a) {
+    color: #059669; /* text-emerald-600 */
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.prose-lg :where(a):hover {
+    color: #047857;
+}
+
+.prose-lg :where(img) {
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: auto;
 }
 </style>

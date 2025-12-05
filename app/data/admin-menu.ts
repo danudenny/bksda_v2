@@ -7,7 +7,6 @@ import {
     Megaphone,
     Menu,
     PawPrint,
-    Settings,
     Tag,
     Users,
 } from 'lucide-vue-next';
@@ -43,24 +42,24 @@ export const adminMenuGroups: MenuGroup[] = [
                 href: '/admin/hero',
             },
             {
-                name: 'Berita',
-                icon: FileText,
-                href: '/admin/posts',
-            },
-            {
                 name: 'Kategori Berita',
                 icon: Tag,
                 href: '/admin/categories',
             },
             {
-                name: 'Pengumuman',
-                icon: Megaphone,
-                href: '/admin/announcements',
+                name: 'Berita',
+                icon: FileText,
+                href: '/admin/posts',
             },
             {
                 name: 'Kategori Pengumuman',
                 icon: Tag,
                 href: '/admin/announcement-categories',
+            },
+            {
+                name: 'Pengumuman',
+                icon: Megaphone,
+                href: '/admin/announcements',
             },
             {
                 name: 'Galeri',
@@ -106,11 +105,6 @@ export const adminMenuGroups: MenuGroup[] = [
                 name: 'Pengguna',
                 icon: Users,
                 href: '/admin/users',
-            },
-            {
-                name: 'Pengaturan',
-                icon: Settings,
-                href: '/admin/settings',
             },
         ],
     },

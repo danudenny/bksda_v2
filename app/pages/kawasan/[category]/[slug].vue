@@ -175,14 +175,6 @@ onMounted(() => {
                             </div>
                         </div>
                     </div>
-
-                    <div class="mt-8 pt-6 border-t border-slate-100">
-                        <Button
-                            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
-                        >
-                            Unduh Brosur
-                        </Button>
-                    </div>
                 </div>
             </div>
         </div>

@@ -12,12 +12,18 @@
             @toggle-search="toggleSearch"
         />
 
-        <MegaMenu
-            :is-open="isMenuOpen"
-            :is-scrolled="isScrolled"
-            :is-homepage="isHomepage"
-            @close="closeMenu"
-        />
+        <div class="hidden lg:block">
+            <MegaMenu
+                :is-open="isMenuOpen"
+                :is-scrolled="isScrolled"
+                :is-homepage="isHomepage"
+                @close="closeMenu"
+            />
+        </div>
+
+        <div class="lg:hidden">
+            <MegaMenuMobile :is-open="isMenuOpen" @close="closeMenu" />
+        </div>
 
         <SearchModal :is-open="isSearchOpen" @close="closeSearch" />
 
@@ -167,10 +173,12 @@ const handleClickOutside = (event: MouseEvent) => {
     if (!target) return;
 
     const megaMenuElement = document.getElementById('mega-menu');
+    const megaMenuMobileElement = document.getElementById('mega-menu-mobile');
     const navbarElement = document.querySelector('header');
 
     if (
         (megaMenuElement && megaMenuElement.contains(target)) ||
+        (megaMenuMobileElement && megaMenuMobileElement.contains(target)) ||
         (navbarElement && navbarElement.contains(target))
     ) {
         return;

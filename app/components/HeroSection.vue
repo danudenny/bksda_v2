@@ -143,7 +143,7 @@
 
             <!-- Control buttons -->
             <div
-                class="absolute bottom-32 sm:bottom-36 lg:bottom-40 right-4 lg:right-12 flex items-center gap-2"
+                class="hidden lg:flex absolute bottom-32 sm:bottom-36 lg:bottom-40 right-4 lg:right-12 items-center gap-2"
             >
                 <button
                     @click="previousSlide"

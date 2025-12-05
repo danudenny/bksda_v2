@@ -61,16 +61,16 @@
                 <h2
                     class="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl"
                 >
-                    Prosedur
+                    Pelayanan Perizinan
                     <span
                         class="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent"
-                        >Perizinan</span
+                        >Konservasi</span
                     >
                 </h2>
                 <p class="mt-4 text-lg leading-8 text-slate-600">
                     Jelajahi berbagai prosedur perizinan resmi kami untuk
-                    kegiatan di kawasan konservasi, pemanfaatan TSL, dan wisata
-                    alam.
+                    kegiatan di kawasan konservasi, Perizinan Tumbuhan dan Satwa
+                    Liar, dan Perizinan Jasa Lingkungan dan Wisata Alam.
                 </p>
             </div>
 
@@ -136,7 +136,7 @@
                                 :to="service.link"
                                 class="group/btn flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/40 hover:scale-105"
                             >
-                                <span>Ajukan Permohonan</span>
+                                <span>Lihat Prosedur</span>
                                 <ArrowUpRightFromCircle
                                     class="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1"
                                 />
@@ -208,7 +208,7 @@ import {
 const services = [
     {
         id: 'simaksi',
-        title: 'SIMAKSI',
+        title: 'Perizinan Masuk Kawasan (Simaksi)',
         description:
             'Surat Izin Masuk Kawasan Konservasi untuk pendakian, penelitian, atau perkemahan.',
         link: '/layanan/simaksi',
@@ -222,7 +222,7 @@ const services = [
     },
     {
         id: 'tsl',
-        title: 'Perizinan TSL',
+        title: 'Perizinan Tumbuhan dan Satwa Liar',
         description:
             'Prosedur untuk perizinan tumbuhan dan satwa liar, termasuk penangkaran dan peredaran.',
         link: '/layanan/tsl',
@@ -232,7 +232,7 @@ const services = [
     },
     {
         id: 'wisata',
-        title: 'Perizinan Wisata',
+        title: 'Perizinan Jasa Lingkungan dan Wisata Alam',
         description:
             'Prosedur untuk penyelenggaraan kegiatan wisata alam di dalam kawasan konservasi.',
         link: '/layanan/wisata',
