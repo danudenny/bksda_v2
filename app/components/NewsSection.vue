@@ -80,12 +80,16 @@
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/20 to-transparent z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                         ></div>
-                        <img
+                        <NuxtImg
                             :src="
                                 featuredPost.imageUrl ||
                                 'https://placehold.co/600x400?text=No+Image'
                             "
                             :alt="featuredPost.title"
+                            provider="cloudinary"
+                            format="webp"
+                            quality="80"
+                            sizes="sm:100vw md:50vw lg:600px"
                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                         <div
@@ -188,12 +192,16 @@
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent z-10"
                         ></div>
-                        <img
+                        <NuxtImg
                             :src="
                                 post.imageUrl ||
                                 'https://placehold.co/600x400?text=No+Image'
                             "
                             :alt="post.title"
+                            provider="cloudinary"
+                            format="webp"
+                            quality="80"
+                            sizes="sm:100vw md:50vw lg:400px"
                             class="aspect-[16/9] w-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
 

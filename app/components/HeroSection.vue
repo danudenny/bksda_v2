@@ -16,6 +16,10 @@
                     <NuxtImg
                         :src="kawasan.image"
                         :alt="kawasan.name"
+                        provider="cloudinary"
+                        format="webp"
+                        quality="80"
+                        sizes="sm:100vw md:100vw lg:100vw"
                         class="w-full h-full object-cover"
                         loading="eager"
                         :style="{

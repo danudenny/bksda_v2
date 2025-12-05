@@ -10,15 +10,23 @@
                         <NuxtImg
                             src="https://res.cloudinary.com/dopp3opre/image/upload/v1763652646/logo1_o93q0x.avif"
                             alt="Kementerian LHK Logo"
-                            width="300"
-                            height="300"
+                            provider="cloudinary"
+                            format="webp"
+                            quality="80"
+                            width="80"
+                            height="80"
+                            fit="contain"
                             class="h-8 w-auto sm:h-10 object-contain transition-transform duration-300 group-hover:scale-110"
                         />
                         <NuxtImg
                             src="https://res.cloudinary.com/dopp3opre/image/upload/v1763652647/logo2_l76b4h.png"
                             alt="BKSDA Logo"
-                            width="300"
-                            height="300"
+                            provider="cloudinary"
+                            format="webp"
+                            quality="80"
+                            width="80"
+                            height="80"
+                            fit="contain"
                             class="h-8 w-auto sm:h-10 object-contain transition-transform duration-300 group-hover:scale-110"
                         />
                         <div>
