@@ -3,7 +3,7 @@ name: Build & Deploy Nuxt (Low Memory Safe)
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
