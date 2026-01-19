@@ -21,12 +21,16 @@
                     :class="social.bgGradient"
                 ></div>
 
-                <component
-                    :is="social.icon"
+                <svg
+                    role="img"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
                     class="relative h-5 w-5 transition-all duration-300 group-hover:scale-110"
                     :class="social.iconClass"
                     aria-hidden="true"
-                />
+                >
+                    <path :d="social.icon.path" />
+                </svg>
 
                 <div
                     class="absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium text-white opacity-0 shadow-lg transition-all duration-200 pointer-events-none group-hover:opacity-100 group-hover:translate-x-1"
@@ -44,13 +48,19 @@
 </template>
 
 <script setup lang="ts">
-import { Facebook, Instagram, Twitter, Youtube } from 'lucide-vue-next';
+import {
+    siFacebook,
+    siInstagram,
+    siX,
+    siYoutube,
+    siThreads,
+} from 'simple-icons/icons';
 
 const socialLinks = [
     {
         name: 'Facebook',
         href: 'https://www.facebook.com/bksda.s.selatan',
-        icon: Facebook,
+        icon: siFacebook,
         colorClass: 'text-slate-600',
         iconClass: 'group-hover:text-blue-600',
         bgGradient: 'bg-gradient-to-r from-blue-50 to-blue-100/50',
@@ -58,19 +68,29 @@ const socialLinks = [
         tooltipArrow: 'border-r-blue-600',
     },
     {
-        name: 'Twitter',
-        href: 'https://twitter.com/bksdasumsel',
-        icon: Twitter,
+        name: 'X (Twitter)',
+        href: 'https://x.com/bksda_sumsel',
+        icon: siX,
         colorClass: 'text-slate-600',
-        iconClass: 'group-hover:text-sky-500',
-        bgGradient: 'bg-gradient-to-r from-sky-50 to-sky-100/50',
-        tooltipBg: 'bg-sky-500',
-        tooltipArrow: 'border-r-sky-500',
+        iconClass: 'group-hover:text-black',
+        bgGradient: 'bg-gradient-to-r from-slate-50 to-slate-100/50',
+        tooltipBg: 'bg-black',
+        tooltipArrow: 'border-r-black',
+    },
+    {
+        name: 'Threads',
+        href: 'https://www.threads.com/@bksda_sumsel',
+        icon: siThreads,
+        colorClass: 'text-slate-600',
+        iconClass: 'group-hover:text-black',
+        bgGradient: 'bg-gradient-to-r from-slate-50 to-slate-100/50',
+        tooltipBg: 'bg-black',
+        tooltipArrow: 'border-r-black',
     },
     {
         name: 'Instagram',
         href: 'https://www.instagram.com/bksda_sumsel',
-        icon: Instagram,
+        icon: siInstagram,
         colorClass: 'text-slate-600',
         iconClass: 'group-hover:text-pink-600',
         bgGradient: 'bg-gradient-to-r from-pink-50 to-purple-50',
@@ -80,7 +100,7 @@ const socialLinks = [
     {
         name: 'YouTube',
         href: 'https://www.youtube.com/channel/UC3mTRUNscHxFBZndT64-_Kg',
-        icon: Youtube,
+        icon: siYoutube,
         colorClass: 'text-slate-600',
         iconClass: 'group-hover:text-red-600',
         bgGradient: 'bg-gradient-to-r from-red-50 to-red-100/50',

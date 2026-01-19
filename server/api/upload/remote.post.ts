@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     cloudinary.config({
       cloud_name: config.cloudinaryCloudName,
       api_key: config.cloudinaryApiKey,
-      api_secret: config.cloudinaryApiSecret,
+      api_secret: config.cloudinaryApiSecret
     });
 
     const result = await (cloudinary as any).uploader.upload(sourceUrl, {

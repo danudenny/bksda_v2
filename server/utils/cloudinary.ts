@@ -6,41 +6,45 @@ export const uploadToCloudinary = async (
 ): Promise<any> => {
     const config = useRuntimeConfig();
 
+    if (!config.cloudinaryCloudName || !config.cloudinaryApiKey || !config.cloudinaryApiSecret) {
+        throw new Error('Cloudinary configuration is missing. Please check your .env file for CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET.');
+    }
+
     cloudinary.config({
         cloud_name: config.cloudinaryCloudName,
         api_key: config.cloudinaryApiKey,
-        api_secret: config.cloudinaryApiSecret,
+        api_secret: config.cloudinaryApiSecret
     });
 
-    const currentYear = new Date().getFullYear();
+    const uploadOptions: any = {
+        folder: folder,
+        resource_type: 'auto',
+        transformation: [
+            {
+                color: '#FFFFFF',
+                overlay: {
+                    font_family: 'Helvetica',
+                    font_size: 100,
+                    font_weight: 'bold',
+                    text: `© BKSDA SUMSEL`,
+                    text_align: 'center',
+                },
+            },
+            {
+                flags: ['layer_apply', 'relative'],
+                gravity: 'south_east',
+                opacity: 35,
+                width: '0.33',
+                crop: 'fit',
+                x: '0.02',
+                y: '0.02',
+            },
+        ],
+    };
 
     return new Promise((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
-            {
-                folder: folder,
-                resource_type: 'auto',
-                transformation: [
-                    {
-                        color: '#FFFFFF',
-                        overlay: {
-                            font_family: 'Helvetica',
-                            font_size: 100,
-                            font_weight: 'bold',
-                            text: `© BKSDA SUMSEL`,
-                            text_align: 'center',
-                        },
-                    },
-                    {
-                        flags: ['layer_apply', 'relative'],
-                        gravity: 'south_east',
-                        opacity: 35,
-                        width: '0.33',
-                        crop: 'fit',
-                        x: '0.02',
-                        y: '0.02',
-                    },
-                ],
-            },
+            uploadOptions,
             (error, result) => {
                 if (error) {
                     return reject(error);
@@ -53,3 +57,4 @@ export const uploadToCloudinary = async (
 };
 
 export default cloudinary;
+

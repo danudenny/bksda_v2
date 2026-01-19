@@ -212,7 +212,7 @@ const services = [
         description:
             'Surat Izin Masuk Kawasan Konservasi untuk pendakian, penelitian, atau perkemahan.',
         link: '/layanan/simaksi',
-        imageUrl: '/cta.avif',
+        imageUrl: 'https://res.cloudinary.com/dopp3opre/image/upload/v1768203339/WhatsApp_Image_Jan_12_2026_2_tl1bce.jpg',
         icon: Mountain,
         features: [
             'Pendakian gunung',
@@ -226,7 +226,7 @@ const services = [
         description:
             'Prosedur untuk perizinan tumbuhan dan satwa liar, termasuk penangkaran dan peredaran.',
         link: '/layanan/tsl',
-        imageUrl: '/fokus_konservasi/harimau.avif',
+        imageUrl: 'https://res.cloudinary.com/dopp3opre/image/upload/v1768203340/WhatsApp_Image_Jan_12_2026_1_iwvru1.jpg',
         icon: Trees,
         features: ['Penangkaran satwa', 'Peredaran TSL', 'Pemanfaatan hasil'],
     },
@@ -236,7 +236,7 @@ const services = [
         description:
             'Prosedur untuk penyelenggaraan kegiatan wisata alam di dalam kawasan konservasi.',
         link: '/layanan/wisata',
-        imageUrl: '/kws_konservasi/gnmaras.avif',
+        imageUrl: 'https://res.cloudinary.com/dopp3opre/image/upload/v1768203340/WhatsApp_Image_Jan_12_2026_bhfff9.jpg',
         icon: FileCheck,
         features: ['Wisata alam', 'Aktivitas outdoor', 'Event & gathering'],
     },

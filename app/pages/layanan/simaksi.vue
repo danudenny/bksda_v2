@@ -215,65 +215,7 @@
                                                     />
                                                 </svg>
                                                 <span
-                                                    >Kepala Pusat Penelitian dan
-                                                    Pengembangan
-                                                    Kehutanan.</span
-                                                >
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <svg
-                                                    class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke-width="2"
-                                                    stroke="currentColor"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    />
-                                                </svg>
-                                                <span
-                                                    >Sekretaris Direktorat
-                                                    Jenderal PHKA.</span
-                                                >
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <svg
-                                                    class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke-width="2"
-                                                    stroke="currentColor"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    />
-                                                </svg>
-                                                <span
-                                                    >Direktorat Konservasi
-                                                    Keanekaragaman Hayati.</span
-                                                >
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <svg
-                                                    class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke-width="2"
-                                                    stroke="currentColor"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    />
-                                                </svg>
-                                                <span
-                                                    >Kepala Seksi Konservasi
+                                                    >Kepala Seksi Konservasi Sumber Daya Alam
                                                     Wilayah setempat.</span
                                                 >
                                             </li>
@@ -300,8 +242,8 @@
                                             class="mt-2 leading-relaxed text-gray-600"
                                         >
                                             Menyerahkan fotocopy KTP dan Materai
-                                            Rp 6.000, serta melampirkan dokumen
-                                            sesuai kegiatan:
+                                            Rp 10.000 (2 Lembar), serta melampirkan
+                                            dokumen sesuai kegiatan:
                                         </p>
                                         <div class="mt-4 space-y-4">
                                             <div
@@ -415,9 +357,7 @@
                                                         <span
                                                             >Tanda pendaftaran
                                                             rekaman video/film
-                                                            dari Badan Informasi
-                                                            dan Komunikasi
-                                                            Nasional.</span
+                                                            dari Kementerian Komunikasi dan Digital (Kemkomdigi).</span
                                                         >
                                                     </li>
                                                     <li
@@ -1074,6 +1014,13 @@
                         </div>
                     </transition>
                 </div>
+            </section>
+
+            <!-- Consultation Button -->
+             <section>
+                <ConsultationButton
+                    message="Halo, saya ingin bertanya mengenai prosedur perizinan Masuk Kawasan (SIMAKSI)."
+                />
             </section>
         </div>
     </NuxtLayout>

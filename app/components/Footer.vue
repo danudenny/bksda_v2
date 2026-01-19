@@ -119,11 +119,15 @@
                             :aria-label="item.name"
                             class="rounded-full p-2 transition-colors duration-300 hover:bg-white/10 hover:text-emerald-300"
                         >
-                            <component
-                                :is="item.icon"
+                            <svg
+                                role="img"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
                                 class="h-5 w-5"
                                 aria-hidden="true"
-                            />
+                            >
+                                <path :d="item.icon.path" />
+                            </svg>
                         </a>
                     </div>
                 </div>
@@ -218,36 +222,44 @@
 
 <script setup lang="ts">
 import {
-    Facebook,
-    Instagram,
     Mail,
     MapPin,
     Phone,
     Smartphone,
-    Twitter,
-    Youtube,
 } from 'lucide-vue-next';
+import {
+    siFacebook,
+    siInstagram,
+    siX,
+    siYoutube,
+    siThreads,
+} from 'simple-icons/icons';
 
 const socialLinks = [
     {
         name: 'Facebook',
         href: 'https://www.facebook.com/bksda.s.selatan',
-        icon: Facebook,
+        icon: siFacebook,
     },
     {
-        name: 'Twitter',
-        href: 'https://twitter.com/bksdasumsel',
-        icon: Twitter,
+        name: 'X (Twitter)',
+        href: 'https://x.com/bksda_sumsel',
+        icon: siX,
+    },
+    {
+        name: 'Threads',
+        href: 'https://www.threads.com/@bksda_sumsel',
+        icon: siThreads,
     },
     {
         name: 'Instagram',
         href: 'https://www.instagram.com/bksda_sumsel',
-        icon: Instagram,
+        icon: siInstagram,
     },
     {
         name: 'YouTube',
         href: 'https://www.youtube.com/channel/UC3mTRUNscHxFBZndT64-_Kg',
-        icon: Youtube,
+        icon: siYoutube,
     },
 ];
 

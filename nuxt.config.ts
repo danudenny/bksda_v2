@@ -54,16 +54,16 @@ export default defineNuxtConfig({
         storageKey: 'nuxt-color-mode',
     },
     runtimeConfig: {
-        openrouterApiKey: process.env.OPENROUTER_API_KEY,
-        cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
-        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
-        cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
+        openrouterApiKey: process.env.NUXT_PUBLIC_OPENROUTER_API_KEY,
+        cloudinaryCloudName: 'dopp3opre',
+        cloudinaryApiKey: '959871894563482',
+        cloudinaryApiSecret: 'AMg2WxfNu_UY9YNlSUwHL6ELM3k',
     },
     routeRules: {
         '/api/**': { cors: true },
         '/admin/**': { ssr: false },
     },
     nitro: {
-        preset: 'bun',
+        preset: 'node-server',
     },
 });
