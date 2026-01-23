@@ -3,7 +3,7 @@ import { useAuth } from "../../utils/auth";
 import { generateSlug, generateUniqueSlug } from "../../utils/slug";
 import { successResponse, errorResponse } from "../../utils/response";
 import { readMultipartFormData } from 'h3';
-import { uploadToCloudinary } from "../../utils/cloudinary";
+import { uploadToLocal } from "../../utils/file_storage";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -19,6 +19,8 @@ export default defineEventHandler(async (event) => {
     }
 
     const body = await readMultipartFormData(event);
+    if (!body) return errorResponse("No data provided");
+
     const title = body.find(item => item.name === 'title')?.data.toString();
     const content = body.find(item => item.name === 'content')?.data.toString();
     const excerpt = body.find(item => item.name === 'excerpt')?.data.toString();
@@ -31,8 +33,7 @@ export default defineEventHandler(async (event) => {
 
     if (imageFile && imageFile.data) {
       try {
-        const result = await uploadToCloudinary(imageFile.data, 'bksda_v2/uploads/posts');
-        imageUrl = result.secure_url;
+        imageUrl = await uploadToLocal(imageFile.data, 'posts');
       } catch (error) {
         console.error("Failed to upload post image:", error);
         throw new Error("Failed to upload image");

@@ -1,5 +1,5 @@
 import { successResponse, errorResponse } from '../utils/response';
-import { uploadToCloudinary } from '../utils/cloudinary';
+import { uploadToLocal } from '../utils/file_storage';
 
 export default defineEventHandler(async (event) => {
   // Ensure user is authenticated/admin
@@ -18,41 +18,42 @@ export default defineEventHandler(async (event) => {
 
   const file = files[0];
   if (!file.filename) {
-     throw createError({ 
-        statusCode: 400, 
-        statusMessage: "Bad Request",
-        data: errorResponse("Invalid file")
-     });
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Bad Request",
+      data: errorResponse("Invalid file")
+    });
   }
 
   // Basic validation
   const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/avif'];
   if (!allowedTypes.includes(file.type || '')) {
-      throw createError({ 
-        statusCode: 400, 
-        statusMessage: "Bad Request", 
-        data: errorResponse("Invalid file type. Only images are allowed.")
-      });
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Bad Request",
+      data: errorResponse("Invalid file type. Only images are allowed.")
+    });
   }
 
   try {
-    const result = await uploadToCloudinary(file.data, 'bksda_v2/uploads');
+    const url = await uploadToLocal(file.data, 'uploads');
+    const filename = url.split('/').pop() || file.filename || 'unknown';
 
     return successResponse('File uploaded successfully', {
-      url: result.secure_url,
-      filename: result.public_id,
-      mimetype: result.format ? `image/${result.format}` : file.type,
-      width: result.width,
-      height: result.height,
-      format: result.format,
-      resource_type: result.resource_type
+      url: url,
+      filename: filename,
+      mimetype: file.type,
+      width: 0, // Not available without processing
+      height: 0, // Not available without processing
+      format: file.type?.split('/')[1] || '',
+      resource_type: 'image'
     });
   } catch (error: any) {
-    console.error("Cloudinary upload error:", error);
+    console.error("Local upload error:", error);
     throw createError({
       statusCode: 500,
       statusMessage: 'Internal Server Error',
-      data: errorResponse('Failed to upload file to Cloudinary', error.message)
+      data: errorResponse('Failed to upload file locally', error.message)
     });
   }
 });

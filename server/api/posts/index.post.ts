@@ -4,7 +4,7 @@ import { generateSlug, generateUniqueSlug } from "../../utils/slug";
 import { validatePostData } from "../../utils/validation";
 import { successResponse, errorResponse } from "../../utils/response";
 import { readMultipartFormData } from 'h3';
-import { uploadToCloudinary } from "../../utils/cloudinary";
+import { uploadToLocal } from "../../utils/file_storage";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -23,8 +23,7 @@ export default defineEventHandler(async (event) => {
 
     if (imageFile && imageFile.data) {
       try {
-        const result = await uploadToCloudinary(imageFile.data, 'bksda_v2/uploads/posts');
-        imageUrl = result.secure_url;
+        imageUrl = await uploadToLocal(imageFile.data, 'posts');
       } catch (error) {
         console.error("Failed to upload post image:", error);
         throw new Error("Failed to upload image");

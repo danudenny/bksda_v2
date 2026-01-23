@@ -1,5 +1,5 @@
 import { requireAdmin, useAuth } from '../../utils/auth';
-import { uploadToCloudinary } from '../../utils/cloudinary';
+import { uploadToLocal } from '../../utils/file_storage';
 import prisma from '../../utils/db';
 import { errorResponse, successResponse } from '../../utils/response';
 import { generateSlug } from '../../utils/slug';
@@ -44,11 +44,7 @@ export default defineEventHandler(async (event) => {
 
         if (imageFile && imageFile.data && imageFile.data.length > 0) {
             try {
-                const result = await uploadToCloudinary(
-                    imageFile.data,
-                    'bksda_v2/uploads/hero-slides'
-                );
-                imageUrl = result.secure_url;
+                imageUrl = await uploadToLocal(imageFile.data, 'hero-slides');
             } catch (error) {
                 console.error('Failed to upload hero image:', error);
                 throw new Error('Failed to upload image');

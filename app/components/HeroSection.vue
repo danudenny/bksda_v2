@@ -16,7 +16,7 @@
                     <NuxtImg
                         :src="kawasan.image"
                         :alt="kawasan.name"
-                        provider="cloudinary"
+                        :provider="kawasan.image?.startsWith('/uploads') ? undefined : 'cloudinary'"
                         format="webp"
                         quality="80"
                         sizes="sm:100vw md:100vw lg:100vw"

@@ -86,7 +86,7 @@
                                 'https://placehold.co/600x400?text=No+Image'
                             "
                             :alt="featuredPost.title"
-                            provider="cloudinary"
+                            :provider="featuredPost.imageUrl?.startsWith('/uploads') ? undefined : 'cloudinary'"
                             format="webp"
                             quality="80"
                             sizes="sm:100vw md:50vw lg:600px"
@@ -198,7 +198,7 @@
                                 'https://placehold.co/600x400?text=No+Image'
                             "
                             :alt="post.title"
-                            provider="cloudinary"
+                            :provider="post.imageUrl?.startsWith('/uploads') ? undefined : 'cloudinary'"
                             format="webp"
                             quality="80"
                             sizes="sm:100vw md:50vw lg:400px"

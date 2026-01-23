@@ -1,5 +1,5 @@
 import { successResponse, errorResponse } from "../../utils/response";
-import cloudinary from "../../utils/cloudinary";
+import { uploadToLocal } from "../../utils/file_storage";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -11,30 +11,32 @@ export default defineEventHandler(async (event) => {
       return errorResponse("Source URL is required");
     }
 
-    // Ensure Cloudinary configured
-    const config = useRuntimeConfig();
-    cloudinary.config({
-      cloud_name: config.cloudinaryCloudName,
-      api_key: config.cloudinaryApiKey,
-      api_secret: config.cloudinaryApiSecret
-    });
+    // Fetch the image
+    const imageResponse = await fetch(sourceUrl);
+    if (!imageResponse.ok) {
+      throw new Error(`Failed to fetch image: ${imageResponse.statusText}`);
+    }
+    const arrayBuffer = await imageResponse.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
-    const result = await (cloudinary as any).uploader.upload(sourceUrl, {
-      folder,
-      resource_type: "image",
-    });
+    // Upload locally
+    const url = await uploadToLocal(buffer, 'imported');
+    const filename = url.split('/').pop() || 'unknown';
+
+    // Attempt to guess mime type from response headers or filename
+    const contentType = imageResponse.headers.get('content-type') || 'application/octet-stream';
 
     return successResponse("Imported successfully", {
-      url: result.secure_url || result.url,
-      filename: result.public_id,
-      mimetype: result.format ? `image/${result.format}` : undefined,
-      width: result.width,
-      height: result.height,
-      format: result.format,
-      resource_type: result.resource_type,
+      url: url,
+      filename: filename,
+      mimetype: contentType,
+      width: 0,
+      height: 0,
+      format: contentType.split('/')[1] || '',
+      resource_type: 'image',
     });
   } catch (err: any) {
-    console.error("Cloudinary remote upload error:", err);
-    return errorResponse("Failed to import into Cloudinary", err.message || "");
+    console.error("Local remote upload error:", err);
+    return errorResponse("Failed to import locally", err.message || "");
   }
 });
