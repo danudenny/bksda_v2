@@ -68,6 +68,7 @@
                         <NuxtImg
                             :src="image.src"
                             :alt="image.alt"
+                            :provider="image.src.includes('cloudinary') ? 'cloudinary' : undefined"
                             :width="384"
                             :height="256"
                             class="gallery-image"
@@ -96,6 +97,7 @@
                         <NuxtImg
                             :src="image.src"
                             :alt="image.alt"
+                            :provider="image.src.includes('cloudinary') ? 'cloudinary' : undefined"
                             :width="384"
                             :height="256"
                             class="gallery-image"
@@ -128,6 +130,7 @@
                         <NuxtImg
                             :src="image.src"
                             :alt="image.alt"
+                            :provider="image.src.includes('cloudinary') ? 'cloudinary' : undefined"
                             :width="384"
                             :height="256"
                             class="gallery-image"
@@ -156,6 +159,7 @@
                         <NuxtImg
                             :src="image.src"
                             :alt="image.alt"
+                            :provider="image.src.includes('cloudinary') ? 'cloudinary' : undefined"
                             :width="384"
                             :height="256"
                             class="gallery-image"
@@ -193,6 +197,7 @@
                         <NuxtImg
                             :src="image.src"
                             :alt="image.alt"
+                            :provider="image.src.includes('cloudinary') ? 'cloudinary' : undefined"
                             :width="384"
                             :height="256"
                             class="gallery-image"
@@ -226,6 +231,7 @@
                         <NuxtImg
                             :src="image.src"
                             :alt="image.alt"
+                            :provider="image.src.includes('cloudinary') ? 'cloudinary' : undefined"
                             :width="384"
                             :height="256"
                             class="gallery-image"

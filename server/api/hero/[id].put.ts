@@ -1,5 +1,5 @@
 import { requireAdmin, useAuth } from '../../utils/auth';
-import { uploadToLocal } from '../../utils/file_storage';
+import { uploadToS3 } from '../../utils/s3';
 import prisma from '../../utils/db';
 import { errorResponse, successResponse } from '../../utils/response';
 import { generateSlug } from '../../utils/slug';
@@ -44,7 +44,7 @@ export default defineEventHandler(async (event) => {
 
         if (imageFile && imageFile.data && imageFile.data.length > 0) {
             try {
-                imageUrl = await uploadToLocal(imageFile.data, 'hero-slides');
+                imageUrl = await uploadToS3(imageFile.data, 'hero-slides', imageFile.type);
             } catch (error) {
                 console.error('Failed to upload hero image:', error);
                 throw new Error('Failed to upload image');

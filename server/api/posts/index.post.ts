@@ -4,12 +4,19 @@ import { generateSlug, generateUniqueSlug } from "../../utils/slug";
 import { validatePostData } from "../../utils/validation";
 import { successResponse, errorResponse } from "../../utils/response";
 import { readMultipartFormData } from 'h3';
-import { uploadToLocal } from "../../utils/file_storage";
+import { uploadToS3 } from "../../utils/s3";
 
 export default defineEventHandler(async (event) => {
   try {
     const user = useAuth(event);
     const body = await readMultipartFormData(event);
+    if (!body) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Bad Request',
+        data: errorResponse('No data provided')
+      });
+    }
 
     const title = body.find(item => item.name === 'title')?.data.toString() || '';
     const slug = body.find(item => item.name === 'slug')?.data.toString() || '';
@@ -23,7 +30,7 @@ export default defineEventHandler(async (event) => {
 
     if (imageFile && imageFile.data) {
       try {
-        imageUrl = await uploadToLocal(imageFile.data, 'posts');
+        imageUrl = await uploadToS3(imageFile.data, 'posts', imageFile.type);
       } catch (error) {
         console.error("Failed to upload post image:", error);
         throw new Error("Failed to upload image");

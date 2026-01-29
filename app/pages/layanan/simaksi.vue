@@ -9,19 +9,7 @@
                 <span
                     class="inline-flex items-center gap-2 rounded-full bg-white/20 backdrop-blur-md border border-white/30 px-4 py-2 text-sm font-semibold text-white"
                 >
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="2"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"
-                        />
-                    </svg>
+                    <ClipboardList class="h-5 w-5" />
                     Perizinan
                 </span>
             </div>
@@ -51,19 +39,7 @@
                     <div
                         class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600"
                     >
-                        <svg
-                            class="h-6 w-6 text-white"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="2"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"
-                            />
-                        </svg>
+                        <ClipboardList class="h-6 w-6 text-white" />
                     </div>
                     Ruang Lingkup Kegiatan
                 </h2>
@@ -106,19 +82,7 @@
                     <div
                         class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600"
                     >
-                        <svg
-                            class="h-6 w-6 text-white"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="2"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                        </svg>
+                        <CheckCircle class="h-6 w-6 text-white" />
                     </div>
                     Prosedur Permohonan
                 </h2>
@@ -201,19 +165,9 @@
                                             class="mt-3 space-y-2 pl-6 text-gray-600"
                                         >
                                             <li class="flex items-start gap-2">
-                                                <svg
+                                                <CheckCircle
                                                     class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke-width="2"
-                                                    stroke="currentColor"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    />
-                                                </svg>
+                                                />
                                                 <span
                                                     >Kepala Seksi Konservasi Sumber Daya Alam
                                                     Wilayah setempat.</span
@@ -263,19 +217,9 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
+                                                        <CheckCircle
                                                             class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        />
                                                         <span
                                                             >Proposal
                                                             kegiatan.</span
@@ -284,19 +228,9 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
+                                                        <CheckCircle
                                                             class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        />
                                                         <span
                                                             >Fotocopy tanda
                                                             pengenal.</span
@@ -319,19 +253,9 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
+                                                        <CheckCircle
                                                             class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        />
                                                         <span
                                                             >Surat izin produksi
                                                             (untuk tujuan
@@ -341,19 +265,9 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
+                                                        <CheckCircle
                                                             class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        />
                                                         <span
                                                             >Tanda pendaftaran
                                                             rekaman video/film
@@ -363,19 +277,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" />
                                                         <span
                                                             >Sinopsis film yang
                                                             akan dibuat.</span
@@ -384,19 +286,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" />
                                                         <span
                                                             >Daftar crew.</span
                                                         >
@@ -404,19 +294,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" />
                                                         <span
                                                             >Surat Peryataan
                                                             tidak merusak
@@ -498,19 +376,9 @@
                                             class="mt-3 space-y-2 text-gray-600"
                                         >
                                             <li class="flex items-start gap-2">
-                                                <svg
+                                                <CheckCircle
                                                     class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke-width="2"
-                                                    stroke="currentColor"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    />
-                                                </svg>
+                                                />
                                                 <span
                                                     >Kepala Pusat Penelitian dan
                                                     Pengembangan
@@ -518,38 +386,14 @@
                                                 >
                                             </li>
                                             <li class="flex items-start gap-2">
-                                                <svg
-                                                    class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke-width="2"
-                                                    stroke="currentColor"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    />
-                                                </svg>
+                                                <CheckCircle class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" />
                                                 <span
                                                     >Direktorat Konservasi
                                                     Keanekaragaman Hayati.</span
                                                 >
                                             </li>
                                             <li class="flex items-start gap-2">
-                                                <svg
-                                                    class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke-width="2"
-                                                    stroke="currentColor"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    />
-                                                </svg>
+                                                <CheckCircle class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" />
                                                 <span
                                                     >Kepala Balai
                                                     setempat.</span
@@ -598,19 +442,9 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
+                                                        <CheckCircle
                                                             class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        />
                                                         <span
                                                             >Surat izin dari
                                                             penelitian
@@ -620,19 +454,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" />
                                                         <span
                                                             >Proposal
                                                             kegiatan.</span
@@ -641,19 +463,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" />
                                                         <span
                                                             >Fotocopy
                                                             Passport.</span
@@ -662,19 +472,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" />
                                                         <span
                                                             >Surat Pemberitahuan
                                                             Penelitian dari
@@ -687,19 +485,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" />
                                                         <span
                                                             >Surat Jalan dari
                                                             Kepolisian.</span
@@ -708,19 +494,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" />
                                                         <span
                                                             >Surat peryataan
                                                             tidak merusak
@@ -748,19 +522,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" />
                                                         <span
                                                             >Surat izin produksi
                                                             (untuk tujuan
@@ -770,19 +532,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" />
                                                         <span
                                                             >Tanda pendaftaran
                                                             rekaman video/film
@@ -794,19 +544,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" />
                                                         <span
                                                             >Sinopsis film yang
                                                             akan dibuat.</span
@@ -815,19 +553,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" />
                                                         <span
                                                             >Daftar crew.</span
                                                         >
@@ -835,19 +561,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-teal-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-teal-600 mt-0.5" />
                                                         <span
                                                             >Surat Peryataan
                                                             tidak merusak
@@ -875,37 +589,15 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
+                                                        <CheckCircle
                                                             class="h-5 w-5 shrink-0 text-blue-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        />
                                                         <span>Proposal.</span>
                                                     </li>
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-blue-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" />
                                                         <span
                                                             >Fotocopy
                                                             Passport.</span
@@ -914,19 +606,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-blue-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" />
                                                         <span
                                                             >Daftar
                                                             peralatan.</span
@@ -935,19 +615,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-blue-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" />
                                                         <span
                                                             >Surat Jalan dari
                                                             Kepolisian.</span
@@ -956,19 +624,7 @@
                                                     <li
                                                         class="flex items-start gap-2"
                                                     >
-                                                        <svg
-                                                            class="h-5 w-5 shrink-0 text-blue-600 mt-0.5"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="2"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <CheckCircle class="h-5 w-5 shrink-0 text-blue-600 mt-0.5" />
                                                         <span
                                                             >Surat Peryataan
                                                             tidak merusak
@@ -1029,6 +685,8 @@
 <script setup lang="ts">
 import {
     Camera,
+    CheckCircle,
+    ClipboardList,
     Globe,
     GraduationCap,
     Mountain,

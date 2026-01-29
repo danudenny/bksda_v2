@@ -1,5 +1,5 @@
 import { successResponse, errorResponse } from '../utils/response';
-import { uploadToLocal } from '../utils/file_storage';
+import { uploadToS3 } from '../utils/s3';
 
 export default defineEventHandler(async (event) => {
   // Ensure user is authenticated/admin
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const url = await uploadToLocal(file.data, 'uploads');
+    const url = await uploadToS3(file.data, 'posts', file.type);
     const filename = url.split('/').pop() || file.filename || 'unknown';
 
     return successResponse('File uploaded successfully', {
@@ -49,11 +49,11 @@ export default defineEventHandler(async (event) => {
       resource_type: 'image'
     });
   } catch (error: any) {
-    console.error("Local upload error:", error);
+    console.error("S3 upload error:", error);
     throw createError({
       statusCode: 500,
       statusMessage: 'Internal Server Error',
-      data: errorResponse('Failed to upload file locally', error.message)
+      data: errorResponse('Failed to upload file to S3', error.message)
     });
   }
 });

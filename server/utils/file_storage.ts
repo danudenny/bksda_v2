@@ -7,7 +7,7 @@ export const uploadToLocal = async (
     folder: string = 'posts'
 ): Promise<string> => {
     // Determine the upload directory
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', folder);
+    const uploadDir = path.join(process.cwd(), 'uploads', folder);
 
     // Ensure directory exists
     try {

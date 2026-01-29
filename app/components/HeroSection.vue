@@ -13,11 +13,11 @@
                     :key="kawasan.id"
                     class="absolute inset-0"
                 >
-                    <NuxtImg
-                        :src="kawasan.image"
-                        :alt="kawasan.name"
-                        :provider="kawasan.image?.startsWith('/uploads') ? undefined : 'cloudinary'"
-                        format="webp"
+                        <NuxtImg
+                            :src="kawasan.image"
+                            :alt="kawasan.name"
+                            :provider="kawasan.image?.includes('cloudinary') ? 'cloudinary' : undefined"
+                            format="webp"
                         quality="80"
                         sizes="sm:100vw md:100vw lg:100vw"
                         class="w-full h-full object-cover"

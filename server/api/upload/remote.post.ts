@@ -1,5 +1,5 @@
 import { successResponse, errorResponse } from "../../utils/response";
-import { uploadToLocal } from "../../utils/file_storage";
+import { uploadToS3 } from "../../utils/s3";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -19,8 +19,8 @@ export default defineEventHandler(async (event) => {
     const arrayBuffer = await imageResponse.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Upload locally
-    const url = await uploadToLocal(buffer, 'imported');
+    // Upload to S3
+    const url = await uploadToS3(buffer, 'imported', contentType);
     const filename = url.split('/').pop() || 'unknown';
 
     // Attempt to guess mime type from response headers or filename
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
       resource_type: 'image',
     });
   } catch (err: any) {
-    console.error("Local remote upload error:", err);
-    return errorResponse("Failed to import locally", err.message || "");
+    console.error("S3 remote upload error:", err);
+    return errorResponse("Failed to import to S3", err.message || "");
   }
 });

@@ -3,7 +3,7 @@ import { useAuth } from "../../utils/auth";
 import { generateSlug, generateUniqueSlug } from "../../utils/slug";
 import { successResponse, errorResponse } from "../../utils/response";
 import { readMultipartFormData } from 'h3';
-import { uploadToLocal } from "../../utils/file_storage";
+import { uploadToS3 } from "../../utils/s3";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
 
     if (imageFile && imageFile.data) {
       try {
-        imageUrl = await uploadToLocal(imageFile.data, 'posts');
+        imageUrl = await uploadToS3(imageFile.data, 'posts', imageFile.type);
       } catch (error) {
         console.error("Failed to upload post image:", error);
         throw new Error("Failed to upload image");

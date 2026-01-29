@@ -43,6 +43,7 @@ export default defineNuxtConfig({
             xxl: 1536,
             '2xl': 1536,
         },
+        domains: ['nos.wjv-1.neo.id'],
     },
     shadcn: {
         prefix: '',
@@ -58,6 +59,11 @@ export default defineNuxtConfig({
         cloudinaryCloudName: 'dopp3opre',
         cloudinaryApiKey: '959871894563482',
         cloudinaryApiSecret: 'AMg2WxfNu_UY9YNlSUwHL6ELM3k',
+        s3AccessKeyId: process.env.NUXT_S3_ACCESS_KEY_ID,
+        s3SecretAccessKey: process.env.NUXT_S3_SECRET_ACCESS_KEY,
+        s3Endpoint: process.env.NUXT_S3_ENDPOINT,
+        s3Bucket: process.env.NUXT_S3_BUCKET,
+        s3PublicUrl: process.env.NUXT_S3_PUBLIC_URL,
     },
     routeRules: {
         '/api/**': { cors: true },

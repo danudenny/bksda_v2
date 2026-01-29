@@ -110,7 +110,7 @@
             </div>
 
             <div class="relative overflow-hidden rounded-xl mb-8">
-                <NuxtImg
+                <img
                     :src="
                         post.imageUrl ||
                         'https://placehold.co/600x400?text=No+Image'
@@ -179,7 +179,7 @@
                 >
                     <NuxtLink :to="relatedPost.href" class="block">
                         <div class="relative overflow-hidden">
-                            <NuxtImg
+                            <img
                                 :src="
                                     relatedPost.imageUrl ||
                                     'https://placehold.co/600x400?text=No+Image'

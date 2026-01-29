@@ -103,6 +103,7 @@
                                     <NuxtImg
                                         :src="spesies.imageUrl"
                                         :alt="spesies.name"
+                                        :provider="spesies.imageUrl?.includes('cloudinary') ? 'cloudinary' : undefined"
                                         class="h-full w-full object-cover transition-all duration-700 grayscale group-hover:grayscale-0 group-hover:scale-110"
                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                         loading="lazy"
